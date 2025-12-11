@@ -1,0 +1,51 @@
+# ------------------------------
+# MSB Show Controls – .gitignore
+# ------------------------------
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# VSCode
+.vscode/
+.history/
+*.code-workspace
+
+# Python tooling (future scripts)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv/
+env/
+venv/
+pip-log.txt
+
+# Node tooling (if GH Pages uses custom themes)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Diagram tools
+*.drawio~
+*.tmp
+*.bak
+*.autosave
+
+# Exports from Home Assistant
+ha/exports/*.backup
+ha/exports/*.old
+ha/exports/*-auto.yaml
+
+# Logs
+*.log
+
+# Archives
+*.zip
+*.tar
+*.gz
+
+# Local notes / scratchpads
+notes/
+scratch/

@@ -1,0 +1,3 @@
+# Traffic Entities
+
+Placeholder.
