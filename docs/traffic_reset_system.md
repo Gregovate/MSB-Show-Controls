@@ -42,6 +42,8 @@ The reset system covers:
   - Resetting HA-side “cars currently in park” estimates
   - (Eventually) telling firmware when to roll to a new day, if needed
 
+![Traffic Reset Flow](../images/design/reset_flow_v1.png)
+
 Out of scope (documented elsewhere):
 
 - Exact MQTT topic naming for CarCounter / GateCounter.
