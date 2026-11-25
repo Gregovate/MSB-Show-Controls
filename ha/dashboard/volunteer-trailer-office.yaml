@@ -1,10 +1,13 @@
 views:
-  - type: sections
-    max_columns: 2
-    title: ShowData
-    path: show-control
-    sections:
-    - type: grid
+- type: panel
+  title: ShowData
+  path: show-control
+  cards:
+  - type: grid
+    columns: 3
+    square: false
+    cards:
+    - type: vertical-stack
       cards:
       - type: grid
         columns: 3
@@ -31,13 +34,9 @@ views:
           icon: mdi:clock-outline
           tap_action:
             action: none
-        grid_options:
-          columns: full
       - type: grid
         square: false
         columns: 2
-        grid_options:
-          columns: full
         cards:
         - type: custom:mushroom-template-card
           entity: binary_sensor.msb_show_open
@@ -52,8 +51,8 @@ views:
           primary: Entrance gate
           secondary: '{{ states(entity) | capitalize if has_value(entity) else ''Unavailable'' }}'
           icon: '{{ ''mdi:gate-open'' if is_state(entity, ''open'') else ''mdi:gate'' }}'
-          color: '{{ {''open'':''green'', ''closed'':''red'', ''opening'':''amber'', ''closing'':''amber''}.get(states(entity), ''grey'')
-            }}'
+          color: '{{ {''open'':''green'', ''closed'':''red'', ''opening'':''amber'', ''closing'':''amber''}.get(states(entity),
+            ''grey'') }}'
           tap_action:
             action: none
           hold_action:
@@ -63,8 +62,6 @@ views:
       - type: grid
         square: false
         columns: 2
-        grid_options:
-          columns: full
         cards:
         - type: custom:mushroom-template-card
           entity: sensor.msb_in_park_cars_canonical
@@ -110,13 +107,9 @@ views:
           color: teal
           tap_action:
             action: more-info
-        grid_options:
-          columns: full
       - type: grid
         columns: 4
         square: false
-        grid_options:
-          columns: full
         cards:
         - type: custom:mushroom-template-card
           primary: 6:00 PM
@@ -171,100 +164,9 @@ views:
           tap_action:
             action: none
       - type: heading
-        heading: Highway 42 · North (left) / South (right)
-        grid_options:
-          columns: full
+        heading: Traffic status
         heading_style: title
       - type: grid
-        columns: 2
-        square: false
-        grid_options:
-          columns: full
-        cards:
-        - type: custom:webrtc-camera
-          entity: camera.cam_hwy_42n_profile001_substream
-          name: Highway 42 North
-        - type: custom:webrtc-camera
-          entity: camera.cam_hwy_42s_profile001_substream
-          name: Highway 42 South
-    - type: grid
-      cards:
-      - type: vertical-stack
-        cards:
-        - type: heading
-          heading: Counter health & beam alarms
-        - type: grid
-          square: false
-          columns: 2
-          cards:
-          - type: custom:mushroom-template-card
-            entity: sensor.msb_car_counter_msb_car_counter_status_2
-            primary: Car Counter
-            icon: mdi:lan-connect
-            secondary: '{{ states(entity, with_unit=true) }}'
-            color: '{{ ''green'' if states(entity)|lower == ''online'' else ''amber'' if states(entity) in [''unknown'',''unavailable'']
-              else ''red'' }}'
-            tap_action:
-              action: more-info
-          - type: custom:mushroom-template-card
-            entity: sensor.msb_gate_counter_msb_gate_counter_status_2
-            primary: Gate Counter
-            icon: mdi:lan-connect
-            secondary: '{{ states(entity, with_unit=true) }}'
-            color: '{{ ''green'' if states(entity)|lower == ''online'' else ''amber'' if states(entity) in [''unknown'',''unavailable'']
-              else ''red'' }}'
-            tap_action:
-              action: more-info
-          - type: custom:mushroom-template-card
-            entity: sensor.msb_car_counter_msb_car_counter_alarm
-            primary: Car Beam
-            icon: mdi:car-brake-alert
-            secondary: '{{ ''Clear'' if is_state(entity,''CLEAR'') else ''Beam stuck'' if ''STUCK'' in states(entity) else states(entity)|capitalize
-              }}'
-            color: '{{ ''green'' if states(entity)|lower == ''clear'' else ''amber'' if states(entity) in [''unknown'',''unavailable'']
-              else ''red'' }}'
-            tap_action:
-              action: more-info
-          - type: custom:mushroom-template-card
-            entity: sensor.msb_gate_counter_msb_gate_counter_alarm
-            primary: Gate Beam
-            icon: mdi:boom-gate-alert
-            secondary: '{{ ''Clear'' if is_state(entity,''CLEAR'') else ''Beam stuck'' if ''STUCK'' in states(entity) else states(entity)|capitalize
-              }}'
-            color: '{{ ''green'' if states(entity)|lower == ''clear'' else ''amber'' if states(entity) in [''unknown'',''unavailable'']
-              else ''red'' }}'
-            tap_action:
-              action: more-info
-          - type: custom:mushroom-template-card
-            entity: sensor.msb_car_counter_car_counter_heartbeat
-            primary: Car heartbeat
-            secondary: '{% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now())
-              - stamp < 300 %} {{ ''Receiving'' if fresh else (''Last '' ~ states(entity) if stamp is not none else ''Unavailable'')
-              }}'
-            icon: mdi:heart-pulse
-            color: '{% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now())
-              - stamp < 300 %} {{ ''green'' if fresh else ''red'' }}'
-          - type: custom:mushroom-template-card
-            entity: sensor.msb_gate_counter_gate_counter_heartbeat
-            primary: Gate heartbeat
-            secondary: '{% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now())
-              - stamp < 300 %} {{ ''Receiving'' if fresh else (''Last '' ~ states(entity) if stamp is not none else ''Unavailable'')
-              }}'
-            icon: mdi:heart-pulse
-            color: '{% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now())
-              - stamp < 300 %} {{ ''green'' if fresh else ''red'' }}'
-          grid_options:
-            columns: full
-        grid_options:
-          columns: full
-      - type: heading
-        grid_options:
-          columns: full
-        heading: Traffic Control
-        heading_style: title
-      - type: grid
-        grid_options:
-          columns: full
         square: false
         columns: 2
         cards:
@@ -417,7 +319,7 @@ views:
           show_state: true
           show_units: false
           tap_action:
-            action: toggle
+            action: none
           styles:
             card:
             - height: 62px
@@ -439,6 +341,10 @@ views:
               icon:
               - color: '#9e9e9e'
           size: 22px
+          hold_action:
+            action: none
+          double_tap_action:
+            action: none
         - type: custom:button-card
           entity: input_boolean.merger_director_present
           name: Merger Actual
@@ -447,7 +353,7 @@ views:
           show_state: true
           show_units: false
           tap_action:
-            action: toggle
+            action: none
           styles:
             card:
             - height: 62px
@@ -469,13 +375,98 @@ views:
               icon:
               - color: '#9e9e9e'
           size: 22px
+          hold_action:
+            action: none
+          double_tap_action:
+            action: none
+    - type: vertical-stack
+      cards:
+      - type: heading
+        heading: Highway 42 · North above / South below
+        heading_style: title
+      - type: grid
+        columns: 1
+        square: false
+        cards:
+        - type: custom:webrtc-camera
+          entity: camera.cam_hwy_42n_profile001_substream
+          name: Highway 42 North
+        - type: custom:webrtc-camera
+          entity: camera.cam_hwy_42s_profile001_substream
+          name: Highway 42 South
+    - type: vertical-stack
+      cards:
+      - type: vertical-stack
+        cards:
+        - type: heading
+          heading: Counter health & beam alarms
+        - type: grid
+          square: false
+          columns: 2
+          cards:
+          - type: custom:mushroom-template-card
+            entity: sensor.msb_car_counter_msb_car_counter_status_2
+            primary: Car Counter
+            icon: mdi:lan-connect
+            secondary: '{{ states(entity, with_unit=true) }}'
+            color: '{{ ''green'' if states(entity)|lower == ''online'' else ''amber'' if states(entity) in [''unknown'',''unavailable'']
+              else ''red'' }}'
+            tap_action:
+              action: more-info
+          - type: custom:mushroom-template-card
+            entity: sensor.msb_gate_counter_msb_gate_counter_status_2
+            primary: Gate Counter
+            icon: mdi:lan-connect
+            secondary: '{{ states(entity, with_unit=true) }}'
+            color: '{{ ''green'' if states(entity)|lower == ''online'' else ''amber'' if states(entity) in [''unknown'',''unavailable'']
+              else ''red'' }}'
+            tap_action:
+              action: more-info
+          - type: custom:mushroom-template-card
+            entity: sensor.msb_car_counter_msb_car_counter_alarm
+            primary: Car Beam
+            icon: mdi:car-brake-alert
+            secondary: '{{ ''Clear'' if is_state(entity,''CLEAR'') else ''Beam stuck'' if ''STUCK'' in states(entity) else states(entity)|capitalize
+              }}'
+            color: '{{ ''green'' if states(entity)|lower == ''clear'' else ''amber'' if states(entity) in [''unknown'',''unavailable'']
+              else ''red'' }}'
+            tap_action:
+              action: more-info
+          - type: custom:mushroom-template-card
+            entity: sensor.msb_gate_counter_msb_gate_counter_alarm
+            primary: Gate Beam
+            icon: mdi:boom-gate-alert
+            secondary: '{{ ''Clear'' if is_state(entity,''CLEAR'') else ''Beam stuck'' if ''STUCK'' in states(entity) else states(entity)|capitalize
+              }}'
+            color: '{{ ''green'' if states(entity)|lower == ''clear'' else ''amber'' if states(entity) in [''unknown'',''unavailable'']
+              else ''red'' }}'
+            tap_action:
+              action: more-info
+          - type: custom:mushroom-template-card
+            entity: sensor.msb_car_counter_car_counter_heartbeat
+            primary: Car heartbeat
+            secondary: '{% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now())
+              - stamp < 300 %} {{ ''Receiving'' if fresh else (''Last '' ~ states(entity) if stamp is not none else ''Unavailable'')
+              }}'
+            icon: mdi:heart-pulse
+            color: '{% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now())
+              - stamp < 300 %} {{ ''green'' if fresh else ''red'' }}'
+          - type: custom:mushroom-template-card
+            entity: sensor.msb_gate_counter_gate_counter_heartbeat
+            primary: Gate heartbeat
+            secondary: '{% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now())
+              - stamp < 300 %} {{ ''Receiving'' if fresh else (''Last '' ~ states(entity) if stamp is not none else ''Unavailable'')
+              }}'
+            icon: mdi:heart-pulse
+            color: '{% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now())
+              - stamp < 300 %} {{ ''green'' if fresh else ''red'' }}'
+          grid_options:
+            columns: full
       - type: weather-forecast
         entity: weather.openweathermap
         show_current: true
         show_forecast: true
         forecast_type: daily
-        grid_options:
-          columns: full
       - type: grid
         square: false
         columns: 2
@@ -630,981 +621,142 @@ views:
               icon:
               - color: '#4caf50'
           size: 22px
-        grid_options:
-          columns: full
-    cards: []
-    header:
-      card:
-        type: markdown
-        text_only: true
-        content: |
-          # Making Spirits Bright 2026
-  - title: Cameras
-    path: cameras
-    icon: mdi:cctv
-    type: sections
-    max_columns: 4
-    sections:
-      - type: grid
-        square: false
-        cards:
-          - type: heading
-            heading: Calendar
-            heading_style: title
-          - type: grid
-            square: false
-            columns: 3
-            cards:
-              - type: custom:button-card
-                entity: sensor.msb_car_counter_days_running
-                name: Show Day
-                icon: mdi:calendar
-                layout: vertical
-                show_state: true
-                styles:
-                  card:
-                    - padding: 10px
-                    - border-radius: 16px
-                  state:
-                    - font-size: 22px
-                    - font-weight: bold
-                  name:
-                    - font-size: 14px
-              - type: custom:button-card
-                entity: sensor.msb_date_display
-                name: Date
-                show_icon: false
-                layout: vertical
-                show_state: true
-                styles:
-                  card:
-                    - padding: 10px
-                    - border-radius: 16px
-                  state:
-                    - font-size: 22px
-                    - font-weight: bold
-                  name:
-                    - font-size: 14px
-              - type: custom:button-card
-                entity: sensor.msb_current_time_display
-                name: Time
-                icon: mdi:clock-outline
-                layout: vertical
-                show_state: true
-                styles:
-                  card:
-                    - padding: 10px
-                    - border-radius: 16px
-                  state:
-                    - font-size: 22px
-                    - font-weight: bold
-                  name:
-                    - font-size: 14px
-          - type: heading
-            heading: Traffic Snapshot
-            heading_style: title
-          - type: grid
-            square: false
-            columns: 2
-            grid_options:
-              columns: full
-            cards:
-              - type: custom:mushroom-template-card
-                entity: sensor.msb_in_park_cars_canonical
-                primary: Cars in park
-                icon: mdi:car-multiple
-                secondary: >-
-                  {% set gate = states('sensor.msb_gate_occupancy_diagnostic') %}
-                  {% set traffic = states('sensor.msb_traffic_status_snapshot') %}
-                  {% if has_value(entity) %}
-                    {{ states(entity, with_unit=true) }}{{ ' · ' ~ traffic.replace('_',' ').capitalize() if traffic in ['busy','very_busy'] else '' }}
-                  {% elif is_number(gate) %}
-                    Gate check: {{ gate }} cars · Show unavailable
-                  {% else %}
-                    Unavailable · No fresh Gate balance
-                  {% endif %}
-                color: >-
-                  {% set traffic = states('sensor.msb_traffic_status_snapshot')
-                  %}{{ 'grey' if not has_value(entity) else 'amber' if traffic
-                  in ['busy','very_busy'] else 'teal' }}
-                tap_action:
-                  action: more-info
-              - type: custom:mushroom-template-card
-                entity: sensor.msb_show_total_display
-                primary: Show total
-                icon: mdi:counter
-                secondary: '{{ states(entity, with_unit=true) }}'
-                color: teal
-                tap_action:
-                  action: more-info
-          - type: grid
-            square: false
-            columns: 2
-            cards:
-              - type: custom:mushroom-template-card
-                entity: sensor.msb_enter_total_display
-                primary: Entered
-                icon: mdi:login
-                secondary: '{{ states(entity, with_unit=true) }}'
-                color: teal
-                tap_action:
-                  action: more-info
-              - type: custom:mushroom-template-card
-                entity: sensor.msb_gate_counter_exit_cars
-                primary: Exited
-                icon: mdi:logout
-                secondary: '{{ states(entity, with_unit=true) }}'
-                color: teal
-                tap_action:
-                  action: more-info
-            grid_options:
-              columns: full
-          - type: heading
-            heading: Statistics
-            heading_style: title
-          - type: grid
-            square: false
-            columns: 2
-            cards:
-              - type: custom:button-card
-                entity: sensor.msb_car_counter_time_between_cars_ms
-                name: Enter Time Between Cars
-                icon: mdi:timer-outline
-                layout: vertical
-                show_state: true
-                tap_action:
-                  action: more-info
-                  entity: sensor.msb_time_between_cars_min
-                styles:
-                  card:
-                    - padding: 10px
-                    - border-radius: 16px
-                  state:
-                    - font-size: 18px
-                    - font-weight: bold
-                  name:
-                    - font-size: 14px
-              - type: custom:button-card
-                entity: sensor.msb_gate_counter_time_between_cars
-                name: Gate Time Between Cars
-                icon: mdi:timer-outline
-                layout: vertical
-                show_state: true
-                tap_action:
-                  action: more-info
-                  entity: sensor.gate_time_between_cars_min
-                styles:
-                  card:
-                    - padding: 10px
-                    - border-radius: 16px
-                  state:
-                    - font-size: 18px
-                    - font-weight: bold
-                  name:
-                    - font-size: 14px
-          - type: heading
-            heading: Traffic Analytics
-            heading_style: title
-          - type: grid
-            square: false
-            columns: 2
-            cards:
-              - type: custom:button-card
-                entity: sensor.msb_traffic_status_snapshot
-                name: Status
-                icon: mdi:traffic-light
-                layout: vertical
-                show_state: true
-                show_units: false
-                styles:
-                  card:
-                    - height: 100px
-                    - padding: 8px
-                    - border-radius: 14px
-                  name:
-                    - font-size: 12px
-                  state:
-                    - font-size: 20px
-                    - font-weight: bold
-                state:
-                  - value: closed
-                    styles:
-                      card:
-                        - background-color: '#b00020'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - value: light
-                    styles:
-                      card:
-                        - background-color: '#2e7d32'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - value: moderate
-                    styles:
-                      card:
-                        - background-color: '#fbc02d'
-                      state:
-                        - color: black
-                      name:
-                        - color: black
-                      icon:
-                        - color: black
-                  - value: busy
-                    styles:
-                      card:
-                        - background-color: '#fb8c00'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - value: very_busy
-                    styles:
-                      card:
-                        - background-color: '#e53935'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-              - type: custom:button-card
-                entity: sensor.msb_travel_time_estimate_min
-                name: Travel Time
-                icon: mdi:timer-sand
-                layout: vertical
-                show_state: true
-                show_units: true
-                styles:
-                  card:
-                    - height: 100px
-                    - padding: 8px
-                    - border-radius: 14px
-                  name:
-                    - font-size: 12px
-                  state:
-                    - font-size: 20px
-                    - font-weight: bold
-                state:
-                  - value: unknown
-                    operator: regex
-                    styles:
-                      card:
-                        - background-color: '#9e9e9e'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - operator: <=
-                    value: 24
-                    styles:
-                      card:
-                        - background-color: '#2e7d32'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - operator: <=
-                    value: 29
-                    styles:
-                      card:
-                        - background-color: '#fbc02d'
-                      state:
-                        - color: black
-                      name:
-                        - color: black
-                      icon:
-                        - color: black
-                  - operator: <=
-                    value: 34
-                    styles:
-                      card:
-                        - background-color: '#fb8c00'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - operator: '>='
-                    value: 35
-                    styles:
-                      card:
-                        - background-color: '#b00020'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-              - type: custom:button-card
-                entity: sensor.msb_enter_rate_cars_min
-                name: Enter Rate
-                icon: mdi:car-arrow-right
-                layout: vertical
-                show_state: true
-                show_units: true
-                styles:
-                  card:
-                    - height: 100px
-                    - padding: 8px
-                    - border-radius: 14px
-                  name:
-                    - font-size: 12px
-                  state:
-                    - font-size: 18px
-                    - font-weight: bold
-                state:
-                  - operator: ==
-                    value: unknown
-                    styles:
-                      card:
-                        - background-color: '#9e9e9e'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - operator: <
-                    value: 4
-                    styles:
-                      card:
-                        - background-color: '#2e7d32'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - operator: <
-                    value: 6
-                    styles:
-                      card:
-                        - background-color: '#fbc02d'
-                      state:
-                        - color: black
-                      name:
-                        - color: black
-                      icon:
-                        - color: black
-                  - operator: <
-                    value: 8
-                    styles:
-                      card:
-                        - background-color: '#fb8c00'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - operator: '>='
-                    value: 8
-                    styles:
-                      card:
-                        - background-color: '#b00020'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-              - type: custom:button-card
-                entity: sensor.msb_flow_health
-                name: Exit Rate
-                icon: mdi:car-arrow-left
-                layout: vertical
-                show_state: false
-                show_units: false
-                show_label: true
-                label: >-
-                  [[[ return
-                  Number(states['sensor.msb_exit_rate_cars_min'].state ||
-                  0).toFixed(2) + ' cars/min'; ]]]
-                styles:
-                  card:
-                    - height: 100px
-                    - padding: 8px
-                    - border-radius: 14px
-                  name:
-                    - font-size: 12px
-                  label:
-                    - font-size: 18px
-                    - font-weight: bold
-                state:
-                  - value: draining_fast
-                    styles:
-                      card:
-                        - background-color: '#2e7d32'
-                      label:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - value: draining
-                    styles:
-                      card:
-                        - background-color: '#2e7d32'
-                      label:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - value: watch
-                    styles:
-                      card:
-                        - background-color: '#fbc02d'
-                      label:
-                        - color: black
-                      name:
-                        - color: black
-                      icon:
-                        - color: black
-                  - value: balanced
-                    styles:
-                      card:
-                        - background-color: '#fbc02d'
-                      label:
-                        - color: black
-                      name:
-                        - color: black
-                      icon:
-                        - color: black
-                  - value: building
-                    styles:
-                      card:
-                        - background-color: '#fb8c00'
-                      label:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - value: building_fast
-                    styles:
-                      card:
-                        - background-color: '#b00020'
-                      label:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - value: overloaded
-                    styles:
-                      card:
-                        - background-color: '#b00020'
-                      label:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-              - type: custom:button-card
-                entity: sensor.msb_lane_2_advisory
-                name: Lane 2
-                icon: mdi:road-variant
-                layout: vertical
-                show_state: true
-                show_units: false
-                styles:
-                  card:
-                    - height: 100px
-                    - padding: 8px
-                    - border-radius: 14px
-                  name:
-                    - font-size: 12px
-                  state:
-                    - font-size: 18px
-                    - font-weight: bold
-                state:
-                  - value: closed
-                    styles:
-                      card:
-                        - background-color: '#9e9e9e'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - value: Close Lane 2
-                    styles:
-                      card:
-                        - background-color: '#b00020'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - value: Lane 2 OK to Open
-                    styles:
-                      card:
-                        - background-color: '#fbc02d'
-                      state:
-                        - color: black
-                      name:
-                        - color: black
-                      icon:
-                        - color: black
-                  - value: Open Lane 2
-                    styles:
-                      card:
-                        - background-color: '#2e7d32'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-              - type: custom:button-card
-                entity: sensor.msb_merger_director_advisory
-                name: Merge Control
-                icon: mdi:account-hard-hat
-                layout: vertical
-                show_state: true
-                show_units: false
-                styles:
-                  card:
-                    - height: 100px
-                    - padding: 8px
-                    - border-radius: 14px
-                  name:
-                    - font-size: 12px
-                  state:
-                    - font-size: 18px
-                    - font-weight: bold
-                state:
-                  - value: Merger Director Not Needed
-                    styles:
-                      card:
-                        - background-color: '#2e7d32'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - value: off_show
-                    styles:
-                      card:
-                        - background-color: '#9e9e9e'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-              - type: custom:button-card
-                entity: input_boolean.lane_2_open
-                name: Lane 2 Actual
-                icon: mdi:road
-                layout: vertical
-                show_state: true
-                show_units: false
-                tap_action:
-                  action: toggle
-                styles:
-                  card:
-                    - height: 100px
-                    - padding: 8px
-                    - border-radius: 14px
-                  name:
-                    - font-size: 12px
-                  state:
-                    - font-size: 18px
-                    - font-weight: bold
-                state:
-                  - value: 'on'
-                    name: Lane 2 OPEN
-                    styles:
-                      card:
-                        - background-color: '#2e7d32'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - value: 'off'
-                    name: Lane 2 CLOSED
-                    styles:
-                      card:
-                        - background-color: '#9e9e9e'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-              - type: custom:button-card
-                entity: input_boolean.merger_director_present
-                name: Merger Actual
-                icon: mdi:account-hard-hat
-                layout: vertical
-                show_state: true
-                show_units: false
-                tap_action:
-                  action: toggle
-                styles:
-                  card:
-                    - height: 100px
-                    - padding: 8px
-                    - border-radius: 14px
-                  name:
-                    - font-size: 12px
-                  state:
-                    - font-size: 18px
-                    - font-weight: bold
-                state:
-                  - value: 'on'
-                    name: Assigned
-                    styles:
-                      card:
-                        - background-color: '#2e7d32'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - value: 'off'
-                    name: Not Assigned
-                    styles:
-                      card:
-                        - background-color: '#9e9e9e'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-      - type: grid
-        column_span: 3
-        cards:
-          - type: heading
-            heading: Live Traffic Cameras
-            heading_style: title
-          - type: grid
-            columns: 3
-            square: false
-            grid_options:
-              columns: full
-            cards:
-              - type: custom:webrtc-camera
-                entity: camera.cam_hwy_42n_profile001_substream
-                name: Highway 42 North
-              - type: custom:webrtc-camera
-                entity: camera.cam_hwy_42s_profile001_substream
-                name: Highway 42 South
-              - type: custom:webrtc-camera
-                entity: camera.front_gate_media_profile2
-                name: Front Gate
-              - type: custom:webrtc-camera
-                entity: camera.fc_carcounter_media_profile2
-                name: Car Counter
-              - type: custom:webrtc-camera
-                entity: camera.food_collection_media_profile2
-                name: Food Collection
-              - type: custom:webrtc-camera
-                entity: camera.stars_profile001_substream
-                name: Traffic Stars
-              - type: custom:webrtc-camera
-                entity: camera.church_media_profile2
-                name: Icicle Tunnel
-              - type: custom:webrtc-camera
-                entity: camera.northern_lights_media_profile2
-                name: Northern Lights
-              - type: custom:webrtc-camera
-                entity: camera.candyland_media_profile2
-                name: Candyland
-              - type: custom:webrtc-camera
-                entity: camera.polarbear_cam_media_profile2
-                name: Polar Bear
-              - type: custom:webrtc-camera
-                entity: camera.igloo_colunteers_media_profile2
-                name: Igloo Volunteers
-      - type: grid
-        cards:
-          - type: heading
-            heading: New section
-          - type: entities
-            title: Captain Live Inputs
-            show_header_toggle: false
-            entities:
-              - entity: binary_sensor.msb_show_open
-              - entity: binary_sensor.msb_carcounter_analytics_active
-              - entity: binary_sensor.msb_gatecounter_analytics_active
-              - type: section
-                label: Load
-              - entity: sensor.msb_in_park_cars_canonical
-              - entity: sensor.msb_in_park_cars_band
-              - type: section
-                label: Flow
-              - entity: sensor.msb_flow_smoothed
-              - entity: sensor.msb_enter_rate_cars_min
-              - entity: sensor.msb_exit_rate_cars_min
-              - entity: sensor.msb_flow_delta_cars_min
-              - entity: sensor.msb_flow_health
-              - type: section
-                label: Experience
-              - entity: sensor.msb_travel_time_estimate_min
-              - type: section
-                label: Movement
-              - entity: sensor.msb_car_counter_time_between_cars_ms
-      - type: grid
-        column_span: 3
-        cards:
-          - type: heading
-            heading: Volunteer Trailer - Security
-            heading_style: title
-          - type: grid
-            columns: 3
-            square: false
-            grid_options:
-              columns: full
-            cards:
-              - type: custom:webrtc-camera
-                entity: camera.vt_parking_cam_media_profile2
-                name: VT Parking
-              - type: custom:webrtc-camera
-                entity: camera.vt_office_profile100
-                name: VT Office
-              - type: custom:webrtc-camera
-                entity: camera.vt_common_profile100
-                name: VT Common Area
-  - title: Counts
-    path: counts
-    icon: mdi:car-multiple
-    type: sections
-    max_columns: 3
-    sections:
-      - type: grid
-        cards:
-          - type: custom:mushroom-template-card
-            entity: sensor.msb_in_park_cars_canonical
-            primary: Cars in park
-            icon: mdi:car-multiple
-            secondary: >-
-              {% set gate = states('sensor.msb_gate_occupancy_diagnostic') %}
-              {% set traffic = states('sensor.msb_traffic_status_snapshot') %}
-              {% if has_value(entity) %}
-                {{ states(entity, with_unit=true) }}{{ ' · ' ~ traffic.replace('_',' ').capitalize() if traffic in ['busy','very_busy'] else '' }}
-              {% elif is_number(gate) %}
-                Gate check: {{ gate }} cars · Show unavailable
-              {% else %}
-                Unavailable · No fresh Gate balance
-              {% endif %}
-            color: >-
-              {% set traffic = states('sensor.msb_traffic_status_snapshot')
-              %}{{ 'grey' if not has_value(entity) else 'amber' if traffic
-              in ['busy','very_busy'] else 'teal' }}
-            tap_action:
-              action: more-info
-          - type: entities
-            title: Traffic – Snapshot
-            show_header_toggle: false
-            entities:
-              - entity: sensor.msb_car_counter_days_running
-                name: Show Day Number
-              - entity: sensor.msb_car_counter_day_of_month
-                name: Day of Month
-              - entity: sensor.msb_car_counter_enter_cars
-                name: Enter Count
-              - entity: sensor.msb_gate_counter_exit_cars
-                name: Exit Count
-              - entity: sensor.msb_car_counter_show_total_cars
-                name: Show Total
-              - entity: sensor.msb_time_between_cars_min
-                name: Entrance Time Between Cars
-              - entity: sensor.gate_time_between_cars_min
-      - type: grid
-        cards:
-          - type: heading
-            heading: Traffic Rates
-            heading_style: title
-          - type: history-graph
-            entities:
-              - entity: sensor.msb_gate_counter_exit_cars
-              - entity: sensor.msb_car_counter_enter_cars
-              - entity: sensor.msb_in_park_cars_canonical
-            hours_to_show: 4
-            title: Last 4 Hours
-      - type: grid
-        cards:
-          - type: entities
-            title: Environmental
-            show_header_toggle: false
-            entities:
-              - entity: sensor.msb_car_counter_car_temp
-                name: Enter Temp
-              - entity: sensor.msb_car_counter_car_humidity
-                name: Enter Humidity
-              - entity: sensor.msb_gate_counter_gate_temp
-                name: Exit Temp
-              - entity: sensor.msb_gate_counter_gate_humidity
-                name: Exit Humidity
-      - type: grid
-        cards:
-          - type: heading
-            heading: Wind Warning Limits
-            heading_style: title
-          - type: entities
-            entities:
-              - entity: input_number.wind_gust_caution
-              - entity: input_number.wind_gust_danger
-              - entity: input_number.wind_sustained_caution
-              - entity: input_number.wind_sustained_danger
-      - type: grid
-        cards:
-          - type: vertical-stack
-            cards:
-              - type: heading
-                heading: Counter health & beam alarms
-              - type: grid
-                square: false
-                columns: 2
-                cards:
-                  - type: custom:mushroom-template-card
-                    entity: sensor.msb_car_counter_msb_car_counter_status_2
-                    primary: Car Counter
-                    icon: mdi:lan-connect
-                    secondary: '{{ states(entity, with_unit=true) }}'
-                    color: >-
-                      {{ 'green' if states(entity)|lower == 'online' else
-                      'amber' if states(entity) in ['unknown','unavailable']
-                      else 'red' }}
-                    tap_action:
-                      action: more-info
-                  - type: custom:mushroom-template-card
-                    entity: sensor.msb_gate_counter_msb_gate_counter_status_2
-                    primary: Gate Counter
-                    icon: mdi:lan-connect
-                    secondary: '{{ states(entity, with_unit=true) }}'
-                    color: >-
-                      {{ 'green' if states(entity)|lower == 'online' else
-                      'amber' if states(entity) in ['unknown','unavailable']
-                      else 'red' }}
-                    tap_action:
-                      action: more-info
-                  - type: custom:mushroom-template-card
-                    entity: sensor.msb_car_counter_msb_car_counter_alarm
-                    primary: Car Beam
-                    icon: mdi:car-brake-alert
-                    secondary: >-
-                      {{ 'Clear' if is_state(entity,'CLEAR') else 'Beam stuck'
-                      if 'STUCK' in states(entity) else
-                      states(entity)|capitalize }}
-                    color: >-
-                      {{ 'green' if states(entity)|lower == 'clear' else 'amber'
-                      if states(entity) in ['unknown','unavailable'] else 'red'
-                      }}
-                    tap_action:
-                      action: more-info
-                  - type: custom:mushroom-template-card
-                    entity: sensor.msb_gate_counter_msb_gate_counter_alarm
-                    primary: Gate Beam
-                    icon: mdi:boom-gate-alert
-                    secondary: >-
-                      {{ 'Clear' if is_state(entity,'CLEAR') else 'Beam stuck'
-                      if 'STUCK' in states(entity) else
-                      states(entity)|capitalize }}
-                    color: >-
-                      {{ 'green' if states(entity)|lower == 'clear' else 'amber'
-                      if states(entity) in ['unknown','unavailable'] else 'red'
-                      }}
-                    tap_action:
-                      action: more-info
-                  - type: custom:mushroom-template-card
-                    entity: sensor.msb_car_counter_car_counter_heartbeat
-                    primary: Car heartbeat
-                    secondary: >-
-                      {% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now()) - stamp < 300 %} {{ 'Receiving' if fresh else ('Last ' ~ states(entity) if stamp is not none else 'Unavailable') }}
-                    icon: mdi:heart-pulse
-                    color: >-
-                      {% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now()) - stamp < 300 %} {{ 'green' if fresh else 'red' }}
-                  - type: custom:mushroom-template-card
-                    entity: sensor.msb_gate_counter_gate_counter_heartbeat
-                    primary: Gate heartbeat
-                    secondary: >-
-                      {% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now()) - stamp < 300 %} {{ 'Receiving' if fresh else ('Last ' ~ states(entity) if stamp is not none else 'Unavailable') }}
-                    icon: mdi:heart-pulse
-                    color: >-
-                      {% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now()) - stamp < 300 %} {{ 'green' if fresh else 'red' }}
-                grid_options:
-                  columns: full
-          - type: entities
-            title: Device Health
-            show_header_toggle: false
-            entities:
-              - type: section
-                label: Car Counter
-              - entity: sensor.msb_car_counter_msb_car_counter_firmware
-                name: Car Counter FW
-              - entity: sensor.msb_car_counter_car_sd_status
-                name: Car SD Status
-              - entity: sensor.msb_car_counter_car_wifi_rssi
-                name: Car WiFi RSSI
-              - entity: sensor.msb_car_counter_car_wifi_ip
-                name: Car WiFi IP
-              - entity: sensor.msb_car_counter_car_wifi_ssid
-                name: Car WiFi SSID
-              - entity: sensor.msb_car_counter_msb_car_counter_status_2
-                name: Car Counter Status
-              - entity: sensor.msb_car_counter_car_counter_debug
-                name: Car Counter Debug Log
-              - type: section
-                label: Gate Counter
-              - entity: sensor.msb_gate_counter_msb_gate_counter_firmware
-                name: Gate Counter FW
-              - entity: sensor.msb_gate_counter_gate_wifi_rssi
-                name: Gate WiFi RSSI
-              - entity: sensor.msb_gate_counter_gate_wifi_ip
-                name: Gate WiFi IP
-              - entity: sensor.msb_gate_counter_gate_wifi_ssid
-                name: Gate WiFi SSID
-              - entity: sensor.msb_gate_counter_msb_gate_counter_status_2
-                name: Gate Counter Status
-              - entity: sensor.msb_gate_counter_gate_counter_debug
-                name: Gate Counter Debug Log
-      - type: grid
-        cards:
-          - type: heading
-            heading: New section
-          - type: entities
-            title: Alarms & Debug Topics
-            show_header_toggle: false
-            entities:
-              - type: section
-                label: Car Counter
-              - entity: sensor.msb_car_counter_msb_car_counter_alarm
-                name: Car Beam Alarm Topic
-              - entity: sensor.msb_car_counter_car_counter_log
-                name: Car Counter Last Log Message
-              - entity: sensor.msb_car_counter_car_counter_debug
-                name: Car Counter Debug Log
-              - type: section
-                label: Gate Counter
-              - entity: sensor.msb_gate_counter_msb_gate_counter_alarm
-                name: Gate Beam Alarm Topic
-              - entity: sensor.msb_gate_counter_gate_counter_log
-                name: Gate Counter Last Log Message
-              - entity: sensor.msb_gate_counter_gate_counter_debug
-                name: Gate Counter Debug Log
+- title: Cameras
+  path: cameras
+  icon: mdi:cctv
+  type: sections
+  max_columns: 3
+  sections:
+  - type: grid
+    column_span: 3
+    cards:
+    - type: heading
+      heading: Live Traffic Cameras
+      heading_style: title
+    - type: grid
+      columns: 3
+      square: false
+      grid_options:
+        columns: full
+      cards:
+      - type: custom:webrtc-camera
+        entity: camera.cam_hwy_42n_profile001_substream
+        name: Highway 42 North
+      - type: custom:webrtc-camera
+        entity: camera.cam_hwy_42s_profile001_substream
+        name: Highway 42 South
+      - type: custom:webrtc-camera
+        entity: camera.front_gate_media_profile2
+        name: Front Gate
+      - type: custom:webrtc-camera
+        entity: camera.fc_carcounter_media_profile2
+        name: Car Counter
+      - type: custom:webrtc-camera
+        entity: camera.food_collection_media_profile2
+        name: Food Collection
+      - type: custom:webrtc-camera
+        entity: camera.stars_profile001_substream
+        name: Traffic Stars
+      - type: custom:webrtc-camera
+        entity: camera.church_media_profile2
+        name: Icicle Tunnel
+      - type: custom:webrtc-camera
+        entity: camera.northern_lights_media_profile2
+        name: Northern Lights
+      - type: custom:webrtc-camera
+        entity: camera.candyland_media_profile2
+        name: Candyland
+      - type: custom:webrtc-camera
+        entity: camera.polarbear_cam_media_profile2
+        name: Polar Bear
+      - type: custom:webrtc-camera
+        entity: camera.igloo_colunteers_media_profile2
+        name: Igloo Volunteers
+  - type: grid
+    column_span: 3
+    cards:
+    - type: heading
+      heading: Volunteer Trailer - Security
+      heading_style: title
+    - type: grid
+      columns: 3
+      square: false
+      grid_options:
+        columns: full
+      cards:
+      - type: custom:webrtc-camera
+        entity: camera.vt_parking_cam_media_profile2
+        name: VT Parking
+      - type: custom:webrtc-camera
+        entity: camera.vt_office_profile100
+        name: VT Office
+      - type: custom:webrtc-camera
+        entity: camera.vt_common_profile100
+        name: VT Common Area
+- title: Counts
+  path: counts
+  icon: mdi:car-multiple
+  type: sections
+  max_columns: 3
+  sections:
+  - type: grid
+    cards:
+    - type: custom:mushroom-template-card
+      entity: sensor.msb_in_park_cars_canonical
+      primary: Cars in park
+      icon: mdi:car-multiple
+      secondary: |-
+        {% set gate = states('sensor.msb_gate_occupancy_diagnostic') %} {% set traffic = states('sensor.msb_traffic_status_snapshot') %} {% if has_value(entity) %}
+          {{ states(entity, with_unit=true) }}{{ ' · ' ~ traffic.replace('_',' ').capitalize() if traffic in ['busy','very_busy'] else '' }}
+        {% elif is_number(gate) %}
+          Gate check: {{ gate }} cars · Show unavailable
+        {% else %}
+          Unavailable · No fresh Gate balance
+        {% endif %}
+      color: '{% set traffic = states(''sensor.msb_traffic_status_snapshot'') %}{{ ''grey'' if not has_value(entity) else ''amber''
+        if traffic in [''busy'',''very_busy''] else ''teal'' }}'
+      tap_action:
+        action: more-info
+    - type: entities
+      title: Traffic – Snapshot
+      show_header_toggle: false
+      entities:
+      - entity: sensor.msb_car_counter_days_running
+        name: Show Day Number
+      - entity: sensor.msb_car_counter_day_of_month
+        name: Day of Month
+      - entity: sensor.msb_car_counter_enter_cars
+        name: Enter Count
+      - entity: sensor.msb_gate_counter_exit_cars
+        name: Exit Count
+      - entity: sensor.msb_car_counter_show_total_cars
+        name: Show Total
+      - entity: sensor.msb_time_between_cars_min
+        name: Entrance Time Between Cars
+      - entity: sensor.gate_time_between_cars_min
+  - type: grid
+    cards:
+    - type: heading
+      heading: Traffic history
+      heading_style: title
+    - type: history-graph
+      entities:
+      - entity: sensor.msb_gate_counter_exit_cars
+      - entity: sensor.msb_car_counter_enter_cars
+      - entity: sensor.msb_in_park_cars_canonical
+      hours_to_show: 4
+      title: Last 4 Hours
+  - type: grid
+    cards:
+    - type: entities
+      title: Environmental
+      show_header_toggle: false
+      entities:
+      - entity: sensor.msb_car_counter_car_temp
+        name: Enter Temp
+      - entity: sensor.msb_car_counter_car_humidity
+        name: Enter Humidity
+      - entity: sensor.msb_gate_counter_gate_temp
+        name: Exit Temp
+      - entity: sensor.msb_gate_counter_gate_humidity
+        name: Exit Humidity
