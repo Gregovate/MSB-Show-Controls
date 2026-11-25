@@ -214,7 +214,7 @@ views:
                 tap_action:
                   action: none
           - type: heading
-            heading: Captain inputs
+            heading: Lane and gate status
             heading_style: title
             grid_options:
               columns: full
@@ -231,6 +231,22 @@ views:
                   'Unavailable') }}
                 color: '{{ ''green'' if is_state(entity,''on'') else ''grey'' }}'
                 tap_action: null
+              - type: custom:mushroom-template-card
+                entity: cover.traffic_ghost_controls_ghost_controls
+                primary: Entrance gate
+                secondary: >-
+                  {{ states(entity) | capitalize if has_value(entity) else 'Unavailable' }}
+                icon: "{{ 'mdi:gate-open' if is_state(entity, 'open') else 'mdi:gate' }}"
+                color: >-
+                  {{ {'open':'green', 'closed':'red', 'opening':'amber', 'closing':'amber'}.get(states(entity), 'grey') }}
+                tap_action:
+                  action: none
+                hold_action:
+                  action: none
+                double_tap_action:
+                  action: none
+            grid_options:
+              columns: full
           - type: vertical-stack
             cards:
               - type: heading
