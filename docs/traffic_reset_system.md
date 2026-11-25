@@ -1,14 +1,6 @@
-
----
-
-### `docs/traffic_reset_system.md`
-
-```markdown
 # Traffic Reset System – Specification
 
-Status: **Draft – Initial Skeleton**  
-Owner: MSB Production / Traffic Systems  
-Season: 2025+
+This page preserves the original reset design and proposed safeguards. For the current park implementation, use the [counter automations](../ha/automations/traffic_automations.md), [reset decision diagram](../design/reset_flow_diagram.md) and [device timing rules](show_times_and_windows.md). In particular, the installed override actions use numeric helper changes and permission switches. The proposed confirm-button workflow below is a design goal.
 
 ---
 
@@ -42,7 +34,7 @@ The reset system covers:
   - Resetting HA-side “cars currently in park” estimates
   - (Eventually) telling firmware when to roll to a new day, if needed
 
-![Traffic Reset Flow](../images/design/reset_flow_v1.png)
+![Traffic Reset Flow](../images/diagrams/reset_flow_v1.png)
 
 Out of scope (documented elsewhere):
 
@@ -272,20 +264,3 @@ These are intentionally out of scope for the first implementation, but worth doc
     - Why (optional text field in runbook / external log).
 
 ---
-
-## 9. Implementation References
-
-When built, the following docs will contain the concrete implementation:
-
-- `ha/entities/traffic_entities.md`
-  - Detailed list of all sensors, inputs, and buttons in the reset system.
-
-- `ha/automations/traffic_automations.md`
-  - Actual automation YAML (or pseudo-YAML) implementing:
-    - Reset guardrails
-    - Button handling
-    - State updates
-
-- `docs/operator_runbook.md`
-  - “How to safely reset nightly traffic totals”
-  - “How to handle device failure or undercount incidents”
