@@ -290,9 +290,23 @@ class MSBSignPreview extends HTMLElement {
     this.panel = document.createElement('div');
     this.panel.style.cssText = 'margin:0 16px 16px;background:#080808;color:#aaa;aspect-ratio:80/34;display:grid;place-items:center;text-align:center';
     this.image = document.createElement('img');
-    this.image.style.cssText = 'width:100%;height:100%;image-rendering:pixelated';
+    this.frame = document.createElement('canvas');
+    this.frame.width = 80;
+    this.frame.height = 34;
+    this.frame.style.cssText = 'width:100%;height:100%;image-rendering:pixelated';
+    this.frame.setAttribute('role', 'img');
+    this.image.onload = () => {
+      if (!this.image.hasAttribute('src') || this.image.naturalWidth !== 80 || this.image.naturalHeight !== 34) return;
+      const ctx = this.frame.getContext('2d');
+      ctx.drawImage(this.image, 0, 0);
+      const pixels = ctx.getImageData(0, 0, 80, 34);
+      MSBSignPreview.brighten(pixels.data);
+      ctx.putImageData(pixels, 0, 0);
+      this.frame.hidden = false;
+      this.message.hidden = true;
+    };
     this.message = document.createElement('span');
-    this.panel.append(this.image, this.message);
+    this.panel.append(this.frame, this.message);
     card.append(this.panel);
     this.replaceChildren(card);
     this.refresh();
@@ -307,14 +321,25 @@ class MSBSignPreview extends HTMLElement {
     const png = live && !released && sensor.attributes.preview_status === state && sensor.attributes.preview_png;
     if (png) {
       const url = 'data:image/png;base64,' + png;
-      if (this.image.getAttribute('src') !== url) this.image.src = url;
-      this.image.alt = state;
+      this.frame.setAttribute('aria-label', state);
+      if (this.image.getAttribute('src') === url) return;
+      this.image.src = url;
     } else {
       this.image.removeAttribute('src');
     }
-    this.image.hidden = !png;
-    this.message.hidden = !!png;
+    this.frame.hidden = true;
+    this.message.hidden = false;
     this.message.textContent = !live ? 'Sign status unavailable' : released ? 'Light-O-Rama has control' : state;
+  }
+  static brighten(rgba) {
+    // Low drive levels are intentional on the LED panels. Lift them for an LCD
+    // while keeping each pixel's RGB proportions, including amber and purple.
+    for (let i = 0; i < rgba.length; i += 4) {
+      const peak = Math.max(rgba[i], rgba[i + 1], rgba[i + 2]);
+      if (peak === 0) continue;
+      const gain = 255 * Math.min(1, Math.cbrt(peak / 100)) / peak;
+      for (let channel = 0; channel < 3; channel++) rgba[i + channel] *= gain;
+    }
   }
   getCardSize() { return 4; }
 }
