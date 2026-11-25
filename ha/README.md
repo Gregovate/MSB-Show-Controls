@@ -10,6 +10,7 @@ Pull the main branch on each computer before copying files. Run `git branch --sh
 | `packages/sign2_queue_wait.yaml` | `/config/packages/sign2_queue_wait.yaml` |
 | `dashboard/park-captain-kiosk.yaml` | Park Captain kiosk dashboard raw configuration (Cars in park includes Gate diagnostic) |
 | [`dashboard/show-administration.yaml`](dashboard/show-administration.yaml) | Existing Show Administration dashboard → raw configuration editor (complete dashboard) |
+| [`dashboard/volunteer-trailer-office.yaml`](dashboard/volunteer-trailer-office.yaml) | Volunteer trailer office tablet, landscape → existing dashboard raw configuration editor |
 | `dashboard/signs-dashboard.yaml` | Existing Signs dashboard → raw configuration editor |
 | `www/msb-sign-message-grid.js` | `/config/www/msb-sign-message-grid.js` |
 | `local_apps/msb_sign_bridge/` | Existing `/local_apps/msb_sign_bridge/` directory |
