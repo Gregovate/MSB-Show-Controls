@@ -1,0 +1,27 @@
+# Shared by both tablets. Use the same five-minute window as the health cards.
+template:
+  - sensor:
+      - name: MSB Kiosk Counter Alert
+        unique_id: msb_kiosk_counter_alert
+        state: >-
+          {% set alerts = namespace(items=[]) %}
+          {% for key, label in [('car', 'Car Counter'), ('gate', 'Gate Counter')] %}
+            {% set online = states('binary_sensor.msb_' ~ key ~ '_counter_online') %}
+            {% set heartbeat = states('sensor.msb_' ~ key ~ '_counter_' ~ key ~ '_counter_heartbeat') %}
+            {% set stamp = as_timestamp(heartbeat, none) %}
+            {% if online == 'off' %}
+              {% set reason = 'offline' %}
+            {% elif online != 'on' %}
+              {% set reason = 'connection unknown' %}
+            {% elif stamp is none %}
+              {% set reason = 'heartbeat unavailable' %}
+            {% elif not (0 <= as_timestamp(now()) - stamp < 300) %}
+              {% set reason = 'check heartbeat' %}
+            {% else %}
+              {% set reason = '' %}
+            {% endif %}
+            {% if reason %}
+              {% set alerts.items = alerts.items + [label ~ ': ' ~ reason] %}
+            {% endif %}
+          {% endfor %}
+          {{ alerts.items | join(' · ') or 'OK' }}
