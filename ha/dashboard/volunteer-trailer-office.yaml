@@ -618,7 +618,7 @@ views:
                       name:
                         - color: white
                   - value: CLEAR
-                    name: Car Beam OK
+                    name: Car Alarm Clear
                     styles:
                       card:
                         - background-color: '#4caf50'
@@ -649,7 +649,7 @@ views:
                       name:
                         - color: white
                   - value: CLEAR
-                    name: Gate Beam OK
+                    name: Gate Alarm Clear
                     styles:
                       card:
                         - background-color: '#4caf50'
@@ -657,42 +657,6 @@ views:
                         - color: white
                       name:
                         - color: white
-          - type: entity
-            entity: sensor.msb_car_counter_car_counter_log
-            name: Gate Counter Beam Status
-            grid_options:
-              columns: 12
-              rows: 2
-            card_mod:
-              style: |
-                ha-card {
-                  font-size: 2rem !important;
-                  line-height: 1.2 !important;
-                  padding: 8px !important;
-                }
-                .value {
-                  font-size: 0.9rem !important;
-                  line-height: 1.2 !important;
-                  white-space: normal !important;
-                }
-          - type: entity
-            entity: sensor.msb_gate_counter_gate_counter_log
-            name: Gate Counter Beam Status
-            grid_options:
-              columns: 12
-              rows: 2
-            card_mod:
-              style: |
-                ha-card {
-                  font-size: 2rem !important;
-                  line-height: 1.2 !important;
-                  padding: 8px !important;
-                }
-                .value {
-                  font-size: 0.9rem !important;
-                  line-height: 1.2 !important;
-                  white-space: normal !important;
-                }
       - type: grid
         square: false
         cards:
@@ -1748,12 +1712,16 @@ views:
                 label: Car Counter
               - entity: sensor.msb_car_counter_msb_car_counter_alarm
                 name: Car Beam Alarm Topic
+              - entity: sensor.msb_car_counter_car_counter_log
+                name: Car Counter Last Log Message
               - entity: sensor.msb_car_counter_car_counter_debug
                 name: Car Counter Debug Log
               - type: section
                 label: Gate Counter
               - entity: sensor.msb_gate_counter_msb_gate_counter_alarm
                 name: Gate Beam Alarm Topic
+              - entity: sensor.msb_gate_counter_gate_counter_log
+                name: Gate Counter Last Log Message
               - entity: sensor.msb_gate_counter_gate_counter_debug
                 name: Gate Counter Debug Log
   - title: Kiosk Experimental
