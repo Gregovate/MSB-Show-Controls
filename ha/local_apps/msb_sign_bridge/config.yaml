@@ -1,5 +1,5 @@
 name: MSB Sign Bridge
-version: 0.3.1
+version: 0.3.2
 slug: msb_sign_bridge
 description: Independent matrix sign rotations controlled by Home Assistant MQTT
 arch:

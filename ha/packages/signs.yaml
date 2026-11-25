@@ -2264,6 +2264,9 @@ mqtt:
     default_entity_id: sensor.msb_signs_hwy42
     state_topic: msb/signs/bridge/state
     value_template: '{{ value_json.hwy42 }}'
+    json_attributes_topic: msb/signs/bridge/state
+    json_attributes_template: '{{ {''preview_png'': value_json.hwy42_preview | default(none), ''preview_status'':
+      value_json.hwy42} | to_json }}'
     availability_topic: msb/signs/bridge/availability
     payload_available: online
     payload_not_available: offline
@@ -2273,6 +2276,9 @@ mqtt:
     default_entity_id: sensor.msb_signs_front
     state_topic: msb/signs/bridge/state
     value_template: '{{ value_json.front }}'
+    json_attributes_topic: msb/signs/bridge/state
+    json_attributes_template: '{{ {''preview_png'': value_json.front_preview | default(none), ''preview_status'':
+      value_json.front} | to_json }}'
     availability_topic: msb/signs/bridge/availability
     payload_available: online
     payload_not_available: offline

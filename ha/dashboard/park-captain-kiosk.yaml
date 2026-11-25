@@ -323,3 +323,16 @@ views:
                       {% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now()) - stamp < 300 %} {{ 'green' if fresh else 'red' }}
                 grid_options:
                   columns: full
+  - title: Signs
+    path: signs
+    icon: mdi:sign-text
+    type: panel
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: custom:msb-sign-preview
+            name: Highway 42
+            entity: sensor.msb_signs_hwy42
+          - type: custom:msb-sign-preview
+            name: Front Entrance
+            entity: sensor.msb_signs_front

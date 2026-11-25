@@ -280,3 +280,42 @@ class MSBSignColorGrid extends MSBSignMessageGrid {
   getCardSize(){return 7}
 }
 if(!customElements.get('msb-sign-color-grid'))customElements.define('msb-sign-color-grid',MSBSignColorGrid);
+
+// Read-only view of the same 80 × 34 RGB image the bridge maps to sACN.
+class MSBSignPreview extends HTMLElement {
+  setConfig(config) {
+    this.entity = config.entity;
+    const card = document.createElement('ha-card');
+    card.header = config.name;
+    this.panel = document.createElement('div');
+    this.panel.style.cssText = 'margin:0 16px 16px;background:#080808;color:#aaa;aspect-ratio:80/34;display:grid;place-items:center;text-align:center';
+    this.image = document.createElement('img');
+    this.image.style.cssText = 'width:100%;height:100%;image-rendering:pixelated';
+    this.message = document.createElement('span');
+    this.panel.append(this.image, this.message);
+    card.append(this.panel);
+    this.replaceChildren(card);
+    this.refresh();
+  }
+  set hass(value) { this._hass = value; this.refresh(); }
+  refresh() {
+    if (!this.panel) return;
+    const sensor = this._hass?.states[this.entity];
+    const state = sensor?.state;
+    const live = state && !['unknown', 'unavailable'].includes(state);
+    const released = live && state.startsWith('Released to LOR');
+    const png = live && !released && sensor.attributes.preview_status === state && sensor.attributes.preview_png;
+    if (png) {
+      const url = 'data:image/png;base64,' + png;
+      if (this.image.getAttribute('src') !== url) this.image.src = url;
+      this.image.alt = state;
+    } else {
+      this.image.removeAttribute('src');
+    }
+    this.image.hidden = !png;
+    this.message.hidden = !!png;
+    this.message.textContent = !live ? 'Sign status unavailable' : released ? 'Light-O-Rama has control' : state;
+  }
+  getCardSize() { return 4; }
+}
+if (!customElements.get('msb-sign-preview')) customElements.define('msb-sign-preview', MSBSignPreview);

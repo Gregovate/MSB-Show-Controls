@@ -238,18 +238,31 @@ class FakeSender:
 
 class TestOutput(unittest.TestCase):
  def test_emergency_interrupts_lor(self):
-  with patch.object(bridge,'render',return_value=[(0,)*510]*16),patch.object(bridge.sacn,'sACNsender',FakeSender):
+  with patch.object(bridge,'render',return_value=('preview', [(0,)*510]*16)),patch.object(bridge.sacn,'sACNsender',FakeSender):
    s=bridge.Sign('HWY 42','10.10.5.4');s.phase='lor';s.started=100
    m={'id':900,'lines':['CLOSED','WEATHER'],'background':(12,0,0),'text_color':(100,100,100),'seconds':7}
    s.step([m],60,101,continuous=True,urgent=True);self.assertEqual(s.current,900);self.assertEqual(s.phase,'overlay')
-   sender=s.sender;s.step([],60,102);self.assertTrue(sender.stopped)
+   self.assertEqual(s.preview,'preview')
+   sender=s.sender;s.step([],60,102);self.assertTrue(sender.stopped);self.assertIsNone(s.preview)
  def test_actual_render_mapping(self):
   with patch.object(bridge,'FONT','/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'):
-   frame=bridge.render({'id':1,'lines':['',''],'background':(1,2,3),'text_color':(0,0,0)})
+   preview,frame=bridge.render({'id':1,'lines':['',''],'background':(1,2,3),'text_color':(0,0,0)})
   self.assertEqual(len(frame),16);self.assertTrue(all(u==(2,1,3)*170 for u in frame))
+ def test_preview_matches_every_controller_pixel(self):
+  with patch.object(bridge,'FONT','/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'):
+   preview,universes=bridge.render({'id':1,'lines':['GATES OPEN','5:00 PM'],'background':(4,8,12),'text_color':(100,88,16)})
+  image=bridge.Image.open(bridge.io.BytesIO(bridge.base64.b64decode(preview)))
+  self.assertEqual(image.size,(80,34))
+  wire=bytes(channel for universe in universes for channel in universe)
+  for y in range(34):
+   row=16-y if y<17 else 33-y
+   for x in range(80):
+    index=(1360 if y<17 else 0)+80*row+(79-x if row%2==0 else x)
+    green,red,blue=wire[3*index:3*index+3]
+    self.assertEqual(image.getpixel((x,y)),(red,green,blue))
  def test_every_installed_message_renders(self):
   c=payload(state_fixture());c['ha'].update(clearing_queue=True,preshow=False,admitting=True)
   with patch.object(bridge,'FONT','/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'):
-   for m in engine.playlist(c,'HWY 42',datetime.now(ZONE))[0]:self.assertEqual(len(bridge.render(m)),16)
+   for m in engine.playlist(c,'HWY 42',datetime.now(ZONE))[0]:self.assertEqual(len(bridge.render(m)[1]),16)
 
 if __name__=='__main__':unittest.main(verbosity=2)

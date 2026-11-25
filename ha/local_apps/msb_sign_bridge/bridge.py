@@ -1,5 +1,7 @@
-"""MSB Sign Bridge 0.3.1. HA owns messages, colors, timing and show settings."""
+"""MSB Sign Bridge 0.3.2. HA owns messages, colors, timing and show settings."""
 
+import base64
+import io
 import json
 import logging
 import queue
@@ -39,6 +41,10 @@ def render(message):
             raise ValueError(f"Message {message['id']}: text does not fit: {text}")
         draw.text(((80-width)//2-left, top+(15-height)//2-upper), text,
                   font=font, fill=message["text_color"])
+    # Encode the logical RGB matrix before converting it to controller wire order.
+    png = io.BytesIO()
+    image.save(png, format="PNG")
+    preview = base64.b64encode(png.getvalue()).decode("ascii")
     pixels = [(0, 0, 0)] * 2720
     for y in range(34):
         offset = 1360 if y < 17 else 0
@@ -47,7 +53,7 @@ def render(message):
             position = 80-x if row % 2 == 0 else x+1
             red, green, blue = image.getpixel((x, y))
             pixels[offset + row*80 + position - 1] = (green, red, blue)
-    return [tuple(v for pixel in pixels[i:i+170] for v in pixel)
+    return preview, [tuple(v for pixel in pixels[i:i+170] for v in pixel)
             for i in range(0, 2720, 170)]
 
 
@@ -60,6 +66,7 @@ class Sign:
         self.phase = "idle"
         self.started = 0.0
         self.current = None
+        self.preview = None
         self.last_frame = None
         self.status = "Waiting for Home Assistant"
 
@@ -68,13 +75,14 @@ class Sign:
             self.sender.stop()
             self.sender = None
         self.current = None
+        self.preview = None
         self.last_frame = None
         self.phase = "idle"
         self.status = reason
 
     def show(self, message):
         # Render first; a bad edit must not leave an old frame on a sign.
-        frame = render(message)
+        preview, frame = render(message)
         address, first = SIGNS[self.name]
         if self.sender is None:
             sender = sacn.sACNsender(
@@ -97,6 +105,7 @@ class Sign:
         else:
             for i in range(16):
                 self.sender[first+i].dmx_data = frame[i]
+        self.preview = preview
         self.last_frame = message
         self.status = " / ".join(message["lines"])
 
@@ -228,11 +237,13 @@ def main():
             state = {
                 "hwy42": signs["HWY 42"].status,
                 "front": signs["Front Entrance"].status,
+                "hwy42_preview": signs["HWY 42"].preview,
+                "front_preview": signs["Front Entrance"].preview,
                 "controls_fresh": healthy,
                 "gates_open": ctx["gates_open"] if ctx else False,
                 "closing_time": ctx["closing_time"] if ctx else "Unavailable",
                 "error": error,
-                "version": "0.3.1",
+                "version": "0.3.2",
                 "wait_status": ctx.get("wait_status", "Waiting for HA") if ctx else "Waiting for HA",
                 "schedule_status": ctx["schedule_status"] if ctx else "Waiting for settings",
             }
@@ -240,7 +251,7 @@ def main():
             if CONNECTED.is_set() and (body != last_state or tick-last_publish >= 10):
                 client.publish(TOPIC+"/state", body, qos=1, retain=True)
                 if body != last_state:
-                    LOG.info("%s", body)
+                    LOG.info("%s", {k: v for k, v in state.items() if not k.endswith("_preview")})
                 last_state, last_publish = body, tick
             STOP.wait(0.1)
     finally:

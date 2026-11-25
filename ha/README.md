@@ -26,3 +26,9 @@ Copy only the listed files required for the update. Keep the other park HA packa
 The Car Counter supplies entrance data and the Gate Counter supplies exit data. Both consume HA operating settings and report what they applied. Follow the [two-way MQTT interface](../firmware-interface/expected_topics.md#follow-a-transaction-across-repositories) or go directly to the firmware MQTT contracts: [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/main/docs/MQTT_Contract.md) · [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/main/docs/MQTT_Contract.md).
 
 [Three-repository main baseline and opening-night checks](../docs/friday-system-check.md).
+
+### Live matrix previews (bridge 0.3.2)
+
+Copy the updated signs package, bridge app files and existing JavaScript resource to their destinations above. Check the HA configuration and restart HA. Rebuild/update the installed local bridge app and start version 0.3.2 with its existing options. Update the existing dashboard module URL to `/local/msb-sign-message-grid.js?v=8`, apply the two kiosk dashboards, and refresh both tablets.
+
+During an HA overlay, Counts on the office tablet and Signs on the captain tablet show the two rendered 80 × 34 RGB frames. During a release they show “Light-O-Rama has control”. Confirm both signs during a normally scheduled rotation.
