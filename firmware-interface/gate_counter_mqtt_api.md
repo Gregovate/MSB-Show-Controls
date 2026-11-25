@@ -13,3 +13,11 @@ GateCounter records departures. HA publishes the retained `msb/traffic/GateCount
 The season-start date travels separately on `Config/showStartDate`. During an extension, check `State/extensionMinutes`, `State/countEndMinute` and `System/settingsHealth` under the device prefix. A retained HA request alone does not establish acceptance by the ESP32.
 
 [HA settings publisher](../ha/automations.yaml) · [Firmware settings implementation](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/refactor/shared-firmware/src/services/OperatingSettings.cpp) · [Diagnostic topics](expected_topics.md)
+
+## Matching firmware documentation
+
+| Question | Device reference |
+| --- | --- |
+| Which counts, hourly snapshots and health topics can HA consume? | [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/370359f14cd5a69f82b44622c73b4a2a7c9be179/docs/MQTT_Contract.md) |
+| Which HA settings does this firmware consume and acknowledge? | [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/370359f14cd5a69f82b44622c73b4a2a7c9be179/docs/Coordinated_Release_9.md) |
+| How are counts restored after a restart? | [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/370359f14cd5a69f82b44622c73b4a2a7c9be179/docs/Count_Persistence.md) |

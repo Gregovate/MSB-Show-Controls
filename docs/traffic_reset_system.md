@@ -264,3 +264,5 @@ These are intentionally out of scope for the first implementation, but worth doc
     - Why (optional text field in runbook / external log).
 
 ---
+
+For the firmware checkpoint and reboot behavior behind a correction decision, see the device persistence references. [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/2c0bf6c6a3da4240876ccf24b06696c883dae4ef/docs/Count_Persistence.md) · [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/370359f14cd5a69f82b44622c73b4a2a7c9be179/docs/Count_Persistence.md).

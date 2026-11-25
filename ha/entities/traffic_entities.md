@@ -15,3 +15,5 @@
 The HA show/normal bucket sorter in the exported automations monitors `sensor.enter_cars`. That entity ID differs from the canonical sign count source. Verify its live mapping when diagnosing a bucket discrepancy.
 
 [Traffic analytics](../packages/traffic_analytics.yaml) · [Wait estimator](../packages/sign2_queue_wait.yaml)
+
+For the MQTT readings behind these HA entities, consult both device contracts. [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/2c0bf6c6a3da4240876ccf24b06696c883dae4ef/docs/MQTT_Contract.md) · [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/370359f14cd5a69f82b44622c73b4a2a7c9be179/docs/MQTT_Contract.md).

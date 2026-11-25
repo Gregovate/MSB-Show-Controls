@@ -9,3 +9,5 @@
 **Storage warnings.** HA subscribes to count persistence, hourly export, summary export, settings health and SD health for each device. Use the warning topic and payload to distinguish recording problems from an offline device.
 
 [Automation source](../automations.yaml) · [Reset decisions](../../design/reset_flow_diagram.md) · [Topic reference](../../firmware-interface/expected_topics.md)
+
+For the receiving side of the HA settings publishers and correction messages, see the coordinated device contracts. [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/2c0bf6c6a3da4240876ccf24b06696c883dae4ef/docs/Coordinated_Release_9.md) · [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/370359f14cd5a69f82b44622c73b4a2a7c9be179/docs/Coordinated_Release_9.md).

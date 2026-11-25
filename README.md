@@ -12,3 +12,5 @@ Home Assistant coordinates the Making Spirits Bright entrance and exit counters,
 | Determine what reaches the website | [Website publishing status](docs/website_publishing.md) |
 
 Use the same Git branch and revision on the laptop and show PC. Check both with `git status --short --branch` and `git log -1 --oneline`. Pull committed updates with `git pull --ff-only`. Installation on park HA is a separate step.
+
+The Car Counter supplies entrance data and the Gate Counter supplies exit data. Both consume HA operating settings and report what they applied. Follow the [two-way MQTT interface](firmware-interface/expected_topics.md#follow-a-transaction-across-repositories) or go directly to the firmware MQTT contracts: [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/2c0bf6c6a3da4240876ccf24b06696c883dae4ef/docs/MQTT_Contract.md) · [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/370359f14cd5a69f82b44622c73b4a2a7c9be179/docs/MQTT_Contract.md).

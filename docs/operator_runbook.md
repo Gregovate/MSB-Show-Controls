@@ -15,3 +15,5 @@
 **If a counter fails**, record the local time, last credible total, device identity and storage warning. Check heartbeat and the device’s persistence/export health. Use the cameras for traffic decisions while diagnosing. A stale total or unavailable highway wait estimate is insufficient evidence for a count correction. Preserve SD logs and reconcile actual arrivals or departures before considering a manual correction.
 
 [Extension procedure](warmup-extension.md) · [Counter diagnostics](../firmware-interface/expected_topics.md) · [Sign behavior](signs.md)
+
+When verifying an extension, use the device acceptance procedure for each counter. [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/2c0bf6c6a3da4240876ccf24b06696c883dae4ef/docs/Coordinated_Release_9.md) · [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/370359f14cd5a69f82b44622c73b4a2a7c9be179/docs/Coordinated_Release_9.md).

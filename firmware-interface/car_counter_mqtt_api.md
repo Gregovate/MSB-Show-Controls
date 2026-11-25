@@ -13,3 +13,11 @@ CarCounter records entrances. HA publishes the retained `msb/traffic/CarCounter/
 The season-start date travels separately on `Config/showStartDate`. During an extension, check `State/extensionMinutes`, `State/countEndMinute` and `System/settingsHealth` under the device prefix. A retained HA request alone does not establish acceptance by the ESP32.
 
 [HA settings publisher](../ha/automations.yaml) · [Firmware settings implementation](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/refactor/shared-firmware/src/services/OperatingSettings.cpp) · [Diagnostic topics](expected_topics.md)
+
+## Matching firmware documentation
+
+| Question | Device reference |
+| --- | --- |
+| Which counts, hourly snapshots and health topics can HA consume? | [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/2c0bf6c6a3da4240876ccf24b06696c883dae4ef/docs/MQTT_Contract.md) |
+| Which HA settings does this firmware consume and acknowledge? | [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/2c0bf6c6a3da4240876ccf24b06696c883dae4ef/docs/Coordinated_Release_9.md) |
+| How are counts restored after a restart? | [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/2c0bf6c6a3da4240876ccf24b06696c883dae4ef/docs/Count_Persistence.md) |

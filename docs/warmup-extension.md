@@ -10,3 +10,5 @@ Install the warm-up update from the [HA install folder](../ha/README.md). The ru
 6. The existing dated MQTT settings feed each counter its extension and existing offset. The HA show/normal bucket sorter follows the public-open sensor. At local midnight HA sets the extension helper to zero; startup clears a previous date's restored value if HA missed midnight. Use the normal evening schedule with equipment deadlines before midnight. No reset or count-correction action belongs in the warm-up or extension workflow.
 
 The large opening-advertising preset was a setup action that rewrites advertising text. It has been removed from Control. The operational initializer appears only until initialization is complete.
+
+Check the returned effective end and dated extension on both devices before treating the counter update as complete. [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/2c0bf6c6a3da4240876ccf24b06696c883dae4ef/docs/Coordinated_Release_9.md) · [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/370359f14cd5a69f82b44622c73b4a2a7c9be179/docs/Coordinated_Release_9.md).
