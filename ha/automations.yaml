@@ -718,21 +718,24 @@
           - switch.vt_radio_chargers
   mode: restart
 - id: msb_traffic_log_gate_open
-  alias: Traffic - Log gate opening
-  description: Record each observed gate opening, including outside show hours.
+  alias: Traffic - Log gate openings and closings
+  description: Record when the gate reports open or closed at any hour.
   triggers:
+    # Ignore reconnects and attribute-only updates.
     - trigger: state
       entity_id: cover.traffic_ghost_controls_ghost_controls
-      # A reconnect while already open is not evidence of a new opening.
-      from:
-        - closed
-        - opening
-        - closing
+      from: [closed, opening, closing]
       to: open
+      id: opened
+    - trigger: state
+      entity_id: cover.traffic_ghost_controls_ghost_controls
+      from: [open, opening, closing]
+      to: closed
+      id: closed
   actions:
     - action: logbook.log
       data:
         name: MSB Traffic
-        message: Gate opened
+        message: "Gate {{ trigger.id }}"
         entity_id: cover.traffic_ghost_controls_ghost_controls
   mode: queued
