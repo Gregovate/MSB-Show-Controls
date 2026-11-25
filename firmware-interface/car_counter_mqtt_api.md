@@ -18,6 +18,6 @@ The season-start date travels separately on `Config/showStartDate`. During an ex
 
 | Question | Device reference |
 | --- | --- |
-| Which counts, hourly snapshots and health topics can HA consume? | [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/0b7e9787bc6d475d17b4874b5c32096103d4c40e/docs/MQTT_Contract.md) |
-| Which HA settings does this firmware consume and acknowledge? | [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/0b7e9787bc6d475d17b4874b5c32096103d4c40e/docs/Coordinated_Release_9.md) |
-| How are counts restored after a restart? | [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/0b7e9787bc6d475d17b4874b5c32096103d4c40e/docs/Count_Persistence.md) |
+| Which counts, hourly snapshots and health topics can HA consume? | [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/main/docs/MQTT_Contract.md) |
+| Which HA settings does this firmware consume and acknowledge? | [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/main/docs/Coordinated_Release_9.md) |
+| How are counts restored after a restart? | [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/main/docs/Count_Persistence.md) |

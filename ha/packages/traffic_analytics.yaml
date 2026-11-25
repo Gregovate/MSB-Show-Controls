@@ -114,14 +114,16 @@ template:
     state: "{{ states('sensor.msb_flow_delta_cars_min') | float(0) }}\n    \n"
   - name: MSB In-Park Cars Band
     unique_id: msb_in_park_cars_band
+    availability: "{{ is_state('binary_sensor.msb_show_open', 'off') or is_number(states('sensor.msb_in_park_cars_canonical')) }}"
     icon: mdi:account-group
     state: "{% set open = is_state('binary_sensor.msb_show_open', 'on') %} {% set cars = states('sensor.msb_in_park_cars_canonical')\
       \ | int(0) %} {% if not open %}\n  off_show\n{% elif cars < 80 %}\n  low\n{% elif cars < 120 %}\n  medium\n\
       {% elif cars < 150 %}\n  high\n{% else %}\n  very_high\n{% endif %}\n"
     attributes:
-      in_park_cars: '{{ states(''sensor.msb_in_park_cars_canonical'') | int(0) }}'
+      in_park_cars: '{{ states(''sensor.msb_in_park_cars_canonical'') | int(none) }}'
   - name: MSB Travel Time Estimate (min)
     unique_id: msb_travel_time_estimate_min
+    availability: "{{ is_state('binary_sensor.msb_show_open', 'off') or is_number(states('sensor.msb_in_park_cars_canonical')) }}"
     icon: mdi:timer-sand
     unit_of_measurement: min
     state_class: measurement
@@ -133,6 +135,7 @@ template:
       \ 15] | max, 60 ] | min | round(0) }}\n  {% endif %}\n{% endif %}\n"
   - name: MSB Travel Time Band
     unique_id: msb_travel_time_band
+    availability: "{{ is_state('binary_sensor.msb_show_open', 'off') or is_number(states('sensor.msb_in_park_cars_canonical')) }}"
     icon: mdi:timer-sand-complete
     state: "{% if not is_state('binary_sensor.msb_show_open', 'on') %}\n  off_show\n{% else %}\n  {% set tt = states('sensor.msb_travel_time_estimate_min')\
       \ | float(0) %}\n  {# Bands aligned with 15 / 20 / 25 / 30 #}\n  {% if tt < 17 %}\n    light\n  {% elif tt\
@@ -143,6 +146,7 @@ template:
         \ | int(0) }}\n{% else %}\n  unknown\n{% endif %}\n"
   - name: MSB Traffic Pressure
     unique_id: msb_traffic_pressure
+    availability: "{{ is_state('binary_sensor.msb_show_open', 'off') or is_number(states('sensor.msb_in_park_cars_canonical')) }}"
     icon: mdi:gauge
     state: "{% set open = is_state('binary_sensor.msb_show_open', 'on') %} {% if not open %}\n  off_show\n{% else\
       \ %}\n  {% set cars  = states('sensor.msb_in_park_cars_canonical') | int(0) %}\n  {% set enter = states('sensor.msb_enter_rate_cars_min')\
@@ -150,7 +154,7 @@ template:
       \ enter - exit %}\n  {% if cars < 100 or diff <= 0 %}\n    low\n  {% elif cars >= 140 and diff > 0.2 %}\n\
       \    high\n  {% else %}\n    medium\n  {% endif %}\n{% endif %}\n"
     attributes:
-      in_park_cars: '{{ states(''sensor.msb_in_park_cars_canonical'') | int(0) }}'
+      in_park_cars: '{{ states(''sensor.msb_in_park_cars_canonical'') | int(none) }}'
       enter_rate_cars_min: '{{ states(''sensor.msb_enter_rate_cars_min'') | float(0) }}'
       exit_rate_cars_min: '{{ states(''sensor.msb_exit_rate_cars_min'') | float(0) }}'
       flow_delta_cars_min: '{{ states(''sensor.msb_flow_delta_cars_min'') | float(0) }}'
@@ -159,14 +163,16 @@ template:
       carcounter_active: '{{ is_state(''binary_sensor.msb_carcounter_analytics_active'', ''on'') }}'
   - name: MSB In Park Cars (Canonical)
     unique_id: msb_in_park_cars_canonical
+    availability: "{{ is_state('binary_sensor.msb_gate_counter_online', 'on') and is_number(states('sensor.msb_gate_counter_in_park_cars')) }}"
     icon: mdi:car-multiple
     state_class: measurement
     unit_of_measurement: cars
-    state: '{{ states(''sensor.msb_gate_counter_in_park_cars'') | int(0) }}
+    state: '{{ states(''sensor.msb_gate_counter_in_park_cars'') | int(none) }}
 
       '
   - name: MSB Traffic Status
     unique_id: msb_traffic_status
+    availability: "{{ is_state('binary_sensor.msb_show_open', 'off') or is_number(states('sensor.msb_in_park_cars_canonical')) }}"
     icon: mdi:traffic-light
     state: "{% set open      = is_state('binary_sensor.msb_show_open', 'on') %} {% set pressure  = states('sensor.msb_traffic_pressure')\
       \ %} {% set tt_band   = states('sensor.msb_travel_time_band') %} {% set load_band = states('sensor.msb_in_park_cars_band')\
@@ -185,6 +191,7 @@ template:
       gatecounter_active: '{{ is_state(''binary_sensor.msb_gatecounter_analytics_active'', ''on'') }}'
   - name: MSB Flow Health
     unique_id: msb_flow_health
+    availability: "{{ is_number(states('sensor.msb_in_park_cars_canonical')) }}"
     icon: mdi:swap-vertical
     state: "{% set cars  = states('sensor.msb_in_park_cars_canonical') | int(0) %} {% set delta = states('sensor.msb_flow_smoothed')\
       \ | float(0) %}\n{# Guardrail: low park load = don't alarm #} {% if cars < 80 %}\n  {% if delta <= 0 %}\n\
@@ -193,12 +200,13 @@ template:
       \    building\n  {% elif delta <= 1.5 %}\n    building_fast\n  {% else %}\n    overloaded\n  {% endif %}\n\
       {% endif %}\n"
     attributes:
-      in_park_cars: '{{ states(''sensor.msb_in_park_cars_canonical'') | int(0) }}'
+      in_park_cars: '{{ states(''sensor.msb_in_park_cars_canonical'') | int(none) }}'
       delta_cars_min: '{{ states(''sensor.msb_flow_delta_cars_min'') | float(0) }}'
       enter_cars_min: '{{ states(''sensor.msb_enter_rate_cars_min'') | float(0) }}'
       exit_cars_min: '{{ states(''sensor.msb_exit_rate_cars_min'') | float(0) }}'
   - name: MSB Traffic Status Reason
     unique_id: msb_traffic_status_reason
+    availability: "{{ is_number(states('sensor.msb_in_park_cars_canonical')) }}"
     icon: mdi:comment-processing-outline
     state: "{% set open = is_state('binary_sensor.msb_show_open', 'on') %} {% set inpark = states('sensor.msb_in_park_cars_canonical')\
       \ | int(0) %} {% set enter = states('sensor.msb_enter_rate_cars_min') | float(0) %} {% set exit  = states('sensor.msb_exit_rate_cars_min')\
@@ -207,6 +215,7 @@ template:
       \ delta={{delta}}\n{% endif %}\n"
   - name: MSB Traffic Status Snapshot
     unique_id: msb_traffic_status_snapshot
+    availability: "{{ is_state('binary_sensor.msb_show_open', 'off') or is_number(states('sensor.msb_in_park_cars_canonical')) }}"
     icon: mdi:car-multiple
     state: '{{ states(''sensor.msb_traffic_status'') }}'
     attributes:
@@ -217,7 +226,7 @@ template:
       estimated_travel_minutes: "{% if is_state('binary_sensor.msb_gatecounter_analytics_active','on') and\n   \
         \   is_state('binary_sensor.msb_show_open','on') %}\n  {{ states('sensor.msb_travel_time_estimate_min')\
         \ | int(0) }}\n{% else %}\n  null\n{% endif %}\n"
-      in_park_cars: '{{ states(''sensor.msb_in_park_cars_canonical'') | int(0) }}'
+      in_park_cars: '{{ states(''sensor.msb_in_park_cars_canonical'') | int(none) }}'
       enter_rate_cars_min: '{{ states(''sensor.msb_enter_rate_cars_min'') | float(0) }}'
       exit_rate_cars_min: '{{ states(''sensor.msb_exit_rate_cars_min'') | float(0) }}'
       flow_delta_cars_min: '{{ states(''sensor.msb_flow_delta_cars_min'') | float(0) }}'
@@ -232,18 +241,20 @@ template:
       last_updated: '{{ now().isoformat() }}'
   - name: MSB Traffic Status JSON
     unique_id: msb_traffic_status_json
+    availability: "{{ is_state('binary_sensor.msb_show_open', 'off') or is_number(states('sensor.msb_in_park_cars_canonical')) }}"
     icon: mdi:code-json
     state: ok
     attributes:
       payload: "{{ {\n  \"status\": states(\"sensor.msb_traffic_status\"),\n  \"show_open\": is_state(\"binary_sensor.msb_show_open\"\
         ,\"on\"),\n  \"analytics_active\": is_state(\"binary_sensor.msb_gatecounter_analytics_active\",\"on\"),\n\
         \  \"estimated_travel_minutes\": (states(\"sensor.msb_travel_time_estimate_min\") | int(0)),\n  \"in_park_cars\"\
-        : (states(\"sensor.msb_in_park_cars_canonical\") | int(0)),\n  \"traffic_pressure\": states(\"sensor.msb_traffic_pressure\"\
+        : (states(\"sensor.msb_in_park_cars_canonical\") | int(none)),\n  \"traffic_pressure\": states(\"sensor.msb_traffic_pressure\"\
         ),\n  \"advice\": (state_attr(\"sensor.msb_traffic_status_snapshot\",\"advice\") | default(\"\") | string\
         \ | replace(\"\\n\",\" \") | replace(\"\\r\",\" \")),\n  \"last_updated\": now().isoformat()\n} | tojson\
         \ }}"
   - name: MSB Lane 2 Advisory
     unique_id: msb_lane_2_advisory
+    availability: "{{ is_state('binary_sensor.msb_show_open', 'off') or is_number(states('sensor.msb_in_park_cars_canonical')) }}"
     icon: mdi:road-variant
     state: "{% set open   = is_state('binary_sensor.msb_show_open','on') %} {% set active = is_state('binary_sensor.msb_gatecounter_analytics_active','on')\
       \ %} {% if not open or not active %}\n  closed\n{% else %}\n  {% set inpark = states('sensor.msb_in_park_cars_canonical')\
@@ -261,7 +272,7 @@ template:
       \ 2' and inpark >= 140 %}\n      Close Lane 2\n\n    {# Default steady recommendation #}\n    {% else %}\n\
       \      Lane 2 OK to Open\n    {% endif %}\n  {% endif %}\n{% endif %}\n"
     attributes:
-      in_park_cars: '{{ states(''sensor.msb_in_park_cars_canonical'') | int(0) }}'
+      in_park_cars: '{{ states(''sensor.msb_in_park_cars_canonical'') | int(none) }}'
       enter_rate_cars_min: '{{ states(''sensor.msb_enter_rate_cars_min'') | float(0) }}'
       tbc_seconds: '{% set tbc_ms = states(''sensor.msb_car_counter_time_between_cars_ms'') | int(0) %} {{ (tbc_ms
         / 1000) | round(1) if tbc_ms > 0 else 9999 }}
@@ -273,6 +284,7 @@ template:
       prev_state: '{{ this.state }}'
   - name: MSB Merger Director Advisory
     unique_id: msb_merger_director_advisory
+    availability: "{{ is_state('binary_sensor.msb_show_open', 'off') or is_number(states('sensor.msb_in_park_cars_canonical')) }}"
     icon: mdi:account-hard-hat
     state: "{% set open   = is_state('binary_sensor.msb_show_open','on') %} {% set active = is_state('binary_sensor.msb_gatecounter_analytics_active','on')\
       \ %}\n{% if not open or not active %}\n  closed\n{% else %}\n  {% set inpark = states('sensor.msb_in_park_cars_canonical')\
@@ -285,12 +297,13 @@ template:
       \ %}\n      Merger Director Not Needed\n    {% else %}\n      Add Merger Director\n    {% endif %}\n  {% endif\
       \ %}\n{% endif %}\n"
     attributes:
-      in_park_cars: '{{ states(''sensor.msb_in_park_cars_canonical'') | int(0) }}'
+      in_park_cars: '{{ states(''sensor.msb_in_park_cars_canonical'') | int(none) }}'
       flow_health: '{{ states(''sensor.msb_flow_health'') }}'
       show_open: '{{ is_state(''binary_sensor.msb_show_open'',''on'') }}'
       gatecounter_active: '{{ is_state(''binary_sensor.msb_gatecounter_analytics_active'',''on'') }}'
   - name: MSB Lane 2 Compliance
     unique_id: msb_lane_2_compliance
+    availability: "{{ is_state('binary_sensor.msb_show_open', 'off') or is_number(states('sensor.msb_in_park_cars_canonical')) }}"
     state: "{% set advised = states('sensor.msb_lane_2_advisory') %} {% set open = is_state('input_boolean.lane_2_open','on')\
       \ %}\n{% if advised == 'Open Lane 2' and not open %}\n  Action Needed\n{% elif advised == 'Close Lane 2' and\
       \ open %}\n  Action Needed\n{% else %}\n  OK\n{% endif %}\n"

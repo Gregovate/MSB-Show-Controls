@@ -9,7 +9,7 @@ Public gates normally open at 5:00 PM. The route is approximately 1.1 miles and 
 
 Operations volunteers park near the exit to open the gates and then leave through the Gate Counter. Their departures should not inflate the show's visitor exit total. The Gate Counter therefore deliberately resets its show daily count after opening, after those departures and before the expected first visitor exits. The entrance counter resets before visitor admission.
 
-The HA administration screenshot supplied on November 4 shows entrance reset offset -1 minute (4:59 PM) and gate reset offset +10 minutes (5:10 PM), relative to a 5:00 PM opening. These are observed settings, not proof that both deployed devices honor them. Greg earlier described a 4:55 PM entrance reset; reconcile the intended entrance offset with HA before changing configuration. Do not substitute the theoretical 13-minute trip for the chosen gate reset offset.
+Greg confirmed Car’s HA reset offset of −1 minute and Gate’s +10 minutes. November 24 telemetry showed Car reset at 4:59 PM, entry eligibility at 5 PM, and Gate reset and exit eligibility at 5:10 PM. HA supplies the closing grace and dated extension. The normal Gate grace is +25 minutes.
 
 ## Congestion and occupancy
 
@@ -32,15 +32,15 @@ The objective is a reasonable comparison of visitor entry and exit volumes over 
 - Compare the complete visitor cohort after its final exits, not merely at admission closing time. Investigate remaining differences using recorded events, resets and device health.
 - Volunteer and other operational movements require explicit treatment; the delayed gate reset establishes the intended visitor baseline but does not repair missing detector events.
 
-## Preserve both kinds of traffic data
+## Test and production recording
 
-All-day hourly traffic supports year-round park analysis, including off-season operation. Show visitor buckets support official nightly and year-to-year comparisons. Excluding volunteer departures from show metrics must not erase their legitimate all-day traffic records.
+Car .31 and Gate .24 archive the test session separately on the matching HA start date. In production, traffic counts and passage logs use each device’s official HA window. Beams and alarms remain active between windows.
 
 The official 2025 ShowSummary / ShowSummaryBuckets records remain authoritative, including prior operational corrections. Do not reconstruct or overwrite that season from raw logs. Recording paths follow the validated current calendar year; a stale show date must never redirect writes into the previous year's folder.
 
 HA owns operational configuration, while firmware must retain validated settings and operate from the RTC without MQTT or Wi-Fi. Scheduled show resets and calendar rollovers must be distinct from reboot recovery: a restart must restore counts, not create another reset.
 
-## Implementation gaps observed in modular-test.5 / .6
+## Historical implementation gaps observed in modular-test.5 / .6
 
 These findings describe source behavior, not completion of the design:
 
@@ -53,10 +53,10 @@ These findings describe source behavior, not completion of the design:
 
 Documentation of the +10-minute gate offset does not change the deployed 17:08 implementation. No device settings or timing were changed by this document.
 
-## Acceptance evidence required
+## Historical .5/.6 acceptance plan
 
 Use setup traffic and controlled events to verify volunteer exclusion, correct visitor totals, preservation of all-day hourly events, and no duplicate reset after reboot. Test hour-boundary travel and prolonged congestion without treating legitimate count differences as faults. Verify HA configuration and offline fallback produce the same agreed timing on both devices.
 
 Record firmware versions, effective configuration, full dates, reset events, detector health and the resulting files. Keep historical official metrics unchanged.
 
-Use these device contracts to trace the HA opening anchor, offsets and dated extension into each counter. [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/0b7e9787bc6d475d17b4874b5c32096103d4c40e/docs/Coordinated_Release_9.md) · [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/0874ed3726824448c6ce334fe5765ac7c55a84f5/docs/Coordinated_Release_9.md).
+For current .31/.24 acceptance, use the [Friday system check](friday-system-check.md). Use these device contracts to trace the HA opening anchor, offsets and dated extension into each counter. [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/main/docs/Coordinated_Release_9.md) · [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/main/docs/Coordinated_Release_9.md).

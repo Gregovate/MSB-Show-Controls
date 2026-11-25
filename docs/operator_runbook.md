@@ -16,6 +16,6 @@
 
 [Extension procedure](warmup-extension.md) · [Counter diagnostics](../firmware-interface/expected_topics.md) · [Sign behavior](signs.md)
 
-When verifying an extension, use the device acceptance procedure for each counter. [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/0b7e9787bc6d475d17b4874b5c32096103d4c40e/docs/Coordinated_Release_9.md) · [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/0874ed3726824448c6ce334fe5765ac7c55a84f5/docs/Coordinated_Release_9.md).
+When verifying an extension, use the device acceptance procedure for each counter. [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/main/docs/Coordinated_Release_9.md) · [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/main/docs/Coordinated_Release_9.md).
 
 [Three-repository main baseline and opening-night checks](friday-system-check.md).

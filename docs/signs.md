@@ -114,9 +114,7 @@ from field evidence; do not modify official history to fit the model.
 The uploaded msb_show_open and analytics-window templates used nominal closing time
 without show_end_extension_min. They now consume one HA effective-closing sensor,
 including its public_start attribute. Existing season guard, analytics start/tail
-cushions and each sensor identity are preserved. Every pre-existing traffic sensor's
-complete definition is checked against a hash of the supplied version; no congestion
-threshold, travel-time formula, lane advisory or count formula was changed. The bridge
+cushions and each sensor identity are preserved. The November 25 update preserves the firmware’s unavailable occupancy state through HA analytics. A live numeric zero and negative balances remain distinct from missing data. Regression checks pin the reviewed definitions and exercise missing and numeric Gate readings. The congestion thresholds and travel-time formulas remain the same. The bridge
 reads that same HA effective-closing sensor rather than calculating another deadline.
 
 Historical reference: Car docs/Traffic_Reliability_20261122.md links 2025 EnterLog.csv
@@ -180,4 +178,4 @@ must be registered; accessible JavaScript bytes alone do not load a custom card.
 Full source, package regeneration and tests are in signs/. Restore that source rather
 than an old chat ZIP. See signs/UPGRADE.md for coordinated installation/rollback.
 
-Trace the entry, exit and hourly data behind HA traffic displays in the firmware MQTT contracts. [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/0b7e9787bc6d475d17b4874b5c32096103d4c40e/docs/MQTT_Contract.md) · [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/0874ed3726824448c6ce334fe5765ac7c55a84f5/docs/MQTT_Contract.md).
+Trace the entry, exit and hourly data behind HA traffic displays in the firmware MQTT contracts. [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/main/docs/MQTT_Contract.md) · [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/main/docs/MQTT_Contract.md).

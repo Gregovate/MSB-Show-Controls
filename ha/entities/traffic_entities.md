@@ -16,4 +16,4 @@ The HA show/normal bucket sorter in the exported automations monitors `sensor.en
 
 [Traffic analytics](../packages/traffic_analytics.yaml) · [Wait estimator](../packages/sign2_queue_wait.yaml)
 
-For the MQTT readings behind these HA entities, consult both device contracts. [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/0b7e9787bc6d475d17b4874b5c32096103d4c40e/docs/MQTT_Contract.md) · [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/0874ed3726824448c6ce334fe5765ac7c55a84f5/docs/MQTT_Contract.md).
+For the MQTT readings behind these HA entities, consult both device contracts. [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/main/docs/MQTT_Contract.md) · [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/main/docs/MQTT_Contract.md).

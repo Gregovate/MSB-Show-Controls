@@ -2,6 +2,10 @@
 
 Use `main` on the laptop and show PC in all three repositories. The November 24 paired firmware source is Car .31 and Gate .24. Production testing of the reliability changes has been limited. Record actual installed versions, local times, observations and any gaps. Field result: pending.
 
+At 11:26 AM Central on November 24, the devices reported Car `25.12.03.2-modular-test.31` and Gate `25.12.28.0-modular-test.24`. Both reported `productionSession=TEST`, the November 22 test calendar, journal and archive health OK, and zero dropped beam edges. Car reported one unassigned recovery event, Gate zero. This establishes the installed test baseline. Friday production acceptance is pending.
+
+The test schedule closed Car at 6:10 PM and Gate at 6:25 PM. Recheck Friday’s actual HA settings against the production deadlines below.
+
 | Stage (Central) | Evidence to compare |
 | --- | --- |
 | Before admission | Read each device’s reported firmware, local clock, production session, journal and archive health. Follow the device cutover procedure for READY and the verified baseline. A first real passage changes that baseline. Never reset counts to recreate the check. |
@@ -10,7 +14,7 @@ Use `main` on the laptop and show PC in all three repositories. The November 24 
 | During operation | Compare camera observations with counts, recording health and HA trends. If an extension is actually needed, verify both devices’ applied deadlines, the sign wording and the separate LOR change. |
 | After cutoff and Gate grace | Compare local-date entries, exits, hourly buckets, final balance and storage health with the devices’ hourly reports. Record missing evidence or unexplained differences explicitly. |
 
-Car supplies dated official entries to Gate. Gate pairs them with same-date exits and can report unknown occupancy if its Car input is stale. The current HA canonical occupancy template uses an integer fallback of zero. When the Gate source is unavailable, a dashboard zero alone cannot establish that the park is empty.
+Car supplies dated official entries to Gate. Gate pairs them with same-date exits and can report unknown occupancy if its Car input is stale. The maintained HA analytics package marks missing Gate occupancy unavailable. A numeric zero or signed balance remains visible. Verify this on park HA after installing the package.
 
 [Car operating contract](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/main/docs/OPERATING_CONTRACT.md) · [Gate operating contract](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/main/docs/OPERATING_CONTRACT.md) · [Car cutover](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/main/docs/Production_Cutover_20261124.md) · [Gate cutover](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/main/docs/Production_Cutover_20261124.md)
 
