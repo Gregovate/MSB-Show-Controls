@@ -6,12 +6,12 @@ template:
         state: >-
           {% set alerts = namespace(items=[]) %}
           {% for key, label in [('car', 'Car Counter'), ('gate', 'Gate Counter')] %}
-            {% set online = states('binary_sensor.msb_' ~ key ~ '_counter_online') %}
+            {% set online = states('sensor.msb_' ~ key ~ '_counter_msb_' ~ key ~ '_counter_status_2') | lower %}
             {% set heartbeat = states('sensor.msb_' ~ key ~ '_counter_' ~ key ~ '_counter_heartbeat') %}
             {% set stamp = as_timestamp(heartbeat, none) %}
-            {% if online == 'off' %}
+            {% if online == 'offline' %}
               {% set reason = 'offline' %}
-            {% elif online != 'on' %}
+            {% elif online != 'online' %}
               {% set reason = 'connection unknown' %}
             {% elif stamp is none %}
               {% set reason = 'heartbeat unavailable' %}
