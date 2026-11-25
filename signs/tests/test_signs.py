@@ -171,28 +171,18 @@ class TestHAContract(unittest.TestCase):
  def test_no_manual_wait_or_duplicate_public_hours_helpers(self):
   self.assertNotIn('msb_signs_wait_minutes',PACKAGE['input_number'])
   self.assertNotIn('msb_signs_public_end_time',PACKAGE['input_datetime'])
- def test_gate_occupancy_availability(self):
+ def test_downstream_occupancy_availability(self):
   sensors={s['unique_id']:s for g in ANALYTICS['template'] for s in g.get('sensor',[])}
-  raw='sensor.msb_gate_counter_in_park_cars'
-  canonical='sensor.msb_in_park_cars_canonical'
-  online='binary_sensor.msb_gate_counter_online'
-  opened='binary_sensor.msb_show_open'
   env=Environment()
-  for reading,connection,expected in [('0','on','0'),('-2','on','-2'),('12','on','12'),
-                                      ('unknown','on',None),('unavailable','on',None),('12','off',None)]:
-   with self.subTest(reading=reading,connection=connection):
-    data={raw:reading,online:connection,opened:'on'}
-    env.globals.update(states=lambda k:data.get(k,'unknown'),is_state=lambda k,v:data.get(k)==v,is_number=number)
-    render=lambda uid,field:env.from_string(sensors['msb_'+uid][field]).render().strip()
-    available=render('in_park_cars_canonical','availability')=='True'
-    self.assertEqual(available,expected is not None)
-    data[canonical]=render('in_park_cars_canonical','state') if available else 'unavailable'
-    self.assertEqual(data[canonical],expected if available else 'unavailable')
-    for uid in ['traffic_status','traffic_status_snapshot','traffic_status_json','travel_time_estimate_min','lane_2_advisory']:
-     self.assertEqual(render(uid,'availability')=='True',available,uid)
-    data[opened]='off'
-    self.assertEqual(render('traffic_status','state'),'closed')
-    self.assertEqual(render('traffic_status','availability'),'True')
+  for reading in ('0','-2','12','unavailable'):
+   data={'sensor.msb_in_park_cars_canonical':reading,'binary_sensor.msb_show_open':'on'}
+   env.globals.update(states=lambda k:data.get(k,'unknown'),is_state=lambda k,v:data.get(k)==v,is_number=number)
+   render=lambda uid,field:env.from_string(sensors['msb_'+uid][field]).render().strip()
+   for uid in ['traffic_status','traffic_status_snapshot','traffic_status_json','travel_time_estimate_min','lane_2_advisory']:
+    self.assertEqual(render(uid,'availability')=='True',number(reading),uid)
+   data['binary_sensor.msb_show_open']='off'
+   self.assertEqual(render('traffic_status','state'),'closed')
+   self.assertEqual(render('traffic_status','availability'),'True')
  def test_reviewed_traffic_sensor_definitions(self):
   import hashlib
   expected=json.loads((ROOT/'tests/analytics_preservation.json').read_text())

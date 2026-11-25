@@ -2238,7 +2238,7 @@ automation:
         \ time' if wait_entity == 'sensor.msb_travel_time_estimate_min' else 'Counter offline' if not counters_online\
         \ else 'HA queue wait unavailable' if not is_number(wait) or wait | float < 0 else 'HA queue wait ready',\n\
         \  'closing_time': ns.end.strftime('%I:%M %p').lstrip('0') if valid else 'Unavailable',\n  'opening_time':\
-        \ opening_time, 'opening_announcement': announce,\n  'in_park': states('sensor.msb_gate_counter_in_park_cars'),\
+        \ opening_time, 'opening_announcement': announce,\n  'in_park': states('sensor.msb_in_park_cars_canonical'),\
         \ 'show_total': season_count,\n  'schedule_status': 'Weather closure' if weather else 'Entry closed' if\
         \ closed else 'Clearing queue' if clearing else 'Force close — overlays suppressed' if force_close else\
         \ 'Public show' if gates else 'Pre-show countdown' if warmup else 'Advertising' if preshow and ns.advertising\

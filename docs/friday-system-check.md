@@ -23,3 +23,5 @@ Car supplies dated official entries to Gate. Gate pairs them with same-date exit
 Begin each session from the current remote main heads. Greg compiles locally and flashes the devices. Git publication, a reported install and field acceptance are separate milestones. The two existing firmware checkpoints carry this same branch handoff.
 
 [Car thread checkpoint](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/main/docs/Checkpoint_2026-11-24_Part_2.md) · [Gate thread checkpoint](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/main/docs/Checkpoint_2026-11-24_Part_2.md)
+
+On opening night, Cars in park stays unavailable at the 4:59 PM reset. Verify the first fresh Gate production reading after public opening, a real zero during operation, and unavailable again at the extended public close even while Gate records its grace period.

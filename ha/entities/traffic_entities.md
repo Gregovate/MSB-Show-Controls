@@ -17,3 +17,5 @@ The HA show/normal bucket sorter in the exported automations monitors `sensor.en
 [Traffic analytics](../packages/traffic_analytics.yaml) · [Wait estimator](../packages/sign2_queue_wait.yaml)
 
 For the MQTT readings behind these HA entities, consult both device contracts. [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/main/docs/MQTT_Contract.md) · [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/main/docs/MQTT_Contract.md).
+
+To diagnose an unavailable occupancy during public hours, check `sensor.msb_gate_occupancy_session`, `sensor.msb_gate_occupancy_sample_time`, `sensor.msb_gate_occupancy_raw`, and `binary_sensor.msb_gate_counter_online`. The sample time is the Gate RTC time from a heartbeat with integer occupancy. HA checks the sender timestamp so an old retained message cannot become current on reconnect. The freshness limit is 120 seconds with five seconds of forward clock tolerance. An unchanged fresh count can remain valid, including zero or a negative diagnostic balance. After public close, inspect raw counters for equipment health and late exits.

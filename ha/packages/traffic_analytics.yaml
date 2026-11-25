@@ -1,4 +1,22 @@
 # Existing supplied HA analytics; only window templates changed to share extension timing.
+# The dedicated raw sensor preserves the firmware's literal unknown on its live topic.
+mqtt:
+  sensor:
+  - name: MSB Gate Occupancy Raw
+    unique_id: msb_gate_occupancy_raw
+    state_topic: msb/traffic/GateCounter/Cars/InParkCars
+    expire_after: 120
+  - name: MSB Gate Occupancy Sample Time
+    unique_id: msb_gate_occupancy_sample_time
+    state_topic: msb/traffic/GateCounter/System/heartbeat
+    expire_after: 120
+    value_template: >-
+      {{ value_json.now if value_json is defined and value_json is mapping
+         and value_json.inpark is integer and value_json.now is string else 'unknown' }}
+  - name: MSB Gate Occupancy Session
+    unique_id: msb_gate_occupancy_session
+    state_topic: msb/traffic/GateCounter/System/productionSession
+
 sensor:
 - platform: derivative
   name: MSB Enter Rate (cars/s)
@@ -163,11 +181,29 @@ template:
       carcounter_active: '{{ is_state(''binary_sensor.msb_carcounter_analytics_active'', ''on'') }}'
   - name: MSB In Park Cars (Canonical)
     unique_id: msb_in_park_cars_canonical
-    availability: "{{ is_state('binary_sensor.msb_gate_counter_online', 'on') and is_number(states('sensor.msb_gate_counter_in_park_cars')) }}"
+    availability: >-
+      {% set clock = now() %}
+      {% set stamp = strptime(states('sensor.msb_gate_occupancy_sample_time'), '%Y-%m-%d %H:%M:%S', none) %}
+      {% set first = states('input_datetime.msb_signs_public_start_date') %}
+      {% set last = states('input_datetime.msb_show_end_date') %}
+      {% set down = states('input_datetime.msb_show_down_date') %}
+      {% set opening = states('input_datetime.msb_show_start_time') %}
+      {% set day = clock.strftime('%Y-%m-%d') %}
+      {{ is_state('binary_sensor.msb_show_open','on') and stamp is not none and stamp.date() == clock.date()
+         and -5 <= clock.timestamp() - stamp.replace(tzinfo=clock.tzinfo).timestamp() <= 120
+         and strptime(first, '%Y-%m-%d', none) is not none
+         and strptime(last, '%Y-%m-%d', none) is not none
+         and strptime(down, '%Y-%m-%d', none) is not none
+         and first <= day <= last and day != down
+         and strptime(opening, '%H:%M:%S', none) is not none
+         and stamp.strftime('%H:%M:%S') >= opening and clock.strftime('%H:%M:%S') >= opening
+         and states('sensor.msb_gate_occupancy_session') in ['READY','READY_FLASH_ONLY_CHECK_SESSION_CARD']
+         and is_state('binary_sensor.msb_gate_counter_online','on')
+         and states('sensor.msb_gate_occupancy_raw') | regex_match('^-?[0-9]+$') }}
     icon: mdi:car-multiple
     state_class: measurement
     unit_of_measurement: cars
-    state: '{{ states(''sensor.msb_gate_counter_in_park_cars'') | int(none) }}
+    state: '{{ states(''sensor.msb_gate_occupancy_raw'') | int(none) }}
 
       '
   - name: MSB Traffic Status
