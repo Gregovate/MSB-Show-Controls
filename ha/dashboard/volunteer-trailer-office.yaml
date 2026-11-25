@@ -748,6 +748,40 @@ views:
       title: Last 4 Hours
   - type: grid
     cards:
+    - type: markdown
+      title: Highway 42 sign
+      grid_options:
+        columns: full
+      entity_id:
+        - sensor.msb_signs_hwy42
+      content: |-
+        {% set status = states('sensor.msb_signs_hwy42') %}
+        {% if not has_value('sensor.msb_signs_hwy42') %}
+        Sign status unavailable
+        {% elif status.startswith('Released to LOR') %}
+        **Light-O-Rama has control**
+        {% elif ' / ' in status %}
+        <pre>{{ status.replace(' / ', '\n', 1) | e }}</pre>
+        {% else %}
+        {{ status | e }}
+        {% endif %}
+    - type: markdown
+      title: Front Entrance sign
+      grid_options:
+        columns: full
+      entity_id:
+        - sensor.msb_signs_front
+      content: |-
+        {% set status = states('sensor.msb_signs_front') %}
+        {% if not has_value('sensor.msb_signs_front') %}
+        Sign status unavailable
+        {% elif status.startswith('Released to LOR') %}
+        **Light-O-Rama has control**
+        {% elif ' / ' in status %}
+        <pre>{{ status.replace(' / ', '\n', 1) | e }}</pre>
+        {% else %}
+        {{ status | e }}
+        {% endif %}
     - type: entities
       title: Environmental
       show_header_toggle: false
