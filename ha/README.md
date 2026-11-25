@@ -42,3 +42,7 @@ Install [Kiosk Mode](https://github.com/NemesisRE/kiosk-mode) through HACS as a 
 Set Fully’s Start URL to `http://192.168.3.20:8123/kiosk-dashboard/show-control`. The dashboard rule matches the HA display name **Volunteer Trailer Tablet**. It removes the sidebar and global navigation controls while keeping the ShowData, cameras, and counts tabs. Review any Fully URL filtering against all three intended views.
 
 On tablet-05, verify all three views, then check the left edge and Back navigation and repeat after a restart. Dashboard presentation settings leave the HA account’s permissions intact. If public use requires enforced denial of other dashboards or production controls, verify that separately before deployment.
+
+### Park Captain Tablet (tablet-03)
+
+Use a dedicated non-admin HA account with display name **Park Captain Tablet**. Apply `dashboard/park-captain-kiosk.yaml` to the existing **Park Captain Dashboard** through its raw configuration editor. On tablet-03, use the live URL copied from the captain dashboard’s show-control view as Fully’s Start URL. Reload and confirm the captain views and controls are accessible, the HA sidebar is hidden, and Back and a restart keep the tablet on the captain dashboard. The Kiosk Mode frontend resource used by tablet-05 serves both dashboards.
