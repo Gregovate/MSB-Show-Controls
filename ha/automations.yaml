@@ -717,3 +717,22 @@
           - switch.command_center_radio_charger
           - switch.vt_radio_chargers
   mode: restart
+- id: msb_traffic_log_gate_open
+  alias: Traffic - Log gate opening
+  description: Record each observed gate opening, including outside show hours.
+  triggers:
+    - trigger: state
+      entity_id: cover.traffic_ghost_controls_ghost_controls
+      # A reconnect while already open is not evidence of a new opening.
+      from:
+        - closed
+        - opening
+        - closing
+      to: open
+  actions:
+    - action: logbook.log
+      data:
+        name: MSB Traffic
+        message: Gate opened
+        entity_id: cover.traffic_ghost_controls_ghost_controls
+  mode: queued
