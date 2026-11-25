@@ -34,3 +34,11 @@ Copy the updated signs package, bridge app files and existing JavaScript resourc
 During an HA overlay, Counts on the office tablet and Signs on the captain tablet show the two rendered 80 × 34 RGB frames. During a release they show “Light-O-Rama has control”. Confirm both signs during a normally scheduled rotation.
 
 For the brighter laptop and tablet previews on an existing 0.3.2 installation, copy only the updated JavaScript resource, set its module URL to `/local/msb-sign-message-grid.js?v=10`, and reload the browser. The preview boosts low LED brightness values for readability while preserving pixel positions and RGB proportions.
+
+### Volunteer Trailer Tablet (tablet-05)
+
+Install [Kiosk Mode](https://github.com/NemesisRE/kiosk-mode) through HACS as a dashboard frontend resource. On the existing user-managed **Kiosk Dashboard**, open **Edit dashboard → ⋮ → Raw configuration editor**, apply the versioned volunteer trailer dashboard above, save, and refresh Fully on the tablet. Home Assistant ignores this configuration on automatically managed default dashboards.
+
+Set Fully’s Start URL to `http://192.168.3.20:8123/kiosk-dashboard/show-control`. The dashboard rule matches the HA display name **Volunteer Trailer Tablet**. It removes the sidebar and global navigation controls while keeping the ShowData, cameras, and counts tabs. Review any Fully URL filtering against all three intended views.
+
+On tablet-05, verify all three views, then check the left edge and Back navigation and repeat after a restart. Dashboard presentation settings leave the HA account’s permissions intact. If public use requires enforced denial of other dashboards or production controls, verify that separately before deployment.
