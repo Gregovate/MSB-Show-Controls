@@ -19,6 +19,20 @@ views:
     cards:
     - type: vertical-stack
       cards:
+      - type: conditional
+        conditions:
+          - entity: sensor.msb_kiosk_counter_alert
+            state_not: 'OK'
+        card:
+          type: custom:mushroom-template-card
+          entity: sensor.msb_kiosk_counter_alert
+          primary: Counter alert
+          secondary: "{{ states(entity) if has_value(entity) else 'Counter monitoring unavailable' }}"
+          multiline_secondary: true
+          icon: mdi:alert
+          color: red
+          tap_action:
+            action: none
       - type: grid
         columns: 3
         square: false
@@ -640,6 +654,20 @@ views:
   - type: grid
     column_span: 3
     cards:
+    - type: conditional
+      conditions:
+        - entity: sensor.msb_kiosk_counter_alert
+          state_not: 'OK'
+      card:
+        type: custom:mushroom-template-card
+        entity: sensor.msb_kiosk_counter_alert
+        primary: Counter alert
+        secondary: "{{ states(entity) if has_value(entity) else 'Counter monitoring unavailable' }}"
+        multiline_secondary: true
+        icon: mdi:alert
+        color: red
+        tap_action:
+          action: none
     - type: heading
       heading: Live Traffic Cameras
       heading_style: title
@@ -711,6 +739,20 @@ views:
   sections:
   - type: grid
     cards:
+    - type: conditional
+      conditions:
+        - entity: sensor.msb_kiosk_counter_alert
+          state_not: 'OK'
+      card:
+        type: custom:mushroom-template-card
+        entity: sensor.msb_kiosk_counter_alert
+        primary: Counter alert
+        secondary: "{{ states(entity) if has_value(entity) else 'Counter monitoring unavailable' }}"
+        multiline_secondary: true
+        icon: mdi:alert
+        color: red
+        tap_action:
+          action: none
     - type: custom:mushroom-template-card
       entity: sensor.msb_in_park_cars_canonical
       primary: Cars in park
@@ -780,3 +822,27 @@ views:
         name: Exit Temp
       - entity: sensor.msb_gate_counter_gate_humidity
         name: Exit Humidity
+
+- title: Cash Entry
+  path: cash-entry
+  icon: mdi:cash-register
+  type: panel
+  cards:
+  - type: vertical-stack
+    cards:
+    - type: conditional
+      conditions:
+        - entity: sensor.msb_kiosk_counter_alert
+          state_not: 'OK'
+      card:
+        type: custom:mushroom-template-card
+        entity: sensor.msb_kiosk_counter_alert
+        primary: Counter alert
+        secondary: "{{ states(entity) if has_value(entity) else 'Counter monitoring unavailable' }}"
+        multiline_secondary: true
+        icon: mdi:alert
+        color: red
+        tap_action:
+          action: none
+    - type: markdown
+      content: Cash entry will open here once the hourly collection form is published.
