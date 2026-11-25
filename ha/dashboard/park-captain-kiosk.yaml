@@ -1,3 +1,13 @@
+# Keep the captain view tabs available while removing HA navigation for tablet-03.
+kiosk_mode:
+  user_settings:
+    - users:
+        - "Park Captain Tablet"
+      hide_sidebar: true
+      hide_menubutton: true
+      hide_search: true
+      hide_assistant: true
+      hide_overflow: true
 views:
   - type: sections
     path: show-control
