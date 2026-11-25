@@ -1,16 +1,16 @@
 # MSB Signs 0.3.1 — HA owns the operating calculations
 
-This directory is the maintained source of the Home Assistant MQTT-to-sACN sign app.
+Install files are maintained together in [ha/](../ha/README.md). This directory contains the sign tests, payload generator and upgrade instructions.
 Use this repository, not an older chat ZIP, for the package, grid, bridge and runbook.
 Prepared source is not a claim that park HA or the physical signs have been updated.
 
 - [Install and upgrade](UPGRADE.md)
 - [Source contract, operating rules and experimental wait model](../docs/signs.md)
 - [HA context template](tools/ha_context.jinja2)
-- [Installable HA package](homeassistant/packages/signs.yaml)
-- [Dashboard](dashboard/signs-dashboard.yaml)
-- [Grid resource](www/msb-sign-message-grid.js)
-- [sACN app](local_apps/msb_sign_bridge)
+- [Installable HA package](../ha/packages/signs.yaml)
+- [Dashboard](../ha/dashboard/signs-dashboard.yaml)
+- [Grid resource](../ha/www/msb-sign-message-grid.js)
+- [sACN app](../ha/local_apps/msb_sign_bridge)
 
 The bridge selects/renders messages and owns output timing only. HA owns public hours,
 date-qualified extension, traffic classification and queue-wait calculation. No device
@@ -36,5 +36,5 @@ Regenerate the embedded HA payload after editing the context template:
 
     python signs/tools/build_package.py
 
-37 Python checks and the DOM grid suite passed for this release. Live acceptance is
+38 Python checks and the DOM grid suite passed for this release. Live acceptance is
 listed in UPGRADE.md. The new Sign 2 estimator must be enabled and field-validated before relying on its public estimates.

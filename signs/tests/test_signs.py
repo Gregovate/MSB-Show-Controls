@@ -10,12 +10,12 @@ from unittest.mock import patch
 import yaml
 from jinja2 import Environment
 ROOT=Path(__file__).resolve().parents[1]
-sys.path.insert(0,str(ROOT/'local_apps/msb_sign_bridge'))
+sys.path.insert(0,str(ROOT.parent/'ha/local_apps/msb_sign_bridge'))
 import engine, bridge
 ZONE=ZoneInfo('America/Chicago')
 ANALYTICS=yaml.safe_load((ROOT.parent/'ha/packages/traffic_analytics.yaml').read_text())
 QUEUE=yaml.safe_load((ROOT.parent/'ha/packages/sign2_queue_wait.yaml').read_text())
-PACKAGE=yaml.safe_load((ROOT/'homeassistant/packages/signs.yaml').read_text())
+PACKAGE=yaml.safe_load((ROOT.parent/'ha/packages/signs.yaml').read_text())
 
 def number(value):
  try:return float(value)==float(value) and abs(float(value))!=float('inf')
@@ -178,7 +178,7 @@ class TestHAContract(unittest.TestCase):
   for uid,digest in expected.items():self.assertEqual(actual[uid],digest,uid)
  def test_package_generation_is_reproducible(self):
   import subprocess
-  p=ROOT/'homeassistant/packages/signs.yaml';before=p.read_bytes()
+  p=ROOT.parent/'ha/packages/signs.yaml';before=p.read_bytes()
   subprocess.run([sys.executable,str(ROOT/'tools/build_package.py')],check=True)
   self.assertEqual(before,p.read_bytes())
 

@@ -2,7 +2,7 @@
 from pathlib import Path
 import yaml
 ROOT = Path(__file__).resolve().parents[1]
-p = ROOT / 'homeassistant/packages/signs.yaml'
+p = ROOT.parent / 'ha/packages/signs.yaml'
 pkg = yaml.safe_load(p.read_text())
 for key in ['msb_signs_wait_enabled']:
     pkg['input_boolean'].pop(key, None)

@@ -1,0 +1,694 @@
+- id: '1732156933135'
+  alias: Update Weather Forecast
+  description: ''
+  triggers:
+  - trigger: time_pattern
+    hours: '1'
+  conditions: []
+  actions:
+  - action: weather.get_forecasts
+    metadata: {}
+    data:
+      type: daily
+    target:
+      entity_id: weather.forecast_home
+  mode: single
+- id: '1732219695497'
+  alias: Reset Enter Daily Total
+  description: Update Car Counter Daily Total (manual override)
+  triggers:
+  - trigger: state
+    entity_id: input_number.update_enter_daily_total
+  conditions:
+  - condition: state
+    entity_id: input_boolean.allow_enter_resets
+    state: 'on'
+  - condition: template
+    value_template: '{{ trigger.from_state is not none and trigger.to_state is not
+      none and is_number(trigger.from_state.state) and is_number(trigger.to_state.state)
+      }}'
+  actions:
+  - action: mqtt.publish
+    data:
+      topic: msb/traffic/CarCounter/Config/countCorrection
+      payload: '{{ now().strftime(''%Y%m%d%H%M%S'') }},daily,{{ states(''input_number.update_enter_daily_total'')
+        | int }}'
+      qos: 0
+      retain: false
+  mode: single
+- id: '1732222198432'
+  alias: Reset Enter Show Total
+  description: Update Car Counter Show Total (manual override)
+  triggers:
+  - trigger: state
+    entity_id: input_number.update_enter_show_total
+  conditions:
+  - condition: state
+    entity_id: input_boolean.enable_calendar_resets
+    state: 'on'
+  - condition: template
+    value_template: '{{ trigger.from_state is not none and trigger.to_state is not
+      none and is_number(trigger.from_state.state) and is_number(trigger.to_state.state)
+      }}'
+  actions:
+  - action: mqtt.publish
+    data:
+      topic: msb/traffic/CarCounter/Config/countCorrection
+      payload: '{{ now().strftime(''%Y%m%d%H%M%S'') }},show,{{ states(''input_number.update_enter_show_total'')
+        | int }}'
+      qos: 0
+      retain: false
+  mode: single
+- id: '1732379608932'
+  alias: Car Counter Beam Alarm
+  description: Drive entrance alarm beacon from Car Counter alarm state.
+  triggers:
+  - entity_id: binary_sensor.msb_car_counter_binary_alarm_v2
+    trigger: state
+  conditions: []
+  actions:
+  - choose:
+    - conditions: '{{ is_state(''binary_sensor.msb_car_counter_binary_alarm_v2'',
+        ''on'') }}'
+      sequence:
+      - target:
+          entity_id:
+          - switch.enter_alarm_light
+        action: switch.turn_on
+      - data:
+          title: Car Counter Stuck!
+          message: 'CarCounter reports {{ states(''sensor.msb_car_counter_alarm'')
+            }}. The enter beam is stuck HIGH beyond timeout. Check the counter.
+
+            '
+        action: persistent_notification.create
+      - data:
+          message: 'Car Counter Alarm: beam stuck at the counter. Check sensors now.'
+        action: notify.mobile_app_dave_s_iphone
+    - conditions: '{{ is_state(''binary_sensor.msb_car_counter_binary_alarm_v2'',
+        ''off'') }}'
+      sequence:
+      - target:
+          entity_id:
+          - switch.enter_alarm_light
+        action: switch.turn_off
+      - data:
+          message: Car Counter Alarm cleared.
+        action: notify.mobile_app_dave_s_iphone
+  mode: restart
+- id: '1732565495323'
+  alias: Reset Exit Daily Total
+  description: Update Gate Counter Daily Total
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_number.update_exit_daily_total
+  conditions:
+  - condition: state
+    entity_id: input_boolean.allow_exit_resets
+    state: 'on'
+  - condition: template
+    value_template: '{{ trigger.from_state is not none and trigger.to_state is not
+      none and is_number(trigger.from_state.state) and is_number(trigger.to_state.state)
+      }}'
+  actions:
+  - action: mqtt.publish
+    data:
+      topic: msb/traffic/GateCounter/Config/countCorrection
+      payload: '{{ now().strftime(''%Y%m%d%H%M%S'') }},daily,{{ states(''input_number.update_exit_daily_total'')
+        | int }}'
+      qos: 0
+      retain: false
+  mode: single
+- id: '1732565857880'
+  alias: Reset Exit Show Total
+  description: Update Gate Counter Show Total
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_number.update_exit_show_total
+  conditions:
+  - condition: state
+    entity_id: input_boolean.allow_exit_resets
+    state: 'on'
+  - condition: template
+    value_template: '{{ trigger.from_state is not none and trigger.to_state is not
+      none and is_number(trigger.from_state.state) and is_number(trigger.to_state.state)
+      }}'
+  actions:
+  - action: mqtt.publish
+    data:
+      topic: msb/traffic/GateCounter/Config/countCorrection
+      payload: '{{ now().strftime(''%Y%m%d%H%M%S'') }},show,{{ states(''input_number.update_exit_show_total'')
+        | int }}'
+      qos: 0
+      retain: false
+  mode: single
+- id: '1732920668021'
+  alias: 2 Minute Warning Alarm
+  description: Turn alarms on at 4:58pm and off at 5:00pm.
+  triggers:
+  - at: '16:58:00'
+    id: warn_on
+    trigger: time
+  - at: '17:00:00'
+    id: warn_off
+    trigger: time
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: warn_on
+      sequence:
+      - target:
+          entity_id:
+          - switch.switch_gate_alarm
+          - switch.enter_alarm_light
+        action: switch.turn_on
+    - conditions:
+      - condition: trigger
+        id: warn_off
+      sequence:
+      - target:
+          entity_id:
+          - switch.switch_gate_alarm
+          - switch.enter_alarm_light
+        action: switch.turn_off
+    default: []
+  mode: single
+- id: '1735272199557'
+  alias: Gate Counter Beam Alarm
+  description: Drive gate alarm beacon from Gate Counter alarm state.
+  triggers:
+  - entity_id: binary_sensor.msb_gate_counter_binary_alarm_v2
+    trigger: state
+  conditions: []
+  actions:
+  - choose:
+    - conditions: '{{ is_state(''binary_sensor.msb_gate_counter_binary_alarm_v2'',
+        ''on'') }}'
+      sequence:
+      - target:
+          entity_id:
+          - switch.switch_gate_alarm
+        action: switch.turn_on
+      - data:
+          title: Gate Beam Sensor Stuck!
+          message: 'GateCounter reports {{ states(''sensor.msb_gate_counter_alarm'')
+            }}. Inspect gate beam sensors immediately.
+
+            '
+        action: persistent_notification.create
+    - conditions: '{{ is_state(''binary_sensor.msb_gate_counter_binary_alarm_v2'',
+        ''off'') }}'
+      sequence:
+      - target:
+          entity_id:
+          - switch.switch_gate_alarm
+        action: switch.turn_off
+  mode: restart
+- id: '1763557995826'
+  alias: 'MSB Gate: Sort traffic into show/normal buckets'
+  triggers:
+  - entity_id: sensor.enter_cars
+    trigger: state
+  actions:
+  - variables:
+      old: '{% set s = trigger.from_state.state if trigger.from_state else ''0'' %}
+        {{ s | float(0) }}
+
+        '
+      new: '{% set s = trigger.to_state.state if trigger.to_state else ''0'' %} {{
+        s | float(0) }}
+
+        '
+      delta: '{% set d = new - old %} {{ d if d > 0 else 0 }}
+
+        '
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ delta > 0 }}'
+      - condition: state
+        entity_id: binary_sensor.msb_show_open
+        state: 'on'
+      sequence:
+      - action: input_number.set_value
+        target:
+          entity_id: input_number.msb_show_traffic_current
+        data:
+          value: '{{ states(''input_number.msb_show_traffic_current'') | float(0)
+            + delta }}
+
+            '
+    - conditions:
+      - condition: template
+        value_template: '{{ delta > 0 }}'
+      - condition: state
+        entity_id: binary_sensor.msb_show_open
+        state: 'off'
+      sequence:
+      - action: input_number.set_value
+        target:
+          entity_id: input_number.normal_traffic_current
+        data:
+          value: '{{ states(''input_number.normal_traffic_current'') | float(0) +
+            delta }}
+
+            '
+  mode: queued
+  max: 20
+  conditions:
+  - condition: template
+    value_template: '{{ trigger.from_state is not none and trigger.to_state is not
+      none and is_number(trigger.from_state.state) and is_number(trigger.to_state.state)
+      }}'
+- id: '1763561348256'
+  alias: 'MSB Gate: Rollover show-season traffic'
+  description: Move season totals on Jan 1; zero current season.
+  triggers:
+  - trigger: time
+    at: 00:05:00
+  - trigger: homeassistant
+    event: start
+  conditions:
+  - condition: template
+    value_template: '{{ now().month == 1 and now().day == 1 }}'
+  actions:
+  - action: input_number.set_value
+    target:
+      entity_id: input_number.msb_show_traffic_two_seasons_ago
+    data:
+      value: '{{ states(''input_number.msb_show_traffic_last_season'') | float(0)
+        }}'
+  - action: input_number.set_value
+    target:
+      entity_id: input_number.msb_show_traffic_last_season
+    data:
+      value: '{{ states(''input_number.msb_show_traffic_current'') | float(0) }}'
+  - action: input_number.set_value
+    target:
+      entity_id: input_number.msb_show_traffic_current
+    data:
+      value: 0
+  mode: single
+- id: production_laser_projector_schedule
+  alias: Production - Projector Schedule
+  description: Runs the projector on its dashboard schedule and turns it off on Show
+    Stop.
+  triggers:
+  - trigger: time
+    at: input_datetime.production_projector_on
+    id: projector_on
+  - trigger: template
+    value_template: >-
+      {% set base = states('input_datetime.production_projector_off') %}
+      {% set minutes = states('input_number.show_end_extension_min') | int(0)
+         if is_state('input_text.msb_traffic_extension_date', now().strftime('%Y%m%d')) else 0 %}
+      {{ base not in ['unknown','unavailable',''] and now() >= today_at(base) + timedelta(minutes=minutes) }}
+    id: projector_off
+  - trigger: state
+    entity_id: input_boolean.msb_show_force_close
+    to: 'on'
+    id: show_stop
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: projector_on
+      - condition: state
+        entity_id: binary_sensor.msb_show_season
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.msb_show_force_close
+        state: 'off'
+      sequence:
+      - action: switch.turn_on
+        target:
+          entity_id: switch.projector_switch
+    - conditions:
+      - condition: trigger
+        id:
+        - projector_off
+        - show_stop
+      sequence:
+      - action: switch.turn_off
+        target:
+          entity_id: switch.projector_switch
+  mode: restart
+- id: production_broadcast_radio_schedule
+  alias: Production - Broadcast Radio Schedule
+  description: Controls the broadcast radio and volunteer marquee and turns both off
+    when Show Stop is activated.
+  triggers:
+  - trigger: time
+    at: input_datetime.production_radio_on
+    id: radio_on
+  - trigger: template
+    value_template: >-
+      {% set base = states('input_datetime.production_radio_off') %}
+      {% set minutes = states('input_number.show_end_extension_min') | int(0)
+         if is_state('input_text.msb_traffic_extension_date', now().strftime('%Y%m%d')) else 0 %}
+      {{ base not in ['unknown','unavailable',''] and now() >= today_at(base) + timedelta(minutes=minutes) }}
+    id: radio_off
+  - trigger: state
+    entity_id: input_boolean.msb_show_force_close
+    to: 'on'
+    id: show_stop
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: radio_on
+      - condition: state
+        entity_id: binary_sensor.msb_show_season
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.msb_show_force_close
+        state: 'off'
+      sequence:
+      - action: switch.turn_on
+        target:
+          entity_id:
+          - switch.broadcast_radio_switch
+          - switch.volunteer_marquee
+          - switch.car_counter_arches
+    - conditions:
+      - condition: trigger
+        id:
+        - radio_off
+        - show_stop
+      sequence:
+      - action: switch.turn_off
+        target:
+          entity_id:
+          - switch.broadcast_radio_switch
+          - switch.volunteer_marquee
+          - switch.car_counter_arches
+  mode: restart
+- id: production_laser_projector_safety_off
+  alias: Production - Projector Safety Off
+  description: Turns the projector off at the safety cutoff.
+  triggers:
+  - trigger: template
+    value_template: >-
+      {% set base = states('input_datetime.production_projector_off_safety') %}
+      {% set minutes = states('input_number.show_end_extension_min') | int(0)
+         if is_state('input_text.msb_traffic_extension_date', now().strftime('%Y%m%d')) else 0 %}
+      {{ base not in ['unknown','unavailable',''] and now() >= today_at(base) + timedelta(minutes=minutes) }}
+  conditions:
+  - condition: state
+    entity_id: switch.projector_switch
+    state: 'on'
+  actions:
+  - action: switch.turn_off
+    target:
+      entity_id: switch.projector_switch
+  mode: single
+- id: msb_traffic_carcounter_settings_v9
+  alias: 'MSB Traffic: Apply CarCounter settings'
+  description: HA owns schedule/reset offsets and tuning. Complete validated transaction;
+    never resets counts. Firmware .9 required.
+  triggers:
+  - trigger: homeassistant
+    event: start
+  - trigger: state
+    entity_id:
+    - input_datetime.msb_show_start_date
+    - input_datetime.msb_show_start_time
+    - input_datetime.msb_show_end_time
+    - input_datetime.msb_show_end_date
+    - input_datetime.msb_show_down_date
+    - input_number.show_end_extension_min
+    - input_number.carcounter_start_offset_min
+    - input_number.carcounter_end_offset_min
+    - input_number.enter_stuck_timeout_s
+    - input_number.enter_cardetectms
+    - input_text.msb_traffic_extension_date
+  - trigger: mqtt
+    topic: msb/traffic/CarCounter/System/hello
+  - trigger: time_pattern
+    minutes: /5
+  conditions:
+  - condition: template
+    value_template: '{{ has_value(''input_datetime.msb_show_start_date'') and has_value(''input_datetime.msb_show_start_time'')
+      and has_value(''input_datetime.msb_show_end_time'') and has_value(''input_datetime.msb_show_end_date'')
+      and has_value(''input_datetime.msb_show_down_date'') and has_value(''input_number.show_end_extension_min'')
+      and has_value(''input_number.carcounter_start_offset_min'') and has_value(''input_number.carcounter_end_offset_min'')
+      and has_value(''input_number.enter_stuck_timeout_s'') and has_value(''input_number.enter_cardetectms'')
+      and is_number(states(''input_number.carcounter_start_offset_min'')) and is_number(states(''input_number.carcounter_end_offset_min''))
+      and is_number(states(''input_number.enter_stuck_timeout_s'')) and is_number(states(''input_number.enter_cardetectms''))
+      and is_number(states(''input_number.show_end_extension_min'')) and states(''input_datetime.msb_show_start_date'')[:4]
+      == now().strftime(''%Y'') and states(''input_datetime.msb_show_end_date'')[:4]
+      == now().strftime(''%Y'') and states(''input_datetime.msb_show_down_date'')[:4]
+      == now().strftime(''%Y'') }}'
+  actions:
+  - action: mqtt.publish
+    data:
+      topic: msb/traffic/CarCounter/Config/operatingSettings
+      payload: "{% set start = states('input_datetime.msb_show_start_time').split(':')
+        %}\n{% set end = states('input_datetime.msb_show_end_time').split(':') %}\n{%
+        set ext = states('input_number.show_end_extension_min') | int if states('input_text.msb_traffic_extension_date')
+        == now().strftime('%Y%m%d') else 0 %}\n{{ [1, start[0]|int*60+start[1]|int,
+        end[0]|int*60+end[1]|int,\n states('input_number.carcounter_start_offset_min')|int,
+        states('input_number.carcounter_end_offset_min')|int, ext,\n now().strftime('%Y%m%d')|int,
+        (states('input_number.enter_stuck_timeout_s')|float*1000)|int,\n states('input_number.enter_cardetectms')|int,\n
+        states('input_datetime.msb_show_end_date')|replace('-','')|int,\n states('input_datetime.msb_show_down_date')|replace('-','')|int,
+        now().year] | join(',') }}"
+      qos: 1
+      retain: true
+  - action: mqtt.publish
+    data:
+      topic: msb/traffic/CarCounter/Config/showStartDate
+      payload: '{{ states(''input_datetime.msb_show_start_date'') }}'
+      qos: 1
+      retain: true
+  mode: restart
+- id: msb_traffic_gatecounter_settings_v9
+  alias: 'MSB Traffic: Apply GateCounter settings'
+  description: HA owns schedule/reset offsets and tuning. Complete validated transaction;
+    never resets counts. Firmware .9 required.
+  triggers:
+  - trigger: homeassistant
+    event: start
+  - trigger: state
+    entity_id:
+    - input_datetime.msb_show_start_date
+    - input_datetime.msb_show_start_time
+    - input_datetime.msb_show_end_time
+    - input_datetime.msb_show_end_date
+    - input_datetime.msb_show_down_date
+    - input_number.show_end_extension_min
+    - input_number.gatecounter_start_offset_min
+    - input_number.gatecounter_show_end_offset_min
+    - input_number.gate_stuck_timeout_s
+    - input_number.exit_cardetectms
+    - input_text.msb_traffic_extension_date
+  - trigger: mqtt
+    topic: msb/traffic/GateCounter/System/hello
+  - trigger: time_pattern
+    minutes: /5
+  conditions:
+  - condition: template
+    value_template: '{{ has_value(''input_datetime.msb_show_start_date'') and has_value(''input_datetime.msb_show_start_time'')
+      and has_value(''input_datetime.msb_show_end_time'') and has_value(''input_datetime.msb_show_end_date'')
+      and has_value(''input_datetime.msb_show_down_date'') and has_value(''input_number.show_end_extension_min'')
+      and has_value(''input_number.gatecounter_start_offset_min'') and has_value(''input_number.gatecounter_show_end_offset_min'')
+      and has_value(''input_number.gate_stuck_timeout_s'') and has_value(''input_number.exit_cardetectms'')
+      and is_number(states(''input_number.gatecounter_start_offset_min'')) and is_number(states(''input_number.gatecounter_show_end_offset_min''))
+      and is_number(states(''input_number.gate_stuck_timeout_s'')) and is_number(states(''input_number.exit_cardetectms''))
+      and is_number(states(''input_number.show_end_extension_min'')) and states(''input_datetime.msb_show_start_date'')[:4]
+      == now().strftime(''%Y'') and states(''input_datetime.msb_show_end_date'')[:4]
+      == now().strftime(''%Y'') and states(''input_datetime.msb_show_down_date'')[:4]
+      == now().strftime(''%Y'') }}'
+  - condition: state
+    entity_id: input_boolean.msb_traffic_grace_initialized
+    state: 'on'
+  actions:
+  - action: mqtt.publish
+    data:
+      topic: msb/traffic/GateCounter/Config/operatingSettings
+      payload: "{% set start = states('input_datetime.msb_show_start_time').split(':')
+        %}\n{% set end = states('input_datetime.msb_show_end_time').split(':') %}\n{%
+        set ext = states('input_number.show_end_extension_min') | int if states('input_text.msb_traffic_extension_date')
+        == now().strftime('%Y%m%d') else 0 %}\n{{ [1, start[0]|int*60+start[1]|int,
+        end[0]|int*60+end[1]|int,\n states('input_number.gatecounter_start_offset_min')|int,
+        states('input_number.gatecounter_show_end_offset_min')|int, ext,\n now().strftime('%Y%m%d')|int,
+        (states('input_number.gate_stuck_timeout_s')|float*1000)|int,\n states('input_number.exit_cardetectms')|int,\n
+        states('input_datetime.msb_show_end_date')|replace('-','')|int,\n states('input_datetime.msb_show_down_date')|replace('-','')|int,
+        now().year] | join(',') }}"
+      qos: 1
+      retain: true
+  - action: mqtt.publish
+    data:
+      topic: msb/traffic/GateCounter/Config/showStartDate
+      payload: '{{ states(''input_datetime.msb_show_start_date'') }}'
+      qos: 1
+      retain: true
+  mode: restart
+- id: msb_traffic_extension_date_v9
+  alias: 'MSB Traffic: Date the show extension'
+  triggers:
+  - trigger: state
+    entity_id: input_number.show_end_extension_min
+  conditions:
+  - condition: template
+    value_template: '{{ trigger.from_state is not none and trigger.to_state is not
+      none and is_number(trigger.from_state.state) and is_number(trigger.to_state.state)
+      }}'
+  actions:
+  - action: input_text.set_value
+    target:
+      entity_id: input_text.msb_traffic_extension_date
+    data:
+      value: '{{ now().strftime(''%Y%m%d'') }}'
+  mode: restart
+- id: msb_traffic_extension_clear_v9
+  alias: 'MSB Traffic: Clear prior night extension'
+  triggers:
+  - trigger: time
+    at: '00:00:00'
+    id: midnight
+  - trigger: homeassistant
+    event: start
+    id: startup
+  conditions:
+  - condition: template
+    value_template: >-
+      {{ trigger.id == 'midnight' or
+         (has_value('input_text.msb_traffic_extension_date') and
+          not is_state('input_text.msb_traffic_extension_date', now().strftime('%Y%m%d'))) }}
+  actions:
+  - action: input_number.set_value
+    target:
+      entity_id: input_number.show_end_extension_min
+    data:
+      value: 0
+  mode: single
+- id: msb_traffic_carcounter_storage_warning_v9
+  alias: 'MSB Traffic: CarCounter storage warning'
+  triggers:
+  - trigger: mqtt
+    topic: msb/traffic/CarCounter/System/countPersistence
+  - trigger: mqtt
+    topic: msb/traffic/CarCounter/System/hourlyExport
+  - trigger: mqtt
+    topic: msb/traffic/CarCounter/System/summaryExport
+  - trigger: mqtt
+    topic: msb/traffic/CarCounter/System/settingsHealth
+  - trigger: mqtt
+    topic: msb/traffic/CarCounter/System/sd/health
+  conditions:
+  - condition: template
+    value_template: '{{ trigger.payload not in [''OK'',''OK_RESTORED'',''NOT_DUE'',''NOT_ATTEMPTED'']
+      }}'
+  actions:
+  - action: persistent_notification.create
+    data:
+      notification_id: msb_traffic_carcounter_storage
+      title: CarCounter recording/configuration warning
+      message: '{{ trigger.topic }}: {{ trigger.payload }}. Check device diagnostics
+        before relying on recorded totals.'
+  mode: queued
+  max: 10
+- id: msb_traffic_gatecounter_storage_warning_v9
+  alias: 'MSB Traffic: GateCounter storage warning'
+  triggers:
+  - trigger: mqtt
+    topic: msb/traffic/GateCounter/System/countPersistence
+  - trigger: mqtt
+    topic: msb/traffic/GateCounter/System/hourlyExport
+  - trigger: mqtt
+    topic: msb/traffic/GateCounter/System/summaryExport
+  - trigger: mqtt
+    topic: msb/traffic/GateCounter/System/settingsHealth
+  - trigger: mqtt
+    topic: msb/traffic/GateCounter/System/sd/health
+  conditions:
+  - condition: template
+    value_template: '{{ trigger.payload not in [''OK'',''OK_RESTORED'',''NOT_DUE'',''NOT_ATTEMPTED'']
+      }}'
+  actions:
+  - action: persistent_notification.create
+    data:
+      notification_id: msb_traffic_gatecounter_storage
+      title: GateCounter recording/configuration warning
+      message: '{{ trigger.topic }}: {{ trigger.payload }}. Check device diagnostics
+        before relying on recorded totals.'
+  mode: queued
+  max: 10
+- id: '1795560346940'
+  alias: Production - Car Counter Arches Follow Radio
+  description: Follows radio state changes while allowing independent arch testing.
+  triggers:
+  - trigger: state
+    entity_id: switch.broadcast_radio_switch
+    to: 'on'
+    id: radio_on
+  - trigger: state
+    entity_id: switch.broadcast_radio_switch
+    to: 'off'
+    id: radio_off
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: radio_on
+      sequence:
+      - action: switch.turn_on
+        target:
+          entity_id: switch.car_counter_arches
+    - conditions:
+      - condition: trigger
+        id: radio_off
+      sequence:
+      - action: switch.turn_off
+        target:
+          entity_id: switch.car_counter_arches
+  mode: restart
+- id: '1795561080340'
+  alias: Production - Radio Charger Schedule
+  description: Charges the Command Center and VT radios overnight and powers both
+    stations for the afternoon check.
+  triggers:
+  - trigger: time
+    at: '20:45:00'
+    id: overnight_on
+  - trigger: time
+    at: 01:00:00
+    id: overnight_off
+  - trigger: time
+    at: '16:15:00'
+    id: afternoon_on
+  - trigger: time
+    at: '16:30:00'
+    id: afternoon_off
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - overnight_on
+        - afternoon_on
+      - condition: state
+        entity_id: binary_sensor.msb_show_season
+        state: 'on'
+      sequence:
+      - action: switch.turn_on
+        target:
+          entity_id:
+          - switch.command_center_radio_charger
+          - switch.vt_radio_chargers
+    - conditions:
+      - condition: trigger
+        id:
+        - overnight_off
+        - afternoon_off
+      sequence:
+      - action: switch.turn_off
+        target:
+          entity_id:
+          - switch.command_center_radio_charger
+          - switch.vt_radio_chargers
+  mode: restart

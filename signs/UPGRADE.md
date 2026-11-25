@@ -5,20 +5,20 @@ in Show Controls signs/. It is source-tested, not live park acceptance.
 
 1. Back up the active signs package, app, dashboard and www resource outside active
    directories. Turn Sign Overlays Enabled OFF and stop MSB Sign Bridge.
-2. Copy the four files in signs/local_apps/msb_sign_bridge into the existing HA local
+2. Copy the four files in ha/local_apps/msb_sign_bridge into the existing HA local
    app directory. Preserve app options, MQTT credentials and lighting interface IP.
-3. Replace config/packages/signs.yaml with signs/homeassistant/packages/signs.yaml.
+3. Replace config/packages/signs.yaml with ha/packages/signs.yaml.
    Keep one signs package only. Also replace config/packages/traffic_analytics.yaml with
    ha/packages/traffic_analytics.yaml and add ha/packages/sign2_queue_wait.yaml there.
    These filenames must each exist only once under packages. Do not replace configuration.yaml.
 4. Run HA Check configuration. Restart HA only if it passes.
-5. Replace config/www/msb-sign-message-grid.js with signs/www/msb-sign-message-grid.js.
+5. Replace config/www/msb-sign-message-grid.js with ha/www/msb-sign-message-grid.js.
    Edit the existing resource URL to /local/msb-sign-message-grid.js?v=7, type Module.
-6. Replace the Signs dashboard raw YAML with signs/dashboard/signs-dashboard.yaml and
+6. Replace the Signs dashboard raw YAML with ha/dashboard/signs-dashboard.yaml and
    Ctrl+F5. Confirm Advertising grid, Message grid and Colors load.
-7. Press Add operational messages once. It initializes slots 12–17 and retires slot 4;
+7. If the initializer is visible, press Add operational messages once. It initializes slots 12–17 and retires slot 4;
    existing other slot edits/orders stay intact. A guard prevents later accidental reloads.
-   Do not press Apply opening advertising again; that resets the original advertising text.
+   The initializer disappears after setup.
 8. Check HA's existing start/end time and extension controls. End time must be the intended
    public cutoff (normally 9 PM); a stale 6 PM test time remains 6 PM until you change it.
    Sign opening date remains Nov 27 independently; no counter season date is written.

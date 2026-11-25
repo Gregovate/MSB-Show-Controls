@@ -1,7 +1,7 @@
 const {JSDOM}=require('jsdom'),fs=require('fs'),assert=require('assert');
 (async()=>{
  const dom=new JSDOM('<html><body></body></html>',{runScripts:'outside-only'}),w=dom.window;
- w.eval(fs.readFileSync(require('path').join(__dirname,'../www/msb-sign-message-grid.js'),'utf8'));
+ w.eval(fs.readFileSync(require('path').join(__dirname,'../../ha/www/msb-sign-message-grid.js'),'utf8'));
  const states={};
  for(let id=1;id<=17;id++)for(const [domain,keys] of [['input_number',['order','seconds']],['input_text',['line1','line2','background','text_color']],['input_select',['target','condition','color_mode']]])for(const key of keys){
  const value=key==='order'?String(id):key==='seconds'?'7':key==='target'?'Both':key==='condition'?'Pre-show':key==='color_mode'?'Fixed':key==='background'?'0,0,12':key==='text_color'?'100,100,100':`Message ${id}`;

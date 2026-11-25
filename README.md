@@ -90,7 +90,6 @@ MSB-Show-Controls/
       traffic_automations.md   # Traffic / reset-related automations
       show_time_automations.md # Time-window automations (future)
     exports/
-      automations.yaml         # HA UI export (snapshot, not hand-edited)
       template_sensors.yaml    # Template export (if you decide to store it)
 
   firmware-interface/
@@ -102,6 +101,10 @@ MSB-Show-Controls/
     traffic_flow_diagrams.md        # Logical flow of cars through park
     reset_flow_diagram.md           # When / how resets are allowed
     show_timing_state_machine.md    # How preshow/main/closed/cleanup interact
+
+## Park Home Assistant installation
+
+The [HA installation folder](ha/README.md) contains the complete automation file, all three packages, the dashboard, its grid resource and the bridge.
 
 ## Implemented sign app
 
