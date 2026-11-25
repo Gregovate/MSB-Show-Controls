@@ -1,0 +1,1925 @@
+views:
+  - type: sections
+    max_columns: 4
+    title: ShowData
+    path: show-control
+    sections:
+      - type: grid
+        square: false
+        cards:
+          - type: heading
+            heading: Highway 42 · North (left) / South (right)
+            grid_options:
+              columns: full
+            heading_style: title
+          - type: grid
+            columns: 2
+            square: false
+            grid_options:
+              columns: full
+            cards:
+              - type: custom:webrtc-camera
+                entity: camera.cam_hwy_42n_profile001_substream
+                name: Highway 42 North
+              - type: custom:webrtc-camera
+                entity: camera.cam_hwy_42s_profile001_substream
+                name: Highway 42 South
+          - type: custom:mushroom-template-card
+            entity: cover.traffic_ghost_controls_ghost_controls
+            primary: Entrance gate
+            secondary: >-
+              {{ states(entity) | capitalize if has_value(entity) else 'Unavailable' }}
+            icon: "{{ 'mdi:gate-open' if is_state(entity, 'open') else 'mdi:gate' }}"
+            color: >-
+              {{ {'open':'green', 'closed':'red', 'opening':'amber', 'closing':'amber'}.get(states(entity), 'grey') }}
+            tap_action:
+              action: none
+            hold_action:
+              action: none
+            double_tap_action:
+              action: none
+          - type: heading
+            heading: Calendar
+            heading_style: title
+          - type: grid
+            square: false
+            columns: 3
+            cards:
+              - type: custom:button-card
+                entity: sensor.msb_car_counter_days_running
+                name: Show Day
+                icon: mdi:calendar
+                layout: vertical
+                show_state: true
+                styles:
+                  card:
+                    - padding: 10px
+                    - border-radius: 16px
+                  state:
+                    - font-size: 22px
+                    - font-weight: bold
+                  name:
+                    - font-size: 14px
+              - type: custom:button-card
+                entity: sensor.msb_date_display
+                name: Date
+                show_icon: false
+                layout: vertical
+                show_state: true
+                styles:
+                  card:
+                    - padding: 10px
+                    - border-radius: 16px
+                  state:
+                    - font-size: 22px
+                    - font-weight: bold
+                  name:
+                    - font-size: 14px
+              - type: custom:button-card
+                entity: sensor.msb_current_time_display
+                name: Time
+                icon: mdi:clock-outline
+                layout: vertical
+                show_state: true
+                styles:
+                  card:
+                    - padding: 10px
+                    - border-radius: 16px
+                  state:
+                    - font-size: 22px
+                    - font-weight: bold
+                  name:
+                    - font-size: 14px
+          - type: heading
+            heading: Traffic Snapshot
+            heading_style: title
+          - type: grid
+            square: false
+            columns: 4
+            cards:
+              - type: custom:button-card
+                entity: sensor.msb_enter_total_display
+                name: Enter
+                icon: mdi:car-arrow-right
+                layout: vertical
+                show_state: true
+                show_units: false
+                state_display: '[[[ return entity.attributes.formatted || entity.state ]]]'
+                size: 30%
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 22px
+                    - font-weight: bold
+              - type: custom:button-card
+                entity: sensor.msb_gate_counter_exit_cars
+                name: Exit
+                icon: mdi:car-arrow-left
+                layout: vertical
+                show_state: true
+                show_units: false
+                size: 30%
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 22px
+                    - font-weight: bold
+              - type: custom:button-card
+                entity: sensor.msb_gate_counter_in_park_cars
+                name: In Park
+                icon: mdi:car-multiple
+                layout: vertical
+                show_state: true
+                show_units: false
+                size: 30%
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 22px
+                    - font-weight: bold
+              - type: custom:button-card
+                entity: sensor.msb_show_total_display
+                name: Show Total
+                icon: mdi:counter
+                layout: vertical
+                show_state: true
+                show_units: false
+                state_display: '[[[ return entity.attributes.formatted || entity.state ]]]'
+                size: 30%
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 22px
+                    - font-weight: bold
+          - type: heading
+            heading: Traffic Control
+            heading_style: title
+          - type: grid
+            square: false
+            columns: 2
+            cards:
+              - type: custom:button-card
+                entity: sensor.msb_traffic_status_snapshot
+                name: Status
+                icon: mdi:traffic-light
+                layout: vertical
+                show_state: true
+                show_units: false
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 20px
+                    - font-weight: bold
+                state:
+                  - value: closed
+                    styles:
+                      card:
+                        - background-color: '#b00020'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - value: light
+                    styles:
+                      card:
+                        - background-color: '#2e7d32'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - value: moderate
+                    styles:
+                      card:
+                        - background-color: '#fbc02d'
+                      state:
+                        - color: black
+                      name:
+                        - color: black
+                      icon:
+                        - color: black
+                  - value: busy
+                    styles:
+                      card:
+                        - background-color: '#fb8c00'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - value: very_busy
+                    styles:
+                      card:
+                        - background-color: '#e53935'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+              - type: custom:button-card
+                entity: sensor.msb_travel_time_estimate_min
+                name: Travel Time
+                icon: mdi:timer-sand
+                layout: vertical
+                show_state: true
+                show_units: true
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 20px
+                    - font-weight: bold
+                state:
+                  - value: unknown
+                    operator: regex
+                    styles:
+                      card:
+                        - background-color: '#9e9e9e'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - operator: <=
+                    value: 24
+                    styles:
+                      card:
+                        - background-color: '#2e7d32'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - operator: <=
+                    value: 29
+                    styles:
+                      card:
+                        - background-color: '#fbc02d'
+                      state:
+                        - color: black
+                      name:
+                        - color: black
+                      icon:
+                        - color: black
+                  - operator: <=
+                    value: 34
+                    styles:
+                      card:
+                        - background-color: '#fb8c00'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - operator: '>='
+                    value: 35
+                    styles:
+                      card:
+                        - background-color: '#b00020'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+              - type: custom:button-card
+                entity: sensor.msb_lane_2_advisory
+                name: Lane 2
+                icon: mdi:road-variant
+                layout: vertical
+                show_state: true
+                show_units: false
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 18px
+                    - font-weight: bold
+                state:
+                  - value: closed
+                    styles:
+                      card:
+                        - background-color: '#9e9e9e'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - value: Close Lane 2
+                    styles:
+                      card:
+                        - background-color: '#b00020'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - value: Lane 2 OK to Open
+                    styles:
+                      card:
+                        - background-color: '#fbc02d'
+                      state:
+                        - color: black
+                      name:
+                        - color: black
+                      icon:
+                        - color: black
+                  - value: Open Lane 2
+                    styles:
+                      card:
+                        - background-color: '#2e7d32'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+              - type: custom:button-card
+                entity: sensor.msb_merger_director_advisory
+                name: Merge Control
+                icon: mdi:account-hard-hat
+                layout: vertical
+                show_state: true
+                show_units: false
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 18px
+                    - font-weight: bold
+                state:
+                  - value: Merger Director Not Needed
+                    styles:
+                      card:
+                        - background-color: '#2e7d32'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - value: closed
+                    styles:
+                      card:
+                        - background-color: '#9e9e9e'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+              - type: custom:button-card
+                entity: input_boolean.lane_2_open
+                name: Lane 2 Actual
+                icon: mdi:road
+                layout: vertical
+                show_state: true
+                show_units: false
+                tap_action:
+                  action: toggle
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 18px
+                    - font-weight: bold
+                state:
+                  - value: 'on'
+                    name: Lane 2 OPEN
+                    styles:
+                      card:
+                        - background-color: '#2e7d32'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - value: 'off'
+                    name: Lane 2 CLOSED
+                    styles:
+                      card:
+                        - background-color: '#9e9e9e'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+              - type: custom:button-card
+                entity: input_boolean.merger_director_present
+                name: Merger Actual
+                icon: mdi:account-hard-hat
+                layout: vertical
+                show_state: true
+                show_units: false
+                tap_action:
+                  action: toggle
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 18px
+                    - font-weight: bold
+                state:
+                  - value: 'on'
+                    name: Assigned
+                    styles:
+                      card:
+                        - background-color: '#2e7d32'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - value: 'off'
+                    name: Not Assigned
+                    styles:
+                      card:
+                        - background-color: '#9e9e9e'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+      - type: grid
+        cards:
+          - type: heading
+            heading: Online Status
+            heading_style: title
+          - type: grid
+            square: false
+            columns: 2
+            cards:
+              - type: custom:button-card
+                entity: sensor.msb_car_counter_msb_car_counter_status_2
+                name: Car Counter
+                icon: mdi:lan-connect
+                layout: vertical
+                show_state: true
+                styles:
+                  card:
+                    - padding: 10px
+                    - border-radius: 16px
+                  state:
+                    - font-size: 14px
+                  name:
+                    - font-size: 16px
+                state:
+                  - value: online
+                    styles:
+                      card:
+                        - background-color: '#4caf50'
+                      icon:
+                        - color: white
+                      name:
+                        - color: white
+                      state:
+                        - color: white
+                  - value: 'off'
+                    styles:
+                      card:
+                        - background-color: '#f44336'
+                      icon:
+                        - color: white
+                      name:
+                        - color: white
+                      state:
+                        - color: white
+                  - value: unavailable
+                    styles:
+                      card:
+                        - background-color: '#9e9e9e'
+                      icon:
+                        - color: white
+                      name:
+                        - color: white
+                      state:
+                        - color: white
+              - type: custom:button-card
+                entity: sensor.msb_gate_counter_msb_gate_counter_status_2
+                name: Gate Counter
+                icon: mdi:lan-connect
+                layout: vertical
+                show_state: true
+                styles:
+                  card:
+                    - padding: 10px
+                    - border-radius: 16px
+                  state:
+                    - font-size: 14px
+                  name:
+                    - font-size: 16px
+                state:
+                  - value: online
+                    styles:
+                      card:
+                        - background-color: '#4caf50'
+                      icon:
+                        - color: white
+                      name:
+                        - color: white
+                      state:
+                        - color: white
+                  - value: offline
+                    styles:
+                      card:
+                        - background-color: '#f44336'
+                      icon:
+                        - color: white
+                      name:
+                        - color: white
+                      state:
+                        - color: white
+          - type: heading
+            heading: Beam / Snow Alarms
+            heading_style: title
+          - type: grid
+            square: false
+            columns: 2
+            cards:
+              - type: custom:button-card
+                entity: sensor.msb_car_counter_msb_car_counter_alarm
+                name: Car Beam
+                icon: mdi:car-brake-alert
+                layout: vertical
+                show_state: false
+                styles:
+                  card:
+                    - padding: 10px
+                    - border-radius: 16px
+                  name:
+                    - font-size: 14px
+                state:
+                  - value: ALARM_ENTER_STUCK
+                    name: Car Beam STUCK
+                    styles:
+                      card:
+                        - background-color: '#f44336'
+                      icon:
+                        - color: white
+                      name:
+                        - color: white
+                  - value: CLEAR
+                    name: Car Beam OK
+                    styles:
+                      card:
+                        - background-color: '#4caf50'
+                      icon:
+                        - color: white
+                      name:
+                        - color: white
+              - type: custom:button-card
+                entity: sensor.msb_gate_counter_msb_gate_counter_alarm
+                name: Gate Beam
+                icon: mdi:boom-gate-alert
+                layout: vertical
+                show_state: false
+                styles:
+                  card:
+                    - padding: 10px
+                    - border-radius: 16px
+                  name:
+                    - font-size: 14px
+                state:
+                  - value: ALARM_EXIT_STUCK
+                    name: Gate Beam STUCK
+                    styles:
+                      card:
+                        - background-color: '#f44336'
+                      icon:
+                        - color: white
+                      name:
+                        - color: white
+                  - value: CLEAR
+                    name: Gate Beam OK
+                    styles:
+                      card:
+                        - background-color: '#4caf50'
+                      icon:
+                        - color: white
+                      name:
+                        - color: white
+          - type: entity
+            entity: sensor.msb_car_counter_car_counter_log
+            name: Gate Counter Beam Status
+            grid_options:
+              columns: 12
+              rows: 2
+            card_mod:
+              style: |
+                ha-card {
+                  font-size: 2rem !important;
+                  line-height: 1.2 !important;
+                  padding: 8px !important;
+                }
+                .value {
+                  font-size: 0.9rem !important;
+                  line-height: 1.2 !important;
+                  white-space: normal !important;
+                }
+          - type: entity
+            entity: sensor.msb_gate_counter_gate_counter_log
+            name: Gate Counter Beam Status
+            grid_options:
+              columns: 12
+              rows: 2
+            card_mod:
+              style: |
+                ha-card {
+                  font-size: 2rem !important;
+                  line-height: 1.2 !important;
+                  padding: 8px !important;
+                }
+                .value {
+                  font-size: 0.9rem !important;
+                  line-height: 1.2 !important;
+                  white-space: normal !important;
+                }
+      - type: grid
+        square: false
+        cards:
+          - type: weather-forecast
+            entity: weather.openweathermap
+            show_current: true
+            show_forecast: true
+            forecast_type: daily
+          - type: grid
+            square: false
+            columns: 4
+            cards:
+              - type: custom:button-card
+                entity: sensor.openweathermap_wind_speed
+                name: Sustained
+                icon: mdi:weather-windy
+                layout: vertical
+                show_state: true
+                styles:
+                  card:
+                    - padding: 10px
+                    - border-radius: 16px
+                  state:
+                    - font-size: 20px
+                    - font-weight: bold
+                  name:
+                    - font-size: 14px
+                state:
+                  - operator: '>'
+                    value: 25
+                    styles:
+                      card:
+                        - background-color: '#f44336'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                  - operator: '>'
+                    value: 15
+                    styles:
+                      card:
+                        - background-color: '#ff9800'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                  - operator: default
+                    styles:
+                      card:
+                        - background-color: '#4caf50'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+              - type: custom:button-card
+                entity: sensor.openweathermap_wind_gust_speed
+                name: Gust
+                icon: mdi:weather-windy-variant
+                layout: vertical
+                show_state: true
+                styles:
+                  card:
+                    - padding: 10px
+                    - border-radius: 16px
+                  state:
+                    - font-size: 20px
+                    - font-weight: bold
+                  name:
+                    - font-size: 14px
+                state:
+                  - operator: '>'
+                    value: 35
+                    styles:
+                      card:
+                        - background-color: '#f44336'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                  - operator: '>'
+                    value: 25
+                    styles:
+                      card:
+                        - background-color: '#ff9800'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                  - operator: default
+                    styles:
+                      card:
+                        - background-color: '#4caf50'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+              - type: custom:button-card
+                entity: sensor.openweathermap_wind_direction
+                name: Direction
+                icon: mdi:compass
+                layout: vertical
+                show_state: true
+                state_display: |
+                  [[[
+                    if (!entity || entity.state === undefined) return 'n/a';
+                    const deg = parseFloat(entity.state);
+                    if (isNaN(deg)) return entity.state;
+                    const card = states['sensor.openweathermap_wind_direction_2']
+                      ? states['sensor.openweathermap_wind_direction_2'].state
+                      : '';
+                    return card ? `${card} (${deg.toFixed(0)}°)` : `${deg.toFixed(0)}°`;
+                  ]]]
+                styles:
+                  card:
+                    - padding: 10px
+                    - border-radius: 16px
+                  state:
+                    - font-size: 18px
+                    - font-weight: bold
+                  name:
+                    - font-size: 14px
+              - type: custom:button-card
+                entity: sensor.openweathermap_wind_status
+                name: Wind Status
+                icon: mdi:alert-circle-outline
+                layout: vertical
+                show_state: true
+                styles:
+                  card:
+                    - padding: 10px
+                    - border-radius: 16px
+                  state:
+                    - font-size: 18px
+                    - font-weight: bold
+                  name:
+                    - font-size: 14px
+                state:
+                  - value: Danger
+                    styles:
+                      card:
+                        - background-color: '#f44336'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                  - value: Caution
+                    styles:
+                      card:
+                        - background-color: '#ff9800'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                  - operator: default
+                    styles:
+                      card:
+                        - background-color: '#4caf50'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+    cards: []
+    header:
+      card:
+        type: markdown
+        text_only: true
+        content: |
+          # Making Spirits Bright 2026
+  - title: Cameras
+    path: cameras
+    icon: mdi:cctv
+    type: sections
+    max_columns: 4
+    sections:
+      - type: grid
+        square: false
+        cards:
+          - type: heading
+            heading: Calendar
+            heading_style: title
+          - type: grid
+            square: false
+            columns: 3
+            cards:
+              - type: custom:button-card
+                entity: sensor.msb_car_counter_days_running
+                name: Show Day
+                icon: mdi:calendar
+                layout: vertical
+                show_state: true
+                styles:
+                  card:
+                    - padding: 10px
+                    - border-radius: 16px
+                  state:
+                    - font-size: 22px
+                    - font-weight: bold
+                  name:
+                    - font-size: 14px
+              - type: custom:button-card
+                entity: sensor.msb_date_display
+                name: Date
+                show_icon: false
+                layout: vertical
+                show_state: true
+                styles:
+                  card:
+                    - padding: 10px
+                    - border-radius: 16px
+                  state:
+                    - font-size: 22px
+                    - font-weight: bold
+                  name:
+                    - font-size: 14px
+              - type: custom:button-card
+                entity: sensor.msb_current_time_display
+                name: Time
+                icon: mdi:clock-outline
+                layout: vertical
+                show_state: true
+                styles:
+                  card:
+                    - padding: 10px
+                    - border-radius: 16px
+                  state:
+                    - font-size: 22px
+                    - font-weight: bold
+                  name:
+                    - font-size: 14px
+          - type: heading
+            heading: Traffic Snapshot
+            heading_style: title
+          - type: grid
+            square: false
+            columns: 4
+            cards:
+              - type: custom:button-card
+                entity: sensor.msb_enter_total_display
+                name: Enter
+                icon: mdi:car-arrow-right
+                layout: vertical
+                show_state: true
+                show_units: false
+                state_display: '[[[ return entity.attributes.formatted || entity.state ]]]'
+                size: 30%
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 22px
+                    - font-weight: bold
+              - type: custom:button-card
+                entity: sensor.msb_gate_counter_exit_cars
+                name: Exit
+                icon: mdi:car-arrow-left
+                layout: vertical
+                show_state: true
+                show_units: false
+                size: 30%
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 22px
+                    - font-weight: bold
+              - type: custom:button-card
+                entity: sensor.msb_gate_counter_in_park_cars
+                name: In Park
+                icon: mdi:car-multiple
+                layout: vertical
+                show_state: true
+                show_units: false
+                size: 30%
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 22px
+                    - font-weight: bold
+              - type: custom:button-card
+                entity: sensor.msb_show_total_display
+                name: Show Total
+                icon: mdi:counter
+                layout: vertical
+                show_state: true
+                show_units: false
+                state_display: '[[[ return entity.attributes.formatted || entity.state ]]]'
+                size: 30%
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 22px
+                    - font-weight: bold
+          - type: heading
+            heading: Statistics
+            heading_style: title
+          - type: grid
+            square: false
+            columns: 2
+            cards:
+              - type: custom:button-card
+                entity: sensor.msb_car_counter_time_between_cars
+                name: Enter Time Between Cars
+                icon: mdi:timer-outline
+                layout: vertical
+                show_state: true
+                tap_action:
+                  action: more-info
+                  entity: sensor.msb_time_between_cars_min
+                styles:
+                  card:
+                    - padding: 10px
+                    - border-radius: 16px
+                  state:
+                    - font-size: 18px
+                    - font-weight: bold
+                  name:
+                    - font-size: 14px
+              - type: custom:button-card
+                entity: sensor.msb_gate_counter_time_between_cars
+                name: Gate Time Between Cars
+                icon: mdi:timer-outline
+                layout: vertical
+                show_state: true
+                tap_action:
+                  action: more-info
+                  entity: sensor.gate_time_between_cars_min
+                styles:
+                  card:
+                    - padding: 10px
+                    - border-radius: 16px
+                  state:
+                    - font-size: 18px
+                    - font-weight: bold
+                  name:
+                    - font-size: 14px
+          - type: heading
+            heading: Traffic Analytics
+            heading_style: title
+          - type: grid
+            square: false
+            columns: 2
+            cards:
+              - type: custom:button-card
+                entity: sensor.msb_traffic_status_snapshot
+                name: Status
+                icon: mdi:traffic-light
+                layout: vertical
+                show_state: true
+                show_units: false
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 20px
+                    - font-weight: bold
+                state:
+                  - value: closed
+                    styles:
+                      card:
+                        - background-color: '#b00020'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - value: light
+                    styles:
+                      card:
+                        - background-color: '#2e7d32'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - value: moderate
+                    styles:
+                      card:
+                        - background-color: '#fbc02d'
+                      state:
+                        - color: black
+                      name:
+                        - color: black
+                      icon:
+                        - color: black
+                  - value: busy
+                    styles:
+                      card:
+                        - background-color: '#fb8c00'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - value: very_busy
+                    styles:
+                      card:
+                        - background-color: '#e53935'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+              - type: custom:button-card
+                entity: sensor.msb_travel_time_estimate_min
+                name: Travel Time
+                icon: mdi:timer-sand
+                layout: vertical
+                show_state: true
+                show_units: true
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 20px
+                    - font-weight: bold
+                state:
+                  - value: unknown
+                    operator: regex
+                    styles:
+                      card:
+                        - background-color: '#9e9e9e'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - operator: <=
+                    value: 24
+                    styles:
+                      card:
+                        - background-color: '#2e7d32'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - operator: <=
+                    value: 29
+                    styles:
+                      card:
+                        - background-color: '#fbc02d'
+                      state:
+                        - color: black
+                      name:
+                        - color: black
+                      icon:
+                        - color: black
+                  - operator: <=
+                    value: 34
+                    styles:
+                      card:
+                        - background-color: '#fb8c00'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - operator: '>='
+                    value: 35
+                    styles:
+                      card:
+                        - background-color: '#b00020'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+              - type: custom:button-card
+                entity: sensor.msb_enter_rate_cars_min
+                name: Enter Rate
+                icon: mdi:car-arrow-right
+                layout: vertical
+                show_state: true
+                show_units: true
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 18px
+                    - font-weight: bold
+                state:
+                  - operator: ==
+                    value: unknown
+                    styles:
+                      card:
+                        - background-color: '#9e9e9e'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - operator: <
+                    value: 4
+                    styles:
+                      card:
+                        - background-color: '#2e7d32'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - operator: <
+                    value: 6
+                    styles:
+                      card:
+                        - background-color: '#fbc02d'
+                      state:
+                        - color: black
+                      name:
+                        - color: black
+                      icon:
+                        - color: black
+                  - operator: <
+                    value: 8
+                    styles:
+                      card:
+                        - background-color: '#fb8c00'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - operator: '>='
+                    value: 8
+                    styles:
+                      card:
+                        - background-color: '#b00020'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+              - type: custom:button-card
+                entity: sensor.msb_flow_health
+                name: Exit Rate
+                icon: mdi:car-arrow-left
+                layout: vertical
+                show_state: false
+                show_units: false
+                show_label: true
+                label: >-
+                  [[[ return
+                  Number(states['sensor.msb_exit_rate_cars_min'].state ||
+                  0).toFixed(2) + ' cars/min'; ]]]
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  label:
+                    - font-size: 18px
+                    - font-weight: bold
+                state:
+                  - value: draining_fast
+                    styles:
+                      card:
+                        - background-color: '#2e7d32'
+                      label:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - value: draining
+                    styles:
+                      card:
+                        - background-color: '#2e7d32'
+                      label:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - value: watch
+                    styles:
+                      card:
+                        - background-color: '#fbc02d'
+                      label:
+                        - color: black
+                      name:
+                        - color: black
+                      icon:
+                        - color: black
+                  - value: balanced
+                    styles:
+                      card:
+                        - background-color: '#fbc02d'
+                      label:
+                        - color: black
+                      name:
+                        - color: black
+                      icon:
+                        - color: black
+                  - value: building
+                    styles:
+                      card:
+                        - background-color: '#fb8c00'
+                      label:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - value: building_fast
+                    styles:
+                      card:
+                        - background-color: '#b00020'
+                      label:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - value: overloaded
+                    styles:
+                      card:
+                        - background-color: '#b00020'
+                      label:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+              - type: custom:button-card
+                entity: sensor.msb_lane_2_advisory
+                name: Lane 2
+                icon: mdi:road-variant
+                layout: vertical
+                show_state: true
+                show_units: false
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 18px
+                    - font-weight: bold
+                state:
+                  - value: closed
+                    styles:
+                      card:
+                        - background-color: '#9e9e9e'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - value: Close Lane 2
+                    styles:
+                      card:
+                        - background-color: '#b00020'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - value: Lane 2 OK to Open
+                    styles:
+                      card:
+                        - background-color: '#fbc02d'
+                      state:
+                        - color: black
+                      name:
+                        - color: black
+                      icon:
+                        - color: black
+                  - value: Open Lane 2
+                    styles:
+                      card:
+                        - background-color: '#2e7d32'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+              - type: custom:button-card
+                entity: sensor.msb_merger_director_advisory
+                name: Merge Control
+                icon: mdi:account-hard-hat
+                layout: vertical
+                show_state: true
+                show_units: false
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 18px
+                    - font-weight: bold
+                state:
+                  - value: Merger Director Not Needed
+                    styles:
+                      card:
+                        - background-color: '#2e7d32'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - value: off_show
+                    styles:
+                      card:
+                        - background-color: '#9e9e9e'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+              - type: custom:button-card
+                entity: input_boolean.lane_2_open
+                name: Lane 2 Actual
+                icon: mdi:road
+                layout: vertical
+                show_state: true
+                show_units: false
+                tap_action:
+                  action: toggle
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 18px
+                    - font-weight: bold
+                state:
+                  - value: 'on'
+                    name: Lane 2 OPEN
+                    styles:
+                      card:
+                        - background-color: '#2e7d32'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - value: 'off'
+                    name: Lane 2 CLOSED
+                    styles:
+                      card:
+                        - background-color: '#9e9e9e'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+              - type: custom:button-card
+                entity: input_boolean.merger_director_present
+                name: Merger Actual
+                icon: mdi:account-hard-hat
+                layout: vertical
+                show_state: true
+                show_units: false
+                tap_action:
+                  action: toggle
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 18px
+                    - font-weight: bold
+                state:
+                  - value: 'on'
+                    name: Assigned
+                    styles:
+                      card:
+                        - background-color: '#2e7d32'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+                  - value: 'off'
+                    name: Not Assigned
+                    styles:
+                      card:
+                        - background-color: '#9e9e9e'
+                      state:
+                        - color: white
+                      name:
+                        - color: white
+                      icon:
+                        - color: white
+      - type: grid
+        column_span: 3
+        cards:
+          - type: heading
+            heading: Live Traffic Cameras
+            heading_style: title
+          - type: grid
+            columns: 3
+            square: false
+            grid_options:
+              columns: full
+            cards:
+              - type: custom:webrtc-camera
+                entity: camera.cam_hwy_42n_profile001_substream
+                name: Highway 42 North
+              - type: custom:webrtc-camera
+                entity: camera.cam_hwy_42s_profile001_substream
+                name: Highway 42 South
+              - type: custom:webrtc-camera
+                entity: camera.front_gate_media_profile2
+                name: Front Gate
+              - type: custom:webrtc-camera
+                entity: camera.fc_carcounter_media_profile2
+                name: Car Counter
+              - type: custom:webrtc-camera
+                entity: camera.food_collection_media_profile2
+                name: Food Collection
+              - type: custom:webrtc-camera
+                entity: camera.stars_profile001_substream
+                name: Traffic Stars
+              - type: custom:webrtc-camera
+                entity: camera.church_media_profile2
+                name: Icicle Tunnel
+              - type: custom:webrtc-camera
+                entity: camera.northern_lights_media_profile2
+                name: Northern Lights
+              - type: custom:webrtc-camera
+                entity: camera.candyland_media_profile2
+                name: Candyland
+              - type: custom:webrtc-camera
+                entity: camera.polarbear_cam_media_profile2
+                name: Polar Bear
+              - type: custom:webrtc-camera
+                entity: camera.igloo_colunteers_media_profile2
+                name: Igloo Volunteers
+      - type: grid
+        cards:
+          - type: heading
+            heading: New section
+          - type: entities
+            title: Captain Live Inputs
+            show_header_toggle: false
+            entities:
+              - entity: binary_sensor.msb_show_open
+              - entity: binary_sensor.msb_carcounter_analytics_active
+              - entity: binary_sensor.msb_gatecounter_analytics_active
+              - type: section
+                label: Load
+              - entity: sensor.msb_in_park_cars_canonical
+              - entity: sensor.msb_in_park_cars_band
+              - type: section
+                label: Flow
+              - entity: sensor.msb_flow_smoothed
+              - entity: sensor.msb_enter_rate_cars_min
+              - entity: sensor.msb_exit_rate_cars_min
+              - entity: sensor.msb_flow_delta_cars_min
+              - entity: sensor.msb_flow_health
+              - type: section
+                label: Experience
+              - entity: sensor.msb_travel_time_estimate_min
+              - type: section
+                label: Movement
+              - entity: sensor.msb_car_counter_time_between_cars_ms
+      - type: grid
+        column_span: 3
+        cards:
+          - type: heading
+            heading: Volunteer Trailer - Security
+            heading_style: title
+          - type: grid
+            columns: 3
+            square: false
+            grid_options:
+              columns: full
+            cards:
+              - type: custom:webrtc-camera
+                entity: camera.vt_parking_cam_media_profile2
+                name: VT Parking
+              - type: custom:webrtc-camera
+                entity: camera.vt_office_profile100
+                name: VT Office
+              - type: custom:webrtc-camera
+                entity: camera.vt_common_profile100
+                name: VT Common Area
+  - title: Counts
+    path: counts
+    icon: mdi:car-multiple
+    type: sections
+    max_columns: 3
+    sections:
+      - type: grid
+        cards:
+          - type: entities
+            title: Traffic – Snapshot
+            show_header_toggle: false
+            entities:
+              - entity: sensor.msb_car_counter_days_running
+                name: Show Day Number
+              - entity: sensor.msb_car_counter_day_of_month
+                name: Day of Month
+              - entity: sensor.msb_car_counter_enter_cars
+                name: Enter Count
+              - entity: sensor.msb_gate_counter_exit_cars
+                name: Exit Count
+              - entity: sensor.msb_car_counter_show_total_cars
+                name: Show Total
+              - entity: sensor.msb_gate_counter_in_park_cars
+                name: In-Park Cars
+              - entity: sensor.msb_time_between_cars_min
+                name: Time Between Cars (ms)
+              - entity: sensor.gate_time_between_cars_min
+      - type: grid
+        cards:
+          - type: heading
+            heading: Traffic Rates
+            heading_style: title
+          - type: history-graph
+            entities:
+              - entity: sensor.msb_gate_counter_exit_cars
+              - entity: sensor.msb_car_counter_enter_cars
+              - entity: sensor.msb_gate_counter_in_park_cars
+            hours_to_show: 4
+            title: Last 4 Hours
+      - type: grid
+        cards:
+          - type: entities
+            title: Environmental
+            show_header_toggle: false
+            entities:
+              - entity: sensor.msb_car_counter_car_temp
+                name: Enter Temp
+              - entity: sensor.msb_car_counter_car_humidity
+                name: Enter Humidity
+              - entity: sensor.msb_gate_counter_gate_temp
+                name: Exit Temp
+              - entity: sensor.msb_gate_counter_gate_humidity
+                name: Exit Humidity
+      - type: grid
+        cards:
+          - type: heading
+            heading: Wind Warning Limits
+            heading_style: title
+          - type: entities
+            entities:
+              - entity: input_number.wind_gust_caution
+              - entity: input_number.wind_gust_danger
+              - entity: input_number.wind_sustained_caution
+              - entity: input_number.wind_sustained_danger
+      - type: grid
+        cards:
+          - type: heading
+            heading: New section
+          - type: entities
+            title: Device Health
+            show_header_toggle: false
+            entities:
+              - type: section
+                label: Car Counter
+              - entity: sensor.msb_car_counter_msb_car_counter_firmware
+                name: Car Counter FW
+              - entity: sensor.msb_car_counter_car_sd_status
+                name: Car SD Status
+              - entity: sensor.msb_car_counter_car_wifi_rssi
+                name: Car WiFi RSSI
+              - entity: sensor.msb_car_counter_car_wifi_ip
+                name: Car WiFi IP
+              - entity: sensor.msb_car_counter_car_wifi_ssid
+                name: Car WiFi SSID
+              - entity: sensor.msb_car_counter_msb_car_counter_status
+                name: Car Counter Hello
+              - entity: sensor.msb_car_counter_car_counter_debug
+                name: Car Counter Debug Log
+              - type: section
+                label: Gate Counter
+              - entity: sensor.msb_gate_counter_msb_gate_counter_firmware
+                name: Gate Counter FW
+              - entity: sensor.msb_gate_counter_gate_wifi_rssi
+                name: Gate WiFi RSSI
+              - entity: sensor.msb_gate_counter_gate_wifi_ip
+                name: Gate WiFi IP
+              - entity: sensor.msb_gate_counter_gate_wifi_ssid
+                name: Gate WiFi SSID
+              - entity: sensor.msb_gate_counter_msb_gate_counter_status
+                name: Gate Counter Hello
+              - entity: sensor.msb_gate_counter_gate_counter_debug
+                name: Gate Counter Debug Log
+      - type: grid
+        cards:
+          - type: heading
+            heading: New section
+          - type: entities
+            title: Alarms & Debug Topics
+            show_header_toggle: false
+            entities:
+              - type: section
+                label: Car Counter
+              - entity: sensor.msb_car_counter_msb_car_counter_alarm
+                name: Car Beam Alarm Topic
+              - entity: sensor.msb_car_counter_car_counter_debug
+                name: Car Counter Debug Log
+              - type: section
+                label: Gate Counter
+              - entity: sensor.msb_gate_counter_msb_gate_counter_alarm
+                name: Gate Beam Alarm Topic
+              - entity: sensor.msb_gate_counter_gate_counter_debug
+                name: Gate Counter Debug Log
+  - title: Kiosk Experimental
+    path: kiosk-experimental
+    icon: mdi:test-tube
+    cards:
+      - type: grid
+        square: false
+        columns: 3
+        cards:
+          - type: custom:button-card
+            entity: sensor.msb_car_counter_days_running
+            name: Show Day
+            icon: mdi:calendar
+            layout: vertical
+            show_state: true
+            styles:
+              card:
+                - padding: 10px
+                - border-radius: 16px
+              state:
+                - font-size: 22px
+                - font-weight: bold
+              name:
+                - font-size: 14px
+          - type: custom:button-card
+            entity: sensor.msb_car_counter_day_of_month
+            name: Day of Month
+            icon: mdi:calendar-today
+            layout: vertical
+            show_state: true
+            styles:
+              card:
+                - padding: 10px
+                - border-radius: 16px
+              state:
+                - font-size: 22px
+                - font-weight: bold
+              name:
+                - font-size: 14px
+          - type: custom:button-card
+            entity: sensor.time
+            name: Time
+            icon: mdi:clock-outline
+            layout: vertical
+            show_state: true
+            styles:
+              card:
+                - padding: 10px
+                - border-radius: 16px
+              state:
+                - font-size: 22px
+                - font-weight: bold
+              name:
+                - font-size: 14px
+          - type: custom:button-card
+            entity: sensor.msb_car_counter_time_between_cars
+            name: Time Between Cars (ms)
+            icon: mdi:timer-outline
+            layout: vertical
+            show_state: true
+            styles:
+              card:
+                - padding: 10px
+                - border-radius: 16px
+              state:
+                - font-size: 18px
+                - font-weight: bold
+              name:
+                - font-size: 14px
+          - type: custom:button-card
+            entity: sensor.date
+            name: Date
+            icon: mdi:calendar-month
+            layout: vertical
+            show_state: true
+            styles:
+              card:
+                - padding: 10px
+                - border-radius: 16px
+              state:
+                - font-size: 22px
+                - font-weight: bold
+              name:
+                - font-size: 14px
+      - type: grid
+        square: false
+        cards:
+          - type: heading
+            heading: Traffic Snapshot
+            heading_style: title
+          - type: grid
+            square: false
+            columns: 4
+            cards:
+              - type: custom:button-card
+                entity: sensor.msb_enter_total_display
+                name: Enter
+                icon: mdi:car-arrow-right
+                layout: vertical
+                show_state: true
+                show_units: false
+                state_display: '[[[ return entity.attributes.formatted || entity.state ]]]'
+                size: 30%
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 22px
+                    - font-weight: bold
+              - type: custom:button-card
+                entity: sensor.msb_gate_counter_exit_cars
+                name: Exit
+                icon: mdi:car-arrow-left
+                layout: vertical
+                show_state: true
+                show_units: false
+                size: 30%
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 22px
+                    - font-weight: bold
+              - type: custom:button-card
+                entity: sensor.msb_gate_counter_in_park_cars
+                name: In Park
+                icon: mdi:car-multiple
+                layout: vertical
+                show_state: true
+                show_units: false
+                size: 30%
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 22px
+                    - font-weight: bold
+              - type: custom:button-card
+                entity: sensor.msb_show_total_display
+                name: Show Total
+                icon: mdi:counter
+                layout: vertical
+                show_state: true
+                show_units: false
+                state_display: '[[[ return entity.attributes.formatted || entity.state ]]]'
+                size: 30%
+                styles:
+                  card:
+                    - height: 100px
+                    - padding: 8px
+                    - border-radius: 14px
+                  name:
+                    - font-size: 12px
+                  state:
+                    - font-size: 22px
+                    - font-weight: bold
