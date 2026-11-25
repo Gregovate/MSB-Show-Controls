@@ -59,6 +59,31 @@
       qos: 0
       retain: false
   mode: single
+- id: msb_reset_days_running
+  alias: Reset Days Running
+  description: Apply a manual correction to the number of days the show actually opened.
+  triggers:
+  - trigger: state
+    entity_id: input_number.update_days_running
+  conditions:
+  - condition: state
+    entity_id: input_boolean.enable_calendar_resets
+    state: 'on'
+  - condition: template
+    value_template: >-
+      {{ trigger.from_state is not none and trigger.to_state is not none
+         and is_number(trigger.from_state.state) and is_number(trigger.to_state.state)
+         and trigger.from_state.state | float != trigger.to_state.state | float
+         and trigger.to_state.state | float == trigger.to_state.state | int
+         and 0 <= trigger.to_state.state | int <= 366 }}
+  actions:
+  - action: mqtt.publish
+    data:
+      topic: msb/traffic/CarCounter/Config/resetDaysRunning
+      payload: '{{ trigger.to_state.state | int }}'
+      qos: 0
+      retain: false
+  mode: queued
 - id: '1732379608932'
   alias: Car Counter Beam Alarm
   description: Drive entrance alarm beacon from Car Counter alarm state.
