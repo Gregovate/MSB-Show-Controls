@@ -100,7 +100,7 @@ views:
     - input_number.msb_sign2_free_flow_mph
 - title: Live previews
   path: live-previews
-  icon: mdi:sign-text
+  icon: mdi:sign-caution
   cards:
   - type: custom:msb-sign-preview
     name: Highway 42
