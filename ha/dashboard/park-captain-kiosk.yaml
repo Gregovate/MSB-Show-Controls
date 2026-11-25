@@ -1,0 +1,309 @@
+views:
+  - type: sections
+    path: show-control
+    title: Park Captain
+    max_columns: 2
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Making Spirits Bright · Park Captain
+            heading_style: title
+            grid_options:
+              columns: full
+          - type: heading
+            heading: Highway 42 · North (left) / South (right)
+            grid_options:
+              columns: full
+            heading_style: title
+          - type: grid
+            columns: 2
+            square: false
+            grid_options:
+              columns: full
+            cards:
+              - type: custom:webrtc-camera
+                entity: camera.cam_hwy_42n_profile001_substream
+                name: Highway 42 North
+              - type: custom:webrtc-camera
+                entity: camera.cam_hwy_42s_profile001_substream
+                name: Highway 42 South
+          - type: grid
+            square: false
+            columns: 2
+            cards:
+              - type: custom:mushroom-template-card
+                entity: sensor.msb_in_park_cars_canonical
+                primary: Cars in park
+                icon: mdi:car-multiple
+                secondary: >-
+                  {% set gate = states('sensor.msb_gate_occupancy_diagnostic') %}
+                  {% set traffic = states('sensor.msb_traffic_status_snapshot') %}
+                  {% if has_value(entity) %}
+                    {{ states(entity, with_unit=true) }}{{ ' · ' ~ traffic.replace('_',' ').capitalize() if traffic in ['busy','very_busy'] else '' }}
+                  {% elif is_number(gate) %}
+                    Gate check: {{ gate }} cars · Show unavailable
+                  {% else %}
+                    Unavailable · No fresh Gate balance
+                  {% endif %}
+                color: >-
+                  {% set traffic = states('sensor.msb_traffic_status_snapshot')
+                  %}{{ 'grey' if not has_value(entity) else 'amber' if traffic
+                  in ['busy','very_busy'] else 'teal' }}
+                tap_action:
+                  action: more-info
+              - type: custom:mushroom-template-card
+                entity: binary_sensor.msb_show_open
+                primary: Show status
+                icon: mdi:traffic-light
+                secondary: >-
+                  {{ {'on':'Open','off':'Closed'}.get(states(entity),
+                  'Unavailable') }}
+                color: '{{ {''on'':''green'',''off'':''red''}.get(states(entity), ''grey'') }}'
+                tap_action:
+                  action: more-info
+            grid_options:
+              columns: full
+          - type: grid
+            square: false
+            columns: 2
+            cards:
+              - type: custom:mushroom-template-card
+                entity: sensor.msb_enter_total_display
+                primary: Entered
+                icon: mdi:login
+                secondary: '{{ states(entity, with_unit=true) }}'
+                color: teal
+                tap_action:
+                  action: more-info
+              - type: custom:mushroom-template-card
+                entity: sensor.msb_gate_counter_exit_cars
+                primary: Exited
+                icon: mdi:logout
+                secondary: '{{ states(entity, with_unit=true) }}'
+                color: teal
+                tap_action:
+                  action: more-info
+            grid_options:
+              columns: full
+          - type: grid
+            columns: 2
+            square: false
+            grid_options:
+              columns: full
+            cards:
+              - type: custom:mushroom-template-card
+                primary: '{{ now().strftime(''%a, %b %d'') }}'
+                secondary: '{{ now().strftime(''%I:%M %p'').lstrip(''0'') }}'
+                icon: mdi:calendar-clock
+                color: teal
+                tap_action:
+                  action: none
+              - type: custom:mushroom-template-card
+                entity: sensor.msb_show_total_display
+                primary: Show total
+                icon: mdi:counter
+                secondary: '{{ states(entity, with_unit=true) }}'
+                color: teal
+                tap_action:
+                  action: more-info
+          - type: grid
+            columns: 4
+            square: false
+            grid_options:
+              columns: full
+            cards:
+              - type: custom:mushroom-template-card
+                primary: 6:00 PM
+                secondary: >-
+                  {% if now().hour < 18 %}—{% else %}
+
+                  {% set matches =
+                  device_entities(device_id('sensor.msb_car_counter_enter_cars'))
+                  if device_id('sensor.msb_car_counter_enter_cars') else [] %}
+
+                  {% set ids = matches | select('search', 'car_hourly_cars_raw')
+                  | list %}
+
+                  {% set source = ids | first |
+                  default('sensor.car_hourly_cars_raw') %}
+
+                  {% set hours = states(source) | from_json(none) %}
+
+                  {{ hours[17] if hours is sequence and hours is not string and
+                  hours is not mapping and hours | length == 24 and hours[17] is
+                  number else '—' }}
+
+                  {% endif %}
+                vertical: true
+                tap_action:
+                  action: none
+              - type: custom:mushroom-template-card
+                primary: 7:00 PM
+                secondary: >-
+                  {% if now().hour < 19 %}—{% else %}
+
+                  {% set matches =
+                  device_entities(device_id('sensor.msb_car_counter_enter_cars'))
+                  if device_id('sensor.msb_car_counter_enter_cars') else [] %}
+
+                  {% set ids = matches | select('search', 'car_hourly_cars_raw')
+                  | list %}
+
+                  {% set source = ids | first |
+                  default('sensor.car_hourly_cars_raw') %}
+
+                  {% set hours = states(source) | from_json(none) %}
+
+                  {{ hours[18] if hours is sequence and hours is not string and
+                  hours is not mapping and hours | length == 24 and hours[18] is
+                  number else '—' }}
+
+                  {% endif %}
+                vertical: true
+                tap_action:
+                  action: none
+              - type: custom:mushroom-template-card
+                primary: 8:00 PM
+                secondary: >-
+                  {% if now().hour < 20 %}—{% else %}
+
+                  {% set matches =
+                  device_entities(device_id('sensor.msb_car_counter_enter_cars'))
+                  if device_id('sensor.msb_car_counter_enter_cars') else [] %}
+
+                  {% set ids = matches | select('search', 'car_hourly_cars_raw')
+                  | list %}
+
+                  {% set source = ids | first |
+                  default('sensor.car_hourly_cars_raw') %}
+
+                  {% set hours = states(source) | from_json(none) %}
+
+                  {{ hours[19] if hours is sequence and hours is not string and
+                  hours is not mapping and hours | length == 24 and hours[19] is
+                  number else '—' }}
+
+                  {% endif %}
+                vertical: true
+                tap_action:
+                  action: none
+              - type: custom:mushroom-template-card
+                primary: 9:00 PM
+                secondary: >-
+                  {% if now().hour < 21 %}—{% else %}
+
+                  {% set matches =
+                  device_entities(device_id('sensor.msb_car_counter_enter_cars'))
+                  if device_id('sensor.msb_car_counter_enter_cars') else [] %}
+
+                  {% set ids = matches | select('search', 'car_hourly_cars_raw')
+                  | list %}
+
+                  {% set source = ids | first |
+                  default('sensor.car_hourly_cars_raw') %}
+
+                  {% set hours = states(source) | from_json(none) %}
+
+                  {{ hours[20] if hours is sequence and hours is not string and
+                  hours is not mapping and hours | length == 24 and hours[20] is
+                  number else '—' }}
+
+                  {% endif %}
+                vertical: true
+                tap_action:
+                  action: none
+          - type: heading
+            heading: Captain inputs
+            heading_style: title
+            grid_options:
+              columns: full
+          - type: grid
+            square: false
+            columns: 2
+            cards:
+              - type: custom:mushroom-template-card
+                entity: input_boolean.lane_2_open
+                primary: Lane 2
+                icon: mdi:road
+                secondary: >-
+                  {{ {'on':'Open','off':'Closed'}.get(states(entity),
+                  'Unavailable') }}
+                color: '{{ ''green'' if is_state(entity,''on'') else ''grey'' }}'
+                tap_action: null
+          - type: vertical-stack
+            cards:
+              - type: heading
+                heading: Counter health & beam alarms
+              - type: grid
+                square: false
+                columns: 2
+                cards:
+                  - type: custom:mushroom-template-card
+                    entity: sensor.msb_car_counter_msb_car_counter_status_2
+                    primary: Car Counter
+                    icon: mdi:lan-connect
+                    secondary: '{{ states(entity, with_unit=true) }}'
+                    color: >-
+                      {{ 'green' if states(entity)|lower == 'online' else
+                      'amber' if states(entity) in ['unknown','unavailable']
+                      else 'red' }}
+                    tap_action:
+                      action: more-info
+                  - type: custom:mushroom-template-card
+                    entity: sensor.msb_gate_counter_msb_gate_counter_status_2
+                    primary: Gate Counter
+                    icon: mdi:lan-connect
+                    secondary: '{{ states(entity, with_unit=true) }}'
+                    color: >-
+                      {{ 'green' if states(entity)|lower == 'online' else
+                      'amber' if states(entity) in ['unknown','unavailable']
+                      else 'red' }}
+                    tap_action:
+                      action: more-info
+                  - type: custom:mushroom-template-card
+                    entity: sensor.msb_car_counter_msb_car_counter_alarm
+                    primary: Car Beam
+                    icon: mdi:car-brake-alert
+                    secondary: >-
+                      {{ 'Clear' if is_state(entity,'CLEAR') else 'Beam stuck'
+                      if 'STUCK' in states(entity) else
+                      states(entity)|capitalize }}
+                    color: >-
+                      {{ 'green' if states(entity)|lower == 'clear' else 'amber'
+                      if states(entity) in ['unknown','unavailable'] else 'red'
+                      }}
+                    tap_action:
+                      action: more-info
+                  - type: custom:mushroom-template-card
+                    entity: sensor.msb_gate_counter_msb_gate_counter_alarm
+                    primary: Gate Beam
+                    icon: mdi:boom-gate-alert
+                    secondary: >-
+                      {{ 'Clear' if is_state(entity,'CLEAR') else 'Beam stuck'
+                      if 'STUCK' in states(entity) else
+                      states(entity)|capitalize }}
+                    color: >-
+                      {{ 'green' if states(entity)|lower == 'clear' else 'amber'
+                      if states(entity) in ['unknown','unavailable'] else 'red'
+                      }}
+                    tap_action:
+                      action: more-info
+                  - type: custom:mushroom-template-card
+                    entity: sensor.msb_car_counter_car_counter_heartbeat
+                    primary: Car heartbeat
+                    secondary: >-
+                      {% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now()) - stamp < 300 %} {{ 'Receiving' if fresh else ('Last ' ~ states(entity) if stamp is not none else 'Unavailable') }}
+                    icon: mdi:heart-pulse
+                    color: >-
+                      {% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now()) - stamp < 300 %} {{ 'green' if fresh else 'red' }}
+                  - type: custom:mushroom-template-card
+                    entity: sensor.msb_gate_counter_gate_counter_heartbeat
+                    primary: Gate heartbeat
+                    secondary: >-
+                      {% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now()) - stamp < 300 %} {{ 'Receiving' if fresh else ('Last ' ~ states(entity) if stamp is not none else 'Unavailable') }}
+                    icon: mdi:heart-pulse
+                    color: >-
+                      {% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now()) - stamp < 300 %} {{ 'green' if fresh else 'red' }}
+                grid_options:
+                  columns: full

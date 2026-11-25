@@ -5,6 +5,7 @@
 | `sensor.msb_car_counter_enter_cars` | Tonight’s entries and input for the five-minute entry derivative. |
 | `sensor.msb_car_counter_show_total_cars` | Season entries displayed in operational sign slot 13. |
 | `sensor.msb_gate_counter_exit_cars` | Exit count used by the five-minute exit derivative. |
+| `sensor.msb_gate_occupancy_diagnostic` | Fresh Gate-calculated balance at any hour, including test mode. The kiosk labels it Gate check when official occupancy is unavailable. |
 | `sensor.msb_in_park_cars_canonical` | Occupancy used in HA analytics and the experimental queue model. |
 | `sensor.msb_gate_counter_in_park_cars` | Gate-published occupancy for comparison. |
 | `sensor.msb_enter_rate_cars_s`, `sensor.msb_exit_rate_cars_s` | Five-minute rates in cars per second. Read with occupancy and camera observations. |

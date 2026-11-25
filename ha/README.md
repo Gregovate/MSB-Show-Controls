@@ -8,6 +8,7 @@ Pull the main branch on each computer before copying files. Run `git branch --sh
 | `packages/signs.yaml` | `/config/packages/signs.yaml` |
 | `packages/traffic_analytics.yaml` | `/config/packages/traffic_analytics.yaml` |
 | `packages/sign2_queue_wait.yaml` | `/config/packages/sign2_queue_wait.yaml` |
+| `dashboard/park-captain-kiosk.yaml` | Park Captain kiosk dashboard raw configuration (Cars in park includes Gate diagnostic) |
 | `dashboard/signs-dashboard.yaml` | Existing Signs dashboard → raw configuration editor |
 | `www/msb-sign-message-grid.js` | `/config/www/msb-sign-message-grid.js` |
 | `local_apps/msb_sign_bridge/` | Existing `/local_apps/msb_sign_bridge/` directory |

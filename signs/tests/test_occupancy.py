@@ -30,7 +30,7 @@ class OccupancyTests(unittest.TestCase):
         }
         self.env = Environment()
         self.env.filters['regex_match'] = lambda s, pattern: re.match(pattern, s) is not None
-        self.env.globals.update(now=lambda: self.clock, strptime=self.parse,
+        self.env.globals.update(is_number=lambda v: re.fullmatch(r'-?[0-9]+', v) is not None, now=lambda: self.clock, strptime=self.parse,
                                 states=lambda e: self.state.get(e, 'unknown'),
                                 is_state=lambda e, v: self.state.get(e) == v)
 
@@ -42,7 +42,21 @@ class OccupancyTests(unittest.TestCase):
             return fallback
 
     def reading(self):
-        spec = SENSORS['msb_in_park_cars_canonical']
+        self.state['sensor.msb_gate_occupancy_diagnostic'] = self.render_sensor('msb_gate_occupancy_diagnostic')
+        return self.render_sensor('msb_in_park_cars_canonical')
+
+    def test_off_show_receiver_readback(self):
+        self.state['binary_sensor.msb_show_open'] = 'off'
+        self.state['sensor.msb_gate_occupancy_session'] = 'TEST'
+        for value in ('-3', '0', '12'):
+            self.state['sensor.msb_gate_occupancy_raw'] = value
+            self.assertEqual(self.reading(), 'unavailable')
+            self.assertEqual(self.state['sensor.msb_gate_occupancy_diagnostic'], value)
+        self.clock += timedelta(minutes=3)
+        self.assertEqual(self.render_sensor('msb_gate_occupancy_diagnostic'), 'unavailable')
+
+    def render_sensor(self, uid):
+        spec = SENSORS[uid]
         if self.env.from_string(spec['availability']).render().strip() != 'True':
             return 'unavailable'
         return self.env.from_string(spec['state']).render().strip()

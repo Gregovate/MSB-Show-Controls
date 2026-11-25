@@ -24,4 +24,6 @@ Begin each session from the current remote main heads. Greg compiles locally and
 
 [Car thread checkpoint](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/main/docs/Checkpoint_2026-11-24_Part_2.md) · [Gate thread checkpoint](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/main/docs/Checkpoint_2026-11-24_Part_2.md)
 
-On opening night, Cars in park stays unavailable at the 4:59 PM reset. Verify the first fresh Gate production reading after public opening, a real zero during operation, and unavailable again at the extended public close even while Gate records its grace period.
+At the 4:59 PM reset, official occupancy stays unavailable. The captain kiosk can still show a fresh Gate check. Verify the first fresh Gate production reading after public opening, a real zero during operation, and unavailable again at the extended public close even while Gate records its grace period.
+
+For an off-hours test, read the Gate check on the Cars in park card. A fresh value is Gate’s own computed balance and may be zero or negative. In TEST mode Gate uses its cached Car total. Observe a known entrance change with exits steady and confirm the corresponding change at Gate. A steady TEST balance alone verifies only Gate reporting to HA. In production Gate also requires fresh, same-date official entries from Car before reporting numeric occupancy. Outside the firmware counting window new beam activity may leave official totals unchanged. Use the diagnostic for equipment verification only.
