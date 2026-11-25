@@ -180,4 +180,4 @@ must be registered; accessible JavaScript bytes alone do not load a custom card.
 Full source, package regeneration and tests are in signs/. Restore that source rather
 than an old chat ZIP. See signs/UPGRADE.md for coordinated installation/rollback.
 
-Trace the entry, exit and hourly data behind HA traffic displays in the firmware MQTT contracts. [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/2c0bf6c6a3da4240876ccf24b06696c883dae4ef/docs/MQTT_Contract.md) · [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/370359f14cd5a69f82b44622c73b4a2a7c9be179/docs/MQTT_Contract.md).
+Trace the entry, exit and hourly data behind HA traffic displays in the firmware MQTT contracts. [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/0b7e9787bc6d475d17b4874b5c32096103d4c40e/docs/MQTT_Contract.md) · [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/0874ed3726824448c6ce334fe5765ac7c55a84f5/docs/MQTT_Contract.md).

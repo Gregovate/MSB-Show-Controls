@@ -59,4 +59,4 @@ Use setup traffic and controlled events to verify volunteer exclusion, correct v
 
 Record firmware versions, effective configuration, full dates, reset events, detector health and the resulting files. Keep historical official metrics unchanged.
 
-Use these device contracts to trace the HA opening anchor, offsets and dated extension into each counter. [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/2c0bf6c6a3da4240876ccf24b06696c883dae4ef/docs/Coordinated_Release_9.md) · [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/370359f14cd5a69f82b44622c73b4a2a7c9be179/docs/Coordinated_Release_9.md).
+Use these device contracts to trace the HA opening anchor, offsets and dated extension into each counter. [Car Counter](https://github.com/Gregovate/MSB-Car-Counter-2024/blob/0b7e9787bc6d475d17b4874b5c32096103d4c40e/docs/Coordinated_Release_9.md) · [Gate Counter](https://github.com/Gregovate/MSB-Gate-Counter-2025/blob/0874ed3726824448c6ce334fe5765ac7c55a84f5/docs/Coordinated_Release_9.md).
