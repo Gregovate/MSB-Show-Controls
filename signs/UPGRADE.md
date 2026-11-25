@@ -72,3 +72,5 @@ outputs still need installation checks. No device firmware or count data is modi
 Rollback: disable overlays and stop bridge; restore backed-up matching package, app,
 dashboard and JavaScript, check HA configuration and rebuild the old app. A mixed schema
 version must not be left running. All counter season dates and recorded totals remain intact.
+
+For the subsequent daily warm-up and extension update, follow [Daily warm-up and show extensions](../docs/warmup-extension.md).

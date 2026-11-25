@@ -1,0 +1,74 @@
+--- a/automations.yaml
++++ b/automations.yaml
+@@ -232,5 +232,5 @@
+         value_template: '{{ delta > 0 }}'
+       - condition: state
+-        entity_id: binary_sensor.msb_show_season
++        entity_id: binary_sensor.msb_show_open
+         state: 'on'
+       sequence:
+@@ -247,6 +247,6 @@
+         value_template: '{{ delta > 0 }}'
+       - condition: state
+-        entity_id: binary_sensor.msb_normal_traffic_season
+-        state: 'on'
++        entity_id: binary_sensor.msb_show_open
++        state: 'off'
+       sequence:
+       - action: input_number.set_value
+@@ -302,6 +302,10 @@
+     at: input_datetime.production_projector_on
+     id: projector_on
+-  - trigger: time
+-    at: input_datetime.production_projector_off
++  - trigger: template
++    value_template: >-
++      {% set base = states('input_datetime.production_projector_off') %}
++      {% set minutes = states('input_number.show_end_extension_min') | int(0)
++         if is_state('input_text.msb_traffic_extension_date', now().strftime('%Y%m%d')) else 0 %}
++      {{ base not in ['unknown','unavailable',''] and now() >= today_at(base) + timedelta(minutes=minutes) }}
+     id: projector_off
+   - trigger: state
+@@ -342,6 +346,10 @@
+     at: input_datetime.production_radio_on
+     id: radio_on
+-  - trigger: time
+-    at: input_datetime.production_radio_off
++  - trigger: template
++    value_template: >-
++      {% set base = states('input_datetime.production_radio_off') %}
++      {% set minutes = states('input_number.show_end_extension_min') | int(0)
++         if is_state('input_text.msb_traffic_extension_date', now().strftime('%Y%m%d')) else 0 %}
++      {{ base not in ['unknown','unavailable',''] and now() >= today_at(base) + timedelta(minutes=minutes) }}
+     id: radio_off
+   - trigger: state
+@@ -384,6 +392,10 @@
+   description: Turns the projector off at the safety cutoff.
+   triggers:
+-  - trigger: time
+-    at: input_datetime.production_projector_off_safety
++  - trigger: template
++    value_template: >-
++      {% set base = states('input_datetime.production_projector_off_safety') %}
++      {% set minutes = states('input_number.show_end_extension_min') | int(0)
++         if is_state('input_text.msb_traffic_extension_date', now().strftime('%Y%m%d')) else 0 %}
++      {{ base not in ['unknown','unavailable',''] and now() >= today_at(base) + timedelta(minutes=minutes) }}
+   conditions:
+   - condition: state
+@@ -537,5 +549,15 @@
+   triggers:
+   - trigger: time
+-    at: 00:01:00
++    at: '00:00:00'
++    id: midnight
++  - trigger: homeassistant
++    event: start
++    id: startup
++  conditions:
++  - condition: template
++    value_template: >-
++      {{ trigger.id == 'midnight' or
++         (has_value('input_text.msb_traffic_extension_date') and
++          not is_state('input_text.msb_traffic_extension_date', now().strftime('%Y%m%d'))) }}
+   actions:
+   - action: input_number.set_value

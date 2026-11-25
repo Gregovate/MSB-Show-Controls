@@ -1,0 +1,12 @@
+# Daily warm-up and show extensions
+
+Install the Nov 25 HA changes over Signs 0.3.1. The existing bridge accepts the same schema. The deployment ZIP contains the updated signs.yaml, dashboard YAML and the edited November 25 park automations.yaml. Back up the current copies first. If automations have changed since the export, apply ha/automations/warmup-extension.patch to the current automations.yaml and review the five changed automations before installation.
+
+1. Replace /config/packages/signs.yaml and /config/automations.yaml with their corresponding files. Check configuration before restarting HA.
+2. Replace the raw Signs dashboard YAML with signs/dashboard/signs-dashboard.yaml.
+3. Set Radio and countdown warm-up to 4:30 PM, show start to 5 PM and the usual public close to 9 PM Central. Check the radio and projector nominal OFF helpers and projector safety OFF helper on the Administrator dashboard. Each receives the same extra minutes on top of its own baseline.
+4. On a scheduled evening with overlays enabled, Show Force Close off and admissions Automatic, slot 9 rotates GATES OPEN IN / 30 MINUTES on both signs during warm-up. Keep slot 9 on Both / Pre-show. The display rounds up through 1 MINUTE and switches to operating messages at opening. The projector keeps its own start time. Radio still operates the volunteer marquee and car-counter arches. The public start remains the counter schedule anchor.
+5. Before the existing cutoff, set the single extension control at the top of Signs. Confirm the displayed closing time and extend LOR manually. Example: 9 PM plus 20 minutes advertises 9:20 PM. A 9:10 PM nominal equipment cutoff moves to 9:30 PM. Show Stop still shuts equipment off immediately. The park's separate projector safety OFF follows its own nominal time plus the extension.
+6. The existing dated MQTT settings feed each counter its extension and existing offset. The HA show/normal bucket sorter follows the public-open sensor. At local midnight HA sets the extension helper to zero; startup clears a previous date's restored value if HA missed midnight. Use the normal evening schedule with equipment deadlines before midnight. No reset or count-correction action belongs in the warm-up or extension workflow.
+
+The large opening-advertising preset was a setup action that rewrites advertising text. It has been removed from Control. The operational initializer appears only until initialization is complete.

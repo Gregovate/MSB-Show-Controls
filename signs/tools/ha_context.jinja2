@@ -35,7 +35,12 @@
 {% set closed = is_state('input_select.msb_signs_admission_state','Closed') %}
 {% set clearing = is_state('input_select.msb_signs_admission_state','Clearing queue') and valid and opening <= day <= season_end and day != down %}
 {% set admitting = (gates or clearing) and not closed and not weather %}
-{% set preshow = valid and day <= opening and not gates and not clearing and not closed and not weather %}
+{% set radio_on = states('input_datetime.production_radio_on') %}
+{% set warmup = valid and (season or special) and operating_day == day
+   and radio_on not in ['unknown','unavailable',''] and today_at(radio_on) <= stamp < ns.start
+   and not (closed or clearing or weather or force_close) %}
+{% set minutes_left = ((ns.start - stamp).total_seconds() / 60) | round(0,'ceil') | int %}
+{% set preshow = valid and (warmup or day <= opening) and not gates and not clearing and not closed and not weather %}
 {% set traffic = states('sensor.msb_traffic_status') %}
 {% set counters_online = is_state('binary_sensor.msb_car_counter_online','on') and is_state('binary_sensor.msb_gate_counter_online','on') %}
 {% set car_online = is_state('binary_sensor.msb_car_counter_online','on') %}
@@ -51,9 +56,9 @@
 {% set tomorrow = valid and (stamp.date() + timedelta(days=1)).isoformat() == opening %}
 {% set opening_day = valid and day == opening %}
 {% set opening_time = ns.start.strftime('%I:%M %p').lstrip('0').replace(':00','') if valid else 'Unavailable' %}
-{% set announce = ['OPEN TOMORROW', opening_time] if tomorrow else ['OPEN TONIGHT',''] if opening_day else ['OPENS', as_datetime(opening).strftime('%b %d').upper()] if valid else ['',''] %}
+{% set announce = ['GATES OPEN IN', minutes_left|string ~ (' MINUTE' if minutes_left == 1 else ' MINUTES')] if warmup else ['OPEN TOMORROW', opening_time] if tomorrow else ['OPEN TONIGHT',''] if opening_day else ['OPENS', as_datetime(opening).strftime('%b %d').upper()] if valid else ['',''] %}
 {% set ha = {
-  'allowed': enabled and (weather or (not force_close and valid and (ns.advertising or gates or clearing or closed))),
+  'allowed': enabled and (weather or (not force_close and valid and (warmup or ns.advertising or gates or clearing or closed))),
   'weather_closed': weather, 'admissions_closed': closed, 'clearing_queue': clearing,
   'admitting': admitting, 'gates_open': gates, 'preshow': preshow, 'opening_day': opening_day,
   'promotion': is_state('input_boolean.msb_signs_promotion_enabled','on') and stamp.timestamp() < expires,
@@ -67,5 +72,5 @@
   'closing_time': ns.end.strftime('%I:%M %p').lstrip('0') if valid else 'Unavailable',
   'opening_time': opening_time, 'opening_announcement': announce,
   'in_park': states('sensor.msb_gate_counter_in_park_cars'), 'show_total': season_count,
-  'schedule_status': 'Weather closure' if weather else 'Entry closed' if closed else 'Clearing queue' if clearing else 'Force close — overlays suppressed' if force_close else 'Public show' if gates else 'Advertising' if preshow and ns.advertising else 'Outside sign schedule'
+  'schedule_status': 'Weather closure' if weather else 'Entry closed' if closed else 'Clearing queue' if clearing else 'Force close — overlays suppressed' if force_close else 'Public show' if gates else 'Pre-show countdown' if warmup else 'Advertising' if preshow and ns.advertising else 'Outside sign schedule'
 } %}

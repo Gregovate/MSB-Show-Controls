@@ -87,6 +87,19 @@ class TestHAContract(unittest.TestCase):
  def test_advertising_boundaries(self):
   for t,allowed in [('04:59:59',False),('05:00:00',True),('08:00:00',False),('16:00:00',True),('21:00:00',False)]:
    with self.subTest(t=t):self.assertEqual(payload(self.state,'2026-11-25T'+t)['ha']['allowed'],allowed)
+ def test_warmup_countdown_rotates_without_opening_counts(self):
+  self.state['input_datetime.production_radio_on']='16:30:00'
+  for day in ('2026-11-27','2026-11-28'):
+   for sign in ('HWY 42','Front Entrance'):
+    for clock,minutes in [('16:30:00','30 MINUTES'),('16:59:59','1 MINUTE')]:
+     items,ctx=self.items(day+'T'+clock,sign)
+     self.assertFalse(ctx['gates_open'])
+     self.assertEqual(next(m['lines'] for m in items if m['id']==9),['GATES OPEN IN',minutes])
+    self.assertFalse(any(m['lines'][0]=='GATES OPEN IN' for m in self.items(day+'T17:00:00',sign)[0]))
+  for stamp in ['2026-11-28T16:29:59','2026-12-24T16:45:00','2026-11-26T16:45:00']:
+   self.assertFalse(any(m['lines'][0]=='GATES OPEN IN' for m in self.items(stamp)[0]))
+  self.state['input_boolean.msb_show_force_close']='on'
+  self.assertEqual(self.items('2026-11-28T16:45:00')[0],[])
  def test_public_boundaries(self):
   for t,opened in [('16:59:59',False),('17:00:00',True),('20:59:59',True),('21:00:00',False)]:
    self.assertEqual(payload(self.state,'2026-11-27T'+t)['ha']['gates_open'],opened)

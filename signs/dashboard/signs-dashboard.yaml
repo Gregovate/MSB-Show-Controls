@@ -4,6 +4,19 @@ views:
   path: control
   icon: mdi:sign-text
   cards:
+  - type: vertical-stack
+    cards:
+    - type: markdown
+      content: >-
+        {% set ext = states('input_number.show_end_extension_min') | int(0) %}
+        ## {{ '🟠' if ext else '🕒' }} Tonight’s extension · +{{ ext }} min
+
+        **Entry closes {{ as_timestamp(states('sensor.msb_effective_entry_closing_time'), 0) | timestamp_custom('%-I:%M %p') if has_value('sensor.msb_effective_entry_closing_time') else '—' }} Central.** Adjust LOR separately.
+    - type: entities
+      show_header_toggle: false
+      entities:
+      - entity: input_number.show_end_extension_min
+        name: Extend tonight by (minutes)
   - type: markdown
     content: '# Sign schedule
 
@@ -19,7 +32,6 @@ views:
     entities:
     - input_select.msb_signs_admission_state
     - input_boolean.msb_signs_weather_closed
-    - input_number.show_end_extension_min
     - input_boolean.msb_sign2_wait_estimator_enabled
   - type: markdown
     content: '**Automatic:** public sign hours. **Clearing queue:** entries still accepted after cutoff; shows ALREADY
@@ -37,18 +49,11 @@ views:
     - sensor.msb_signs_error
     - sensor.msb_signs_wait_status
     show_header_toggle: false
-  - type: button
-    name: Apply opening advertising
-    icon: mdi:calendar-check
-    tap_action:
-      action: perform-action
-      perform_action: script.msb_signs_apply_opening_schedule
   - type: entities
     title: Sign controls
     entities:
     - input_boolean.msb_signs_enabled
     - input_boolean.msb_signs_gate_message_enabled
-    - input_number.show_end_extension_min
     - input_boolean.msb_show_force_close
     show_header_toggle: false
   - type: entities
@@ -65,6 +70,8 @@ views:
     - input_datetime.msb_signs_public_start_date
     - input_datetime.msb_show_end_date
     - input_datetime.msb_show_down_date
+    - entity: input_datetime.production_radio_on
+      name: Radio and countdown warm-up
     - input_datetime.msb_show_start_time
     - input_datetime.msb_show_end_time
     show_header_toggle: false
@@ -74,11 +81,17 @@ views:
     - sensor.msb_sign2_queue_wait_minutes
     - sensor.msb_effective_entry_closing_time
     - input_text.msb_signs_food_entity
-  - type: button
-    name: Add operational messages once
-    tap_action:
-      action: perform-action
-      perform_action: script.msb_signs_load_operations
+  - type: conditional
+    conditions:
+    - entity: input_boolean.msb_signs_operations_configured
+      state: 'off'
+    card:
+      type: button
+      show_icon: false
+      name: Add operational messages once
+      tap_action:
+        action: perform-action
+        perform_action: script.msb_signs_load_operations
   - type: entities
     title: Experimental Sign 2 model — field calibration
     show_header_toggle: false
