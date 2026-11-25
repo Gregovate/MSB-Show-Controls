@@ -1,0 +1,71 @@
+{# Executed by Home Assistant, using its configured America/Chicago timezone.
+   Public sign opening date stays independent of the counter season reset date. #}
+{% set stamp = now() %}
+{% set day = stamp.date().isoformat() %}
+{% set opening = states('input_datetime.msb_signs_public_start_date') %}
+{% set season_end = states('input_datetime.msb_show_end_date') %}
+{% set down = states('input_datetime.msb_show_down_date') %}
+{% set start_text = states('input_datetime.msb_show_start_time') %}
+{% set end_text = states('input_datetime.msb_show_end_time') %}
+{% set valid = start_text not in ['unknown','unavailable',''] and end_text not in ['unknown','unavailable',''] and opening not in ['unknown','unavailable',''] and season_end not in ['unknown','unavailable',''] %}
+{% set ns = namespace(start=stamp, end=stamp, advertising=false) %}
+{% set shared_end = as_datetime(states('sensor.msb_effective_entry_closing_time')) %}
+{% set shared_start = as_datetime(state_attr('sensor.msb_effective_entry_closing_time','public_start')) %}
+{% set valid = valid and shared_start is not none and shared_end is not none %}
+{% if valid %}{% set ns.start = shared_start %}{% set ns.end = shared_end %}{% endif %}
+{% set operating_day = ns.start.date().isoformat() %}
+{% set season = valid and opening <= operating_day <= season_end and operating_day != down %}
+{% set special = valid and is_state('input_boolean.msb_signs_special_event_enabled','on') and operating_day == states('input_datetime.msb_signs_special_event_date') %}
+{% set force_close = not is_state('input_boolean.msb_show_force_close','off') %}
+{% set gates = valid and (season or special) and ns.start <= stamp < ns.end and not force_close %}
+{% for offset in [-1,0] %}
+  {% for prefix in ['morning','evening'] %}
+    {% set a = states('input_datetime.msb_signs_' ~ prefix ~ '_start') %}
+    {% set b = states('input_datetime.msb_signs_' ~ prefix ~ '_end') %}
+    {% if a not in ['unknown','unavailable',''] and b not in ['unknown','unavailable',''] %}
+      {% set begin = today_at(a) + timedelta(days=offset) %}
+      {% set finish = today_at(b) + timedelta(days=offset) %}
+      {% if finish <= begin %}{% set finish = finish + timedelta(days=1) %}{% endif %}
+      {% if begin <= stamp < finish %}{% set ns.advertising = true %}{% endif %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+{% set enabled = is_state('input_boolean.msb_signs_enabled','on') %}
+{% set weather = is_state('input_boolean.msb_signs_weather_closed','on') %}
+{% set closed = is_state('input_select.msb_signs_admission_state','Closed') %}
+{% set clearing = is_state('input_select.msb_signs_admission_state','Clearing queue') and valid and opening <= day <= season_end and day != down %}
+{% set admitting = (gates or clearing) and not closed and not weather %}
+{% set preshow = valid and day <= opening and not gates and not clearing and not closed and not weather %}
+{% set traffic = states('sensor.msb_traffic_status') %}
+{% set counters_online = is_state('binary_sensor.msb_car_counter_online','on') and is_state('binary_sensor.msb_gate_counter_online','on') %}
+{% set car_online = is_state('binary_sensor.msb_car_counter_online','on') %}
+{% set tonight = states('sensor.msb_car_counter_enter_cars') %}
+{% set season_count = states('sensor.msb_car_counter_show_total_cars') %}
+{% set food_entity = states('input_text.msb_signs_food_entity') %}
+{% set food = states(food_entity) if food_entity.startswith('sensor.') else 'unknown' %}
+{# A queue-wait entity must measure Sign 2 -> entry. Never substitute the
+   existing msb_travel_time_estimate_min (time WITHIN the park). #}
+{% set wait_entity = 'sensor.msb_sign2_queue_wait_minutes' %}
+{% set wait = states(wait_entity) if wait_entity.startswith('sensor.') else 'unknown' %}
+{% set expires = as_timestamp(states('input_datetime.msb_signs_promotion_expires'), 0) %}
+{% set tomorrow = valid and (stamp.date() + timedelta(days=1)).isoformat() == opening %}
+{% set opening_day = valid and day == opening %}
+{% set opening_time = ns.start.strftime('%I:%M %p').lstrip('0').replace(':00','') if valid else 'Unavailable' %}
+{% set announce = ['OPEN TOMORROW', opening_time] if tomorrow else ['OPEN TONIGHT',''] if opening_day else ['OPENS', as_datetime(opening).strftime('%b %d').upper()] if valid else ['',''] %}
+{% set ha = {
+  'allowed': enabled and (weather or (not force_close and valid and (ns.advertising or gates or clearing or closed))),
+  'weather_closed': weather, 'admissions_closed': closed, 'clearing_queue': clearing,
+  'admitting': admitting, 'gates_open': gates, 'preshow': preshow, 'opening_day': opening_day,
+  'promotion': is_state('input_boolean.msb_signs_promotion_enabled','on') and stamp.timestamp() < expires,
+  'traffic_valid': counters_online and traffic in ['light','moderate','busy','very_busy'],
+  'traffic': traffic.replace('_',' ').upper(), 'traffic_key': traffic,
+  'tonight': (tonight | int | string) if car_online and is_number(tonight) and tonight | float >= 0 else none,
+  'season_total': (season_count | int | string) if car_online and is_number(season_count) and season_count | float >= 0 else none,
+  'food_lbs': (food | int | string) if is_number(food) and food | float >= 0 else none,
+  'wait_minutes': (wait | float | round(0,'ceil') | int | string) if admitting and counters_online and is_number(wait) and wait | float >= 0 and wait_entity != 'sensor.msb_travel_time_estimate_min' else none,
+  'wait_status': 'Missing HA queue-wait source' if not wait_entity.startswith('sensor.') else 'Wrong source: in-park travel time' if wait_entity == 'sensor.msb_travel_time_estimate_min' else 'Counter offline' if not counters_online else 'HA queue wait unavailable' if not is_number(wait) or wait | float < 0 else 'HA queue wait ready',
+  'closing_time': ns.end.strftime('%I:%M %p').lstrip('0') if valid else 'Unavailable',
+  'opening_time': opening_time, 'opening_announcement': announce,
+  'in_park': states('sensor.msb_gate_counter_in_park_cars'), 'show_total': season_count,
+  'schedule_status': 'Weather closure' if weather else 'Entry closed' if closed else 'Clearing queue' if clearing else 'Force close — overlays suppressed' if force_close else 'Public show' if gates else 'Advertising' if preshow and ns.advertising else 'Outside sign schedule'
+} %}

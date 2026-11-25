@@ -1,0 +1,2325 @@
+input_boolean:
+  msb_signs_enabled:
+    name: Sign Overlays Enabled
+  msb_signs_promotion_enabled:
+    name: Run Walk Advertising
+  msb_signs_gate_message_enabled:
+    name: Gates Open Message
+  msb_signs_special_event_enabled:
+    name: Special Event Uses Admin Gate Hours
+  msb_signs_configured:
+    name: Sign Settings Initialized
+  msb_signs_preshow_configured:
+    name: Pre-show Messages Initialized
+  msb_signs_weather_closed:
+    name: Emergency closure — WEATHER
+  msb_signs_operations_configured:
+    name: Operational messages initialized
+input_number:
+  msb_signs_screen_seconds:
+    name: Default Seconds Per Message
+    min: 1
+    max: 60
+    step: 1
+    mode: box
+    unit_of_measurement: s
+  msb_signs_hwy42_lor_seconds:
+    name: HWY 42 LOR Interval
+    min: 5
+    max: 900
+    step: 1
+    mode: box
+    unit_of_measurement: s
+  msb_signs_front_lor_seconds:
+    name: Front Entrance LOR Interval
+    min: 5
+    max: 900
+    step: 1
+    mode: box
+    unit_of_measurement: s
+  msb_signs_message_1_order:
+    name: 'Message 1: Order'
+    min: 1
+    max: 99
+    step: 1
+    mode: box
+  msb_signs_message_1_seconds:
+    name: 'Message 1: Seconds (0 = Default)'
+    min: 0
+    max: 60
+    step: 1
+    mode: box
+    unit_of_measurement: s
+  msb_signs_message_2_order:
+    name: 'Message 2: Order'
+    min: 1
+    max: 99
+    step: 1
+    mode: box
+  msb_signs_message_2_seconds:
+    name: 'Message 2: Seconds (0 = Default)'
+    min: 0
+    max: 60
+    step: 1
+    mode: box
+    unit_of_measurement: s
+  msb_signs_message_3_order:
+    name: 'Message 3: Order'
+    min: 1
+    max: 99
+    step: 1
+    mode: box
+  msb_signs_message_3_seconds:
+    name: 'Message 3: Seconds (0 = Default)'
+    min: 0
+    max: 60
+    step: 1
+    mode: box
+    unit_of_measurement: s
+  msb_signs_message_4_order:
+    name: 'Message 4: Order'
+    min: 1
+    max: 99
+    step: 1
+    mode: box
+  msb_signs_message_4_seconds:
+    name: 'Message 4: Seconds (0 = Default)'
+    min: 0
+    max: 60
+    step: 1
+    mode: box
+    unit_of_measurement: s
+  msb_signs_message_5_order:
+    name: 'Message 5: Order'
+    min: 1
+    max: 99
+    step: 1
+    mode: box
+  msb_signs_message_5_seconds:
+    name: 'Message 5: Seconds (0 = Default)'
+    min: 0
+    max: 60
+    step: 1
+    mode: box
+    unit_of_measurement: s
+  msb_signs_message_6_order:
+    name: 'Message 6: Order'
+    min: 1
+    max: 99
+    step: 1
+    mode: box
+  msb_signs_message_6_seconds:
+    name: 'Message 6: Seconds (0 = Default)'
+    min: 0
+    max: 60
+    step: 1
+    mode: box
+    unit_of_measurement: s
+  msb_signs_message_7_order:
+    name: 'Message 7: Order'
+    min: 1
+    max: 99
+    step: 1
+    mode: box
+  msb_signs_message_7_seconds:
+    name: 'Message 7: Seconds (0 = Default)'
+    min: 0
+    max: 60
+    step: 1
+    mode: box
+    unit_of_measurement: s
+  msb_signs_message_8_order:
+    name: 'Message 8: Order'
+    min: 1
+    max: 99
+    step: 1
+    mode: box
+  msb_signs_message_9_order:
+    name: 'Message 9: Order'
+    min: 1
+    max: 99
+    step: 1
+    mode: box
+  msb_signs_message_10_order:
+    name: 'Message 10: Order'
+    min: 1
+    max: 99
+    step: 1
+    mode: box
+  msb_signs_message_11_order:
+    name: 'Message 11: Order'
+    min: 1
+    max: 99
+    step: 1
+    mode: box
+  msb_signs_message_8_seconds:
+    name: 'Message 8: Seconds (0 = Default)'
+    min: 0
+    max: 60
+    step: 1
+    mode: box
+    unit_of_measurement: s
+  msb_signs_message_9_seconds:
+    name: 'Message 9: Seconds (0 = Default)'
+    min: 0
+    max: 60
+    step: 1
+    mode: box
+    unit_of_measurement: s
+  msb_signs_message_10_seconds:
+    name: 'Message 10: Seconds (0 = Default)'
+    min: 0
+    max: 60
+    step: 1
+    mode: box
+    unit_of_measurement: s
+  msb_signs_message_11_seconds:
+    name: 'Message 11: Seconds (0 = Default)'
+    min: 0
+    max: 60
+    step: 1
+    mode: box
+    unit_of_measurement: s
+  msb_signs_message_12_order:
+    name: 'Message 12: Order'
+    min: 1
+    max: 99
+    step: 1
+    mode: box
+  msb_signs_message_12_seconds:
+    name: 'Message 12: Seconds (0 = Default)'
+    min: 0
+    max: 60
+    step: 1
+    mode: box
+    unit_of_measurement: s
+  msb_signs_message_13_order:
+    name: 'Message 13: Order'
+    min: 1
+    max: 99
+    step: 1
+    mode: box
+  msb_signs_message_13_seconds:
+    name: 'Message 13: Seconds (0 = Default)'
+    min: 0
+    max: 60
+    step: 1
+    mode: box
+    unit_of_measurement: s
+  msb_signs_message_14_order:
+    name: 'Message 14: Order'
+    min: 1
+    max: 99
+    step: 1
+    mode: box
+  msb_signs_message_14_seconds:
+    name: 'Message 14: Seconds (0 = Default)'
+    min: 0
+    max: 60
+    step: 1
+    mode: box
+    unit_of_measurement: s
+  msb_signs_message_15_order:
+    name: 'Message 15: Order'
+    min: 1
+    max: 99
+    step: 1
+    mode: box
+  msb_signs_message_15_seconds:
+    name: 'Message 15: Seconds (0 = Default)'
+    min: 0
+    max: 60
+    step: 1
+    mode: box
+    unit_of_measurement: s
+  msb_signs_message_16_order:
+    name: 'Message 16: Order'
+    min: 1
+    max: 99
+    step: 1
+    mode: box
+  msb_signs_message_16_seconds:
+    name: 'Message 16: Seconds (0 = Default)'
+    min: 0
+    max: 60
+    step: 1
+    mode: box
+    unit_of_measurement: s
+  msb_signs_message_17_order:
+    name: 'Message 17: Order'
+    min: 1
+    max: 99
+    step: 1
+    mode: box
+  msb_signs_message_17_seconds:
+    name: 'Message 17: Seconds (0 = Default)'
+    min: 0
+    max: 60
+    step: 1
+    mode: box
+    unit_of_measurement: s
+input_datetime:
+  msb_signs_morning_start:
+    name: Advertising Morning Start
+    has_date: false
+    has_time: true
+  msb_signs_morning_end:
+    name: Advertising Morning End
+    has_date: false
+    has_time: true
+  msb_signs_evening_start:
+    name: Advertising Evening Start
+    has_date: false
+    has_time: true
+  msb_signs_evening_end:
+    name: Advertising Evening End
+    has_date: false
+    has_time: true
+  msb_signs_promotion_expires:
+    name: Run Walk Advertising Expires
+    has_date: true
+    has_time: true
+  msb_signs_special_event_date:
+    name: Special Event Date
+    has_date: true
+    has_time: false
+  msb_signs_public_start_date:
+    name: Sign public start date
+    has_date: true
+    has_time: false
+    initial: '2026-11-27'
+input_text:
+  msb_signs_color_open:
+    name: Open Background RGB
+    max: 16
+  msb_signs_color_closed:
+    name: Closed Background RGB
+    max: 16
+  msb_signs_color_light:
+    name: Light Background RGB
+    max: 16
+  msb_signs_color_moderate:
+    name: Moderate Background RGB
+    max: 16
+  msb_signs_color_busy:
+    name: Busy Background RGB
+    max: 16
+  msb_signs_color_very_busy:
+    name: Very Busy Background RGB
+    max: 16
+  msb_signs_message_1_line1:
+    name: 'Message 1: Top Line'
+    max: 80
+  msb_signs_message_1_line2:
+    name: 'Message 1: Bottom Line'
+    max: 80
+  msb_signs_message_1_background:
+    name: 'Message 1: Fixed Background RGB'
+    max: 16
+  msb_signs_message_1_text_color:
+    name: 'Message 1: Text RGB'
+    max: 16
+  msb_signs_message_2_line1:
+    name: 'Message 2: Top Line'
+    max: 80
+  msb_signs_message_2_line2:
+    name: 'Message 2: Bottom Line'
+    max: 80
+  msb_signs_message_2_background:
+    name: 'Message 2: Fixed Background RGB'
+    max: 16
+  msb_signs_message_2_text_color:
+    name: 'Message 2: Text RGB'
+    max: 16
+  msb_signs_message_3_line1:
+    name: 'Message 3: Top Line'
+    max: 80
+  msb_signs_message_3_line2:
+    name: 'Message 3: Bottom Line'
+    max: 80
+  msb_signs_message_3_background:
+    name: 'Message 3: Fixed Background RGB'
+    max: 16
+  msb_signs_message_3_text_color:
+    name: 'Message 3: Text RGB'
+    max: 16
+  msb_signs_message_4_line1:
+    name: 'Message 4: Top Line'
+    max: 80
+  msb_signs_message_4_line2:
+    name: 'Message 4: Bottom Line'
+    max: 80
+  msb_signs_message_4_background:
+    name: 'Message 4: Fixed Background RGB'
+    max: 16
+  msb_signs_message_4_text_color:
+    name: 'Message 4: Text RGB'
+    max: 16
+  msb_signs_message_5_line1:
+    name: 'Message 5: Top Line'
+    max: 80
+  msb_signs_message_5_line2:
+    name: 'Message 5: Bottom Line'
+    max: 80
+  msb_signs_message_5_background:
+    name: 'Message 5: Fixed Background RGB'
+    max: 16
+  msb_signs_message_5_text_color:
+    name: 'Message 5: Text RGB'
+    max: 16
+  msb_signs_message_6_line1:
+    name: 'Message 6: Top Line'
+    max: 80
+  msb_signs_message_6_line2:
+    name: 'Message 6: Bottom Line'
+    max: 80
+  msb_signs_message_6_background:
+    name: 'Message 6: Fixed Background RGB'
+    max: 16
+  msb_signs_message_6_text_color:
+    name: 'Message 6: Text RGB'
+    max: 16
+  msb_signs_message_7_line1:
+    name: 'Message 7: Top Line'
+    max: 80
+  msb_signs_message_7_line2:
+    name: 'Message 7: Bottom Line'
+    max: 80
+  msb_signs_message_7_background:
+    name: 'Message 7: Fixed Background RGB'
+    max: 16
+  msb_signs_message_7_text_color:
+    name: 'Message 7: Text RGB'
+    max: 16
+  msb_signs_message_8_line1:
+    name: 'Message 8: Top Line'
+    max: 80
+  msb_signs_message_9_line1:
+    name: 'Message 9: Top Line'
+    max: 80
+  msb_signs_message_10_line1:
+    name: 'Message 10: Top Line'
+    max: 80
+  msb_signs_message_11_line1:
+    name: 'Message 11: Top Line'
+    max: 80
+  msb_signs_message_8_line2:
+    name: 'Message 8: Bottom Line'
+    max: 80
+  msb_signs_message_9_line2:
+    name: 'Message 9: Bottom Line'
+    max: 80
+  msb_signs_message_10_line2:
+    name: 'Message 10: Bottom Line'
+    max: 80
+  msb_signs_message_11_line2:
+    name: 'Message 11: Bottom Line'
+    max: 80
+  msb_signs_message_8_background:
+    name: 'Message 8: Fixed Background RGB'
+    max: 16
+  msb_signs_message_9_background:
+    name: 'Message 9: Fixed Background RGB'
+    max: 16
+  msb_signs_message_10_background:
+    name: 'Message 10: Fixed Background RGB'
+    max: 16
+  msb_signs_message_11_background:
+    name: 'Message 11: Fixed Background RGB'
+    max: 16
+  msb_signs_message_8_text_color:
+    name: 'Message 8: Text RGB'
+    max: 16
+  msb_signs_message_9_text_color:
+    name: 'Message 9: Text RGB'
+    max: 16
+  msb_signs_message_10_text_color:
+    name: 'Message 10: Text RGB'
+    max: 16
+  msb_signs_message_11_text_color:
+    name: 'Message 11: Text RGB'
+    max: 16
+  msb_signs_food_entity:
+    name: Food pounds entity
+    max: 100
+  msb_signs_message_12_line1:
+    name: 'Message 12: Top Line'
+    max: 80
+  msb_signs_message_12_line2:
+    name: 'Message 12: Bottom Line'
+    max: 80
+  msb_signs_message_12_background:
+    name: 'Message 12: Fixed Background RGB'
+    max: 16
+  msb_signs_message_12_text_color:
+    name: 'Message 12: Text RGB'
+    max: 16
+  msb_signs_message_13_line1:
+    name: 'Message 13: Top Line'
+    max: 80
+  msb_signs_message_13_line2:
+    name: 'Message 13: Bottom Line'
+    max: 80
+  msb_signs_message_13_background:
+    name: 'Message 13: Fixed Background RGB'
+    max: 16
+  msb_signs_message_13_text_color:
+    name: 'Message 13: Text RGB'
+    max: 16
+  msb_signs_message_14_line1:
+    name: 'Message 14: Top Line'
+    max: 80
+  msb_signs_message_14_line2:
+    name: 'Message 14: Bottom Line'
+    max: 80
+  msb_signs_message_14_background:
+    name: 'Message 14: Fixed Background RGB'
+    max: 16
+  msb_signs_message_14_text_color:
+    name: 'Message 14: Text RGB'
+    max: 16
+  msb_signs_message_15_line1:
+    name: 'Message 15: Top Line'
+    max: 80
+  msb_signs_message_15_line2:
+    name: 'Message 15: Bottom Line'
+    max: 80
+  msb_signs_message_15_background:
+    name: 'Message 15: Fixed Background RGB'
+    max: 16
+  msb_signs_message_15_text_color:
+    name: 'Message 15: Text RGB'
+    max: 16
+  msb_signs_message_16_line1:
+    name: 'Message 16: Top Line'
+    max: 80
+  msb_signs_message_16_line2:
+    name: 'Message 16: Bottom Line'
+    max: 80
+  msb_signs_message_16_background:
+    name: 'Message 16: Fixed Background RGB'
+    max: 16
+  msb_signs_message_16_text_color:
+    name: 'Message 16: Text RGB'
+    max: 16
+  msb_signs_message_17_line1:
+    name: 'Message 17: Top Line'
+    max: 80
+  msb_signs_message_17_line2:
+    name: 'Message 17: Bottom Line'
+    max: 80
+  msb_signs_message_17_background:
+    name: 'Message 17: Fixed Background RGB'
+    max: 16
+  msb_signs_message_17_text_color:
+    name: 'Message 17: Text RGB'
+    max: 16
+input_select:
+  msb_signs_message_1_target:
+    name: 'Message 1: Sign'
+    options:
+    - Disabled
+    - Both
+    - HWY 42
+    - Front Entrance
+  msb_signs_message_1_condition:
+    name: 'Message 1: Show When'
+    options:
+    - Always
+    - Gates open
+    - Gates closed
+    - Promotion active
+    - Traffic available
+    - Pre-show
+    - Public operation
+    - Clearing queue
+  msb_signs_message_1_color_mode:
+    name: 'Message 1: Background Mode'
+    options:
+    - Fixed
+    - Gates
+    - Traffic
+  msb_signs_message_2_target:
+    name: 'Message 2: Sign'
+    options:
+    - Disabled
+    - Both
+    - HWY 42
+    - Front Entrance
+  msb_signs_message_2_condition:
+    name: 'Message 2: Show When'
+    options:
+    - Always
+    - Gates open
+    - Gates closed
+    - Promotion active
+    - Traffic available
+    - Pre-show
+    - Public operation
+    - Clearing queue
+  msb_signs_message_2_color_mode:
+    name: 'Message 2: Background Mode'
+    options:
+    - Fixed
+    - Gates
+    - Traffic
+  msb_signs_message_3_target:
+    name: 'Message 3: Sign'
+    options:
+    - Disabled
+    - Both
+    - HWY 42
+    - Front Entrance
+  msb_signs_message_3_condition:
+    name: 'Message 3: Show When'
+    options:
+    - Always
+    - Gates open
+    - Gates closed
+    - Promotion active
+    - Traffic available
+    - Pre-show
+    - Public operation
+    - Clearing queue
+  msb_signs_message_3_color_mode:
+    name: 'Message 3: Background Mode'
+    options:
+    - Fixed
+    - Gates
+    - Traffic
+  msb_signs_message_4_target:
+    name: 'Message 4: Sign'
+    options:
+    - Disabled
+    - Both
+    - HWY 42
+    - Front Entrance
+  msb_signs_message_4_condition:
+    name: 'Message 4: Show When'
+    options:
+    - Always
+    - Gates open
+    - Gates closed
+    - Promotion active
+    - Traffic available
+    - Pre-show
+    - Public operation
+    - Clearing queue
+  msb_signs_message_4_color_mode:
+    name: 'Message 4: Background Mode'
+    options:
+    - Fixed
+    - Gates
+    - Traffic
+  msb_signs_message_5_target:
+    name: 'Message 5: Sign'
+    options:
+    - Disabled
+    - Both
+    - HWY 42
+    - Front Entrance
+  msb_signs_message_5_condition:
+    name: 'Message 5: Show When'
+    options:
+    - Always
+    - Gates open
+    - Gates closed
+    - Promotion active
+    - Traffic available
+    - Pre-show
+    - Public operation
+    - Clearing queue
+  msb_signs_message_5_color_mode:
+    name: 'Message 5: Background Mode'
+    options:
+    - Fixed
+    - Gates
+    - Traffic
+  msb_signs_message_6_target:
+    name: 'Message 6: Sign'
+    options:
+    - Disabled
+    - Both
+    - HWY 42
+    - Front Entrance
+  msb_signs_message_6_condition:
+    name: 'Message 6: Show When'
+    options:
+    - Always
+    - Gates open
+    - Gates closed
+    - Promotion active
+    - Traffic available
+    - Pre-show
+    - Public operation
+    - Clearing queue
+  msb_signs_message_6_color_mode:
+    name: 'Message 6: Background Mode'
+    options:
+    - Fixed
+    - Gates
+    - Traffic
+  msb_signs_message_7_target:
+    name: 'Message 7: Sign'
+    options:
+    - Disabled
+    - Both
+    - HWY 42
+    - Front Entrance
+  msb_signs_message_7_condition:
+    name: 'Message 7: Show When'
+    options:
+    - Always
+    - Gates open
+    - Gates closed
+    - Promotion active
+    - Traffic available
+    - Pre-show
+    - Public operation
+    - Clearing queue
+  msb_signs_message_7_color_mode:
+    name: 'Message 7: Background Mode'
+    options:
+    - Fixed
+    - Gates
+    - Traffic
+  msb_signs_message_8_target:
+    name: 'Message 8: Sign'
+    options:
+    - Disabled
+    - Both
+    - HWY 42
+    - Front Entrance
+  msb_signs_message_9_target:
+    name: 'Message 9: Sign'
+    options:
+    - Disabled
+    - Both
+    - HWY 42
+    - Front Entrance
+  msb_signs_message_10_target:
+    name: 'Message 10: Sign'
+    options:
+    - Disabled
+    - Both
+    - HWY 42
+    - Front Entrance
+  msb_signs_message_11_target:
+    name: 'Message 11: Sign'
+    options: &id001
+    - Disabled
+    - Both
+    - HWY 42
+    - Front Entrance
+  msb_signs_message_8_condition:
+    name: 'Message 8: Show When'
+    options:
+    - Always
+    - Gates open
+    - Gates closed
+    - Promotion active
+    - Traffic available
+    - Pre-show
+    - Public operation
+    - Clearing queue
+  msb_signs_message_9_condition:
+    name: 'Message 9: Show When'
+    options:
+    - Always
+    - Gates open
+    - Gates closed
+    - Promotion active
+    - Traffic available
+    - Pre-show
+    - Public operation
+    - Clearing queue
+  msb_signs_message_10_condition:
+    name: 'Message 10: Show When'
+    options:
+    - Always
+    - Gates open
+    - Gates closed
+    - Promotion active
+    - Traffic available
+    - Pre-show
+    - Public operation
+    - Clearing queue
+  msb_signs_message_11_condition:
+    name: 'Message 11: Show When'
+    options: &id002
+    - Always
+    - Gates open
+    - Gates closed
+    - Promotion active
+    - Traffic available
+    - Pre-show
+    - Public operation
+    - Clearing queue
+    - Public operation
+    - Clearing queue
+    - Public operation
+    - Clearing queue
+    - Public operation
+    - Clearing queue
+    - Public operation
+    - Clearing queue
+    - Public operation
+    - Clearing queue
+    - Public operation
+    - Clearing queue
+  msb_signs_message_8_color_mode:
+    name: 'Message 8: Background Mode'
+    options:
+    - Fixed
+    - Gates
+    - Traffic
+  msb_signs_message_9_color_mode:
+    name: 'Message 9: Background Mode'
+    options:
+    - Fixed
+    - Gates
+    - Traffic
+  msb_signs_message_10_color_mode:
+    name: 'Message 10: Background Mode'
+    options:
+    - Fixed
+    - Gates
+    - Traffic
+  msb_signs_message_11_color_mode:
+    name: 'Message 11: Background Mode'
+    options: &id003
+    - Fixed
+    - Gates
+    - Traffic
+  msb_signs_admission_state:
+    name: Admission status
+    options:
+    - Automatic
+    - Clearing queue
+    - Closed
+    initial: Automatic
+  msb_signs_message_12_target:
+    name: 'Message 12: Sign'
+    options: *id001
+  msb_signs_message_12_condition:
+    name: 'Message 12: Show When'
+    options: *id002
+  msb_signs_message_12_color_mode:
+    name: 'Message 12: Background Mode'
+    options: *id003
+  msb_signs_message_13_target:
+    name: 'Message 13: Sign'
+    options: *id001
+  msb_signs_message_13_condition:
+    name: 'Message 13: Show When'
+    options: *id002
+  msb_signs_message_13_color_mode:
+    name: 'Message 13: Background Mode'
+    options: *id003
+  msb_signs_message_14_target:
+    name: 'Message 14: Sign'
+    options: *id001
+  msb_signs_message_14_condition:
+    name: 'Message 14: Show When'
+    options: *id002
+  msb_signs_message_14_color_mode:
+    name: 'Message 14: Background Mode'
+    options: *id003
+  msb_signs_message_15_target:
+    name: 'Message 15: Sign'
+    options: *id001
+  msb_signs_message_15_condition:
+    name: 'Message 15: Show When'
+    options: *id002
+  msb_signs_message_15_color_mode:
+    name: 'Message 15: Background Mode'
+    options: *id003
+  msb_signs_message_16_target:
+    name: 'Message 16: Sign'
+    options: *id001
+  msb_signs_message_16_condition:
+    name: 'Message 16: Show When'
+    options: *id002
+  msb_signs_message_16_color_mode:
+    name: 'Message 16: Background Mode'
+    options: *id003
+  msb_signs_message_17_target:
+    name: 'Message 17: Sign'
+    options: *id001
+  msb_signs_message_17_condition:
+    name: 'Message 17: Show When'
+    options: *id002
+  msb_signs_message_17_color_mode:
+    name: 'Message 17: Background Mode'
+    options: *id003
+script:
+  msb_signs_initialize:
+    alias: 'Signs: Initialize Settings Once'
+    mode: single
+    sequence:
+    - condition: state
+      entity_id: input_boolean.msb_signs_configured
+      state: 'off'
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_screen_seconds
+      data:
+        value: 5
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_hwy42_lor_seconds
+      data:
+        value: 60
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_front_lor_seconds
+      data:
+        value: 60
+    - action: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.msb_signs_morning_start
+      data:
+        time: 05:00:00
+    - action: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.msb_signs_morning_end
+      data:
+        time: 08:00:00
+    - action: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.msb_signs_evening_start
+      data:
+        time: '16:00:00'
+    - action: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.msb_signs_evening_end
+      data:
+        time: '21:00:00'
+    - action: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.msb_signs_promotion_expires
+      data:
+        datetime: '2026-11-21 19:00:00'
+    - action: input_datetime.set_datetime
+      target:
+        entity_id: input_datetime.msb_signs_special_event_date
+      data:
+        date: '2026-11-19'
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_color_open
+      data:
+        value: 0,12,0
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_color_closed
+      data:
+        value: 12,0,0
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_color_light
+      data:
+        value: 0,12,0
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_color_moderate
+      data:
+        value: 8,8,0
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_color_busy
+      data:
+        value: 16,3,0
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_color_very_busy
+      data:
+        value: 12,0,12
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_1_line1
+      data:
+        value: HOLIDAY LIGHTS
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_1_line2
+      data:
+        value: RUN / WALK
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_1_condition
+      data:
+        option: Promotion active
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_1_color_mode
+      data:
+        option: Fixed
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_1_background
+      data:
+        value: 0,0,12
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_1_target
+      data:
+        option: Both
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_1_text_color
+      data:
+        value: 100,100,100
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_1_order
+      data:
+        value: 1
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_1_seconds
+      data:
+        value: 0
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_2_line1
+      data:
+        value: THIS SATURDAY
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_2_line2
+      data:
+        value: NOV 21
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_2_condition
+      data:
+        option: Promotion active
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_2_color_mode
+      data:
+        option: Fixed
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_2_background
+      data:
+        value: 0,0,12
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_2_target
+      data:
+        option: Both
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_2_text_color
+      data:
+        value: 100,100,100
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_2_order
+      data:
+        value: 2
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_2_seconds
+      data:
+        value: 0
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_3_line1
+      data:
+        value: 5K RUN
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_3_line2
+      data:
+        value: 1 MILE WALK
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_3_condition
+      data:
+        option: Promotion active
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_3_color_mode
+      data:
+        option: Fixed
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_3_background
+      data:
+        value: 0,0,12
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_3_target
+      data:
+        option: Both
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_3_text_color
+      data:
+        value: 100,100,100
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_3_order
+      data:
+        value: 3
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_3_seconds
+      data:
+        value: 0
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_4_line1
+      data:
+        value: GATES OPEN
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_4_line2
+      data:
+        value: UNTIL {closing_time}
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_4_condition
+      data:
+        option: Gates open
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_4_color_mode
+      data:
+        option: Gates
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_4_background
+      data:
+        value: 0,12,0
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_4_target
+      data:
+        option: Both
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_4_text_color
+      data:
+        value: 100,100,100
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_4_order
+      data:
+        value: 4
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_4_seconds
+      data:
+        value: 0
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_5_line1
+      data:
+        value: TRAFFIC
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_5_line2
+      data:
+        value: '{traffic}'
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_5_condition
+      data:
+        option: Traffic available
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_5_color_mode
+      data:
+        option: Traffic
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_5_background
+      data:
+        value: 0,12,0
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_5_target
+      data:
+        option: Both
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_5_text_color
+      data:
+        value: 100,100,100
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_5_order
+      data:
+        value: 5
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_5_seconds
+      data:
+        value: 0
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_6_line1
+      data:
+        value: THANK YOU
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_6_line2
+      data:
+        value: FOR VISITING
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_6_condition
+      data:
+        option: Always
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_6_color_mode
+      data:
+        option: Fixed
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_6_background
+      data:
+        value: 0,0,12
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_6_target
+      data:
+        option: Disabled
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_6_text_color
+      data:
+        value: 100,100,100
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_6_order
+      data:
+        value: 6
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_6_seconds
+      data:
+        value: 0
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_7_line1
+      data:
+        value: ''
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_7_line2
+      data:
+        value: ''
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_7_condition
+      data:
+        option: Always
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_7_color_mode
+      data:
+        option: Fixed
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_7_background
+      data:
+        value: 0,0,12
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_7_target
+      data:
+        option: Disabled
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_7_text_color
+      data:
+        value: 100,100,100
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_7_order
+      data:
+        value: 7
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_7_seconds
+      data:
+        value: 0
+    - action: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.msb_signs_enabled
+    - action: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.msb_signs_promotion_enabled
+    - action: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.msb_signs_gate_message_enabled
+    - action: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.msb_signs_special_event_enabled
+    - action: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.msb_signs_configured
+  msb_signs_release:
+    alias: 'Signs: Release Both to LOR'
+    mode: restart
+    sequence:
+    - action: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.msb_signs_enabled
+    - action: mqtt.publish
+      data:
+        topic: msb/signs/bridge/release
+        payload: RELEASE
+        qos: 1
+        retain: false
+  msb_signs_load_preshow:
+    alias: 'Signs: Load Pre-show Messages Once'
+    mode: single
+    sequence:
+    - condition: state
+      entity_id: input_boolean.msb_signs_preshow_configured
+      state: 'off'
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_8_line1
+      data:
+        value: MAKING SPIRITS BRIGHT
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_8_line2
+      data:
+        value: OPENS NOV 27
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_8_background
+      data:
+        value: 0,0,12
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_8_text_color
+      data:
+        value: 100,100,100
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_8_target
+      data:
+        option: Both
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_8_condition
+      data:
+        option: Pre-show
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_8_color_mode
+      data:
+        option: Fixed
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_8_order
+      data:
+        value: 8
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_8_seconds
+      data:
+        value: 7
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_9_line1
+      data:
+        value: EVERY NIGHT
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_9_line2
+      data:
+        value: GATES OPEN 5 PM
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_9_background
+      data:
+        value: 0,0,12
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_9_text_color
+      data:
+        value: 100,100,100
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_9_target
+      data:
+        option: Both
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_9_condition
+      data:
+        option: Pre-show
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_9_color_mode
+      data:
+        option: Fixed
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_9_order
+      data:
+        value: 9
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_9_seconds
+      data:
+        value: 7
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_10_line1
+      data:
+        value: THROUGH NEW
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_10_line2
+      data:
+        value: YEAR'S EVE
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_10_background
+      data:
+        value: 0,0,12
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_10_text_color
+      data:
+        value: 100,100,100
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_10_target
+      data:
+        option: Both
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_10_condition
+      data:
+        option: Pre-show
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_10_color_mode
+      data:
+        option: Fixed
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_10_order
+      data:
+        value: 10
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_10_seconds
+      data:
+        value: 7
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_11_line1
+      data:
+        value: CLOSED
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_11_line2
+      data:
+        value: CHRISTMAS EVE
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_11_background
+      data:
+        value: 0,0,12
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_11_text_color
+      data:
+        value: 100,100,100
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_11_target
+      data:
+        option: Both
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_11_condition
+      data:
+        option: Pre-show
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_11_color_mode
+      data:
+        option: Fixed
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_11_order
+      data:
+        value: 11
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_11_seconds
+      data:
+        value: 7
+    - action: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.msb_signs_preshow_configured
+  msb_signs_apply_opening_schedule:
+    alias: 'Signs: Apply Opening Advertising'
+    mode: single
+    sequence:
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_8_target
+      data:
+        option: Both
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_8_condition
+      data:
+        option: Pre-show
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_8_color_mode
+      data:
+        option: Fixed
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_8_line1
+      data:
+        value: MAKING
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_8_line2
+      data:
+        value: SPIRITS BRIGHT
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_8_background
+      data:
+        value: 0,0,12
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_8_text_color
+      data:
+        value: 100,100,100
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_8_order
+      data:
+        value: 8
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_8_seconds
+      data:
+        value: 7
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_9_target
+      data:
+        option: Both
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_9_condition
+      data:
+        option: Pre-show
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_9_color_mode
+      data:
+        option: Fixed
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_9_line1
+      data:
+        value: EVERY NIGHT
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_9_line2
+      data:
+        value: GATES OPEN 5 PM
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_9_background
+      data:
+        value: 0,0,12
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_9_text_color
+      data:
+        value: 100,100,100
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_9_order
+      data:
+        value: 9
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_9_seconds
+      data:
+        value: 7
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_10_target
+      data:
+        option: Both
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_10_condition
+      data:
+        option: Pre-show
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_10_color_mode
+      data:
+        option: Fixed
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_10_line1
+      data:
+        value: THROUGH NEW
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_10_line2
+      data:
+        value: YEAR’S EVE
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_10_background
+      data:
+        value: 0,0,12
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_10_text_color
+      data:
+        value: 100,100,100
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_10_order
+      data:
+        value: 10
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_10_seconds
+      data:
+        value: 7
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_11_target
+      data:
+        option: Both
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_11_condition
+      data:
+        option: Pre-show
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_11_color_mode
+      data:
+        option: Fixed
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_11_line1
+      data:
+        value: CLOSED
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_11_line2
+      data:
+        value: CHRISTMAS EVE
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_11_background
+      data:
+        value: 0,0,12
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_11_text_color
+      data:
+        value: 100,100,100
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_11_order
+      data:
+        value: 11
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_11_seconds
+      data:
+        value: 7
+    - action: input_boolean.turn_off
+      target:
+        entity_id:
+        - input_boolean.msb_signs_promotion_enabled
+        - input_boolean.msb_signs_special_event_enabled
+    - action: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.msb_signs_enabled
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_4_target
+      data:
+        option: Both
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_4_condition
+      data:
+        option: Gates open
+    - action: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.msb_signs_gate_message_enabled
+  msb_signs_load_operations:
+    alias: 'Signs: Add operational messages once'
+    mode: single
+    sequence:
+    - condition: state
+      entity_id: input_boolean.msb_signs_operations_configured
+      state: 'off'
+    - action: script.msb_sign2_initialize_model
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_12_line1
+      data:
+        value: TRAFFIC TONIGHT
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_12_line2
+      data:
+        value: '{tonight} CARS'
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_12_background
+      data:
+        value: 0,0,12
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_12_text_color
+      data:
+        value: 100,100,100
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_12_target
+      data:
+        option: Both
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_12_condition
+      data:
+        option: Public operation
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_12_color_mode
+      data:
+        option: Fixed
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_12_order
+      data:
+        value: 12
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_12_seconds
+      data:
+        value: 7
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_13_line1
+      data:
+        value: TRAFFIC SEASON
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_13_line2
+      data:
+        value: '{season_total} CARS'
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_13_background
+      data:
+        value: 0,0,12
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_13_text_color
+      data:
+        value: 100,100,100
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_13_target
+      data:
+        option: Both
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_13_condition
+      data:
+        option: Public operation
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_13_color_mode
+      data:
+        option: Fixed
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_13_order
+      data:
+        value: 13
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_13_seconds
+      data:
+        value: 7
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_14_line1
+      data:
+        value: EST WAIT TIME
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_14_line2
+      data:
+        value: '{wait_minutes} MIN'
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_14_background
+      data:
+        value: 0,0,12
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_14_text_color
+      data:
+        value: 100,100,100
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_14_target
+      data:
+        option: HWY 42
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_14_condition
+      data:
+        option: Public operation
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_14_color_mode
+      data:
+        option: Fixed
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_14_order
+      data:
+        value: 14
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_14_seconds
+      data:
+        value: 7
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_15_line1
+      data:
+        value: ALREADY IN LINE?
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_15_line2
+      data:
+        value: YOU MAY ENTER
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_15_background
+      data:
+        value: 0,0,12
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_15_text_color
+      data:
+        value: 100,100,100
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_15_target
+      data:
+        option: Both
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_15_condition
+      data:
+        option: Clearing queue
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_15_color_mode
+      data:
+        option: Fixed
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_15_order
+      data:
+        value: 15
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_15_seconds
+      data:
+        value: 7
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_16_line1
+      data:
+        value: ENTRY CLOSES
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_16_line2
+      data:
+        value: '{closing_time}'
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_16_background
+      data:
+        value: 0,0,12
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_16_text_color
+      data:
+        value: 100,100,100
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_16_target
+      data:
+        option: Both
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_16_condition
+      data:
+        option: Public operation
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_16_color_mode
+      data:
+        option: Fixed
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_16_order
+      data:
+        value: 16
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_16_seconds
+      data:
+        value: 7
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_17_line1
+      data:
+        value: FOOD COLLECTED
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_17_line2
+      data:
+        value: '{food_lbs} LBS'
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_17_background
+      data:
+        value: 0,0,12
+    - action: input_text.set_value
+      target:
+        entity_id: input_text.msb_signs_message_17_text_color
+      data:
+        value: 100,100,100
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_17_target
+      data:
+        option: Disabled
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_17_condition
+      data:
+        option: Public operation
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_17_color_mode
+      data:
+        option: Fixed
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_17_order
+      data:
+        value: 17
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_signs_message_17_seconds
+      data:
+        value: 7
+    - action: input_select.select_option
+      target:
+        entity_id: input_select.msb_signs_message_4_target
+      data:
+        option: Disabled
+    - action: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.msb_signs_operations_configured
+automation:
+- id: msb_signs_publish_v2
+  alias: 'Signs: Publish Live Controls'
+  mode: restart
+  triggers:
+  - trigger: homeassistant
+    event: start
+  - trigger: time_pattern
+    seconds: /10
+  - trigger: state
+    entity_id:
+    - input_boolean.msb_signs_enabled
+    - input_boolean.msb_signs_promotion_enabled
+    - input_boolean.msb_signs_gate_message_enabled
+    - input_boolean.msb_signs_special_event_enabled
+    - input_boolean.msb_signs_configured
+    - input_number.msb_signs_screen_seconds
+    - input_number.msb_signs_hwy42_lor_seconds
+    - input_number.msb_signs_front_lor_seconds
+    - input_number.msb_signs_message_1_order
+    - input_number.msb_signs_message_1_seconds
+    - input_number.msb_signs_message_2_order
+    - input_number.msb_signs_message_2_seconds
+    - input_number.msb_signs_message_3_order
+    - input_number.msb_signs_message_3_seconds
+    - input_number.msb_signs_message_4_order
+    - input_number.msb_signs_message_4_seconds
+    - input_number.msb_signs_message_5_order
+    - input_number.msb_signs_message_5_seconds
+    - input_number.msb_signs_message_6_order
+    - input_number.msb_signs_message_6_seconds
+    - input_number.msb_signs_message_7_order
+    - input_number.msb_signs_message_7_seconds
+    - input_datetime.msb_signs_morning_start
+    - input_datetime.msb_signs_morning_end
+    - input_datetime.msb_signs_evening_start
+    - input_datetime.msb_signs_evening_end
+    - input_datetime.msb_signs_promotion_expires
+    - input_datetime.msb_signs_special_event_date
+    - input_text.msb_signs_color_open
+    - input_text.msb_signs_color_closed
+    - input_text.msb_signs_color_light
+    - input_text.msb_signs_color_moderate
+    - input_text.msb_signs_color_busy
+    - input_text.msb_signs_color_very_busy
+    - input_text.msb_signs_message_1_line1
+    - input_text.msb_signs_message_1_line2
+    - input_text.msb_signs_message_1_background
+    - input_text.msb_signs_message_1_text_color
+    - input_text.msb_signs_message_2_line1
+    - input_text.msb_signs_message_2_line2
+    - input_text.msb_signs_message_2_background
+    - input_text.msb_signs_message_2_text_color
+    - input_text.msb_signs_message_3_line1
+    - input_text.msb_signs_message_3_line2
+    - input_text.msb_signs_message_3_background
+    - input_text.msb_signs_message_3_text_color
+    - input_text.msb_signs_message_4_line1
+    - input_text.msb_signs_message_4_line2
+    - input_text.msb_signs_message_4_background
+    - input_text.msb_signs_message_4_text_color
+    - input_text.msb_signs_message_5_line1
+    - input_text.msb_signs_message_5_line2
+    - input_text.msb_signs_message_5_background
+    - input_text.msb_signs_message_5_text_color
+    - input_text.msb_signs_message_6_line1
+    - input_text.msb_signs_message_6_line2
+    - input_text.msb_signs_message_6_background
+    - input_text.msb_signs_message_6_text_color
+    - input_text.msb_signs_message_7_line1
+    - input_text.msb_signs_message_7_line2
+    - input_text.msb_signs_message_7_background
+    - input_text.msb_signs_message_7_text_color
+    - input_select.msb_signs_message_1_target
+    - input_select.msb_signs_message_1_condition
+    - input_select.msb_signs_message_1_color_mode
+    - input_select.msb_signs_message_2_target
+    - input_select.msb_signs_message_2_condition
+    - input_select.msb_signs_message_2_color_mode
+    - input_select.msb_signs_message_3_target
+    - input_select.msb_signs_message_3_condition
+    - input_select.msb_signs_message_3_color_mode
+    - input_select.msb_signs_message_4_target
+    - input_select.msb_signs_message_4_condition
+    - input_select.msb_signs_message_4_color_mode
+    - input_select.msb_signs_message_5_target
+    - input_select.msb_signs_message_5_condition
+    - input_select.msb_signs_message_5_color_mode
+    - input_select.msb_signs_message_6_target
+    - input_select.msb_signs_message_6_condition
+    - input_select.msb_signs_message_6_color_mode
+    - input_select.msb_signs_message_7_target
+    - input_select.msb_signs_message_7_condition
+    - input_select.msb_signs_message_7_color_mode
+    - input_datetime.msb_show_start_date
+    - input_datetime.msb_show_end_date
+    - input_datetime.msb_show_down_date
+    - input_datetime.msb_show_start_time
+    - input_datetime.msb_show_end_time
+    - input_number.show_end_extension_min
+    - input_text.msb_traffic_extension_date
+    - input_boolean.msb_show_force_close
+    - sensor.msb_traffic_status
+    - sensor.msb_enter_rate_cars_s
+    - sensor.msb_exit_rate_cars_s
+    - sensor.msb_gate_counter_in_park_cars
+    - sensor.msb_car_counter_show_total_cars
+    - binary_sensor.msb_car_counter_online
+    - binary_sensor.msb_gate_counter_online
+    - input_text.msb_signs_message_8_line1
+    - input_text.msb_signs_message_9_line1
+    - input_text.msb_signs_message_10_line1
+    - input_text.msb_signs_message_11_line1
+    - input_text.msb_signs_message_8_line2
+    - input_text.msb_signs_message_9_line2
+    - input_text.msb_signs_message_10_line2
+    - input_text.msb_signs_message_11_line2
+    - input_text.msb_signs_message_8_background
+    - input_text.msb_signs_message_9_background
+    - input_text.msb_signs_message_10_background
+    - input_text.msb_signs_message_11_background
+    - input_text.msb_signs_message_8_text_color
+    - input_text.msb_signs_message_9_text_color
+    - input_text.msb_signs_message_10_text_color
+    - input_text.msb_signs_message_11_text_color
+    - input_number.msb_signs_message_8_order
+    - input_number.msb_signs_message_9_order
+    - input_number.msb_signs_message_10_order
+    - input_number.msb_signs_message_11_order
+    - input_number.msb_signs_message_8_seconds
+    - input_number.msb_signs_message_9_seconds
+    - input_number.msb_signs_message_10_seconds
+    - input_number.msb_signs_message_11_seconds
+    - input_select.msb_signs_message_8_target
+    - input_select.msb_signs_message_9_target
+    - input_select.msb_signs_message_10_target
+    - input_select.msb_signs_message_11_target
+    - input_select.msb_signs_message_8_condition
+    - input_select.msb_signs_message_9_condition
+    - input_select.msb_signs_message_10_condition
+    - input_select.msb_signs_message_11_condition
+    - input_select.msb_signs_message_8_color_mode
+    - input_select.msb_signs_message_9_color_mode
+    - input_select.msb_signs_message_10_color_mode
+    - input_select.msb_signs_message_11_color_mode
+    - input_boolean.msb_signs_preshow_configured
+    - input_boolean.msb_signs_weather_closed
+    - input_number.msb_signs_message_12_order
+    - input_number.msb_signs_message_12_seconds
+    - input_number.msb_signs_message_13_order
+    - input_number.msb_signs_message_13_seconds
+    - input_number.msb_signs_message_14_order
+    - input_number.msb_signs_message_14_seconds
+    - input_number.msb_signs_message_15_order
+    - input_number.msb_signs_message_15_seconds
+    - input_number.msb_signs_message_16_order
+    - input_number.msb_signs_message_16_seconds
+    - input_number.msb_signs_message_17_order
+    - input_number.msb_signs_message_17_seconds
+    - input_select.msb_signs_admission_state
+    - input_select.msb_signs_message_12_target
+    - input_select.msb_signs_message_12_condition
+    - input_select.msb_signs_message_12_color_mode
+    - input_select.msb_signs_message_13_target
+    - input_select.msb_signs_message_13_condition
+    - input_select.msb_signs_message_13_color_mode
+    - input_select.msb_signs_message_14_target
+    - input_select.msb_signs_message_14_condition
+    - input_select.msb_signs_message_14_color_mode
+    - input_select.msb_signs_message_15_target
+    - input_select.msb_signs_message_15_condition
+    - input_select.msb_signs_message_15_color_mode
+    - input_select.msb_signs_message_16_target
+    - input_select.msb_signs_message_16_condition
+    - input_select.msb_signs_message_16_color_mode
+    - input_select.msb_signs_message_17_target
+    - input_select.msb_signs_message_17_condition
+    - input_select.msb_signs_message_17_color_mode
+    - input_text.msb_signs_food_entity
+    - input_text.msb_signs_message_12_line1
+    - input_text.msb_signs_message_12_line2
+    - input_text.msb_signs_message_12_background
+    - input_text.msb_signs_message_12_text_color
+    - input_text.msb_signs_message_13_line1
+    - input_text.msb_signs_message_13_line2
+    - input_text.msb_signs_message_13_background
+    - input_text.msb_signs_message_13_text_color
+    - input_text.msb_signs_message_14_line1
+    - input_text.msb_signs_message_14_line2
+    - input_text.msb_signs_message_14_background
+    - input_text.msb_signs_message_14_text_color
+    - input_text.msb_signs_message_15_line1
+    - input_text.msb_signs_message_15_line2
+    - input_text.msb_signs_message_15_background
+    - input_text.msb_signs_message_15_text_color
+    - input_text.msb_signs_message_16_line1
+    - input_text.msb_signs_message_16_line2
+    - input_text.msb_signs_message_16_background
+    - input_text.msb_signs_message_16_text_color
+    - input_text.msb_signs_message_17_line1
+    - input_text.msb_signs_message_17_line2
+    - input_text.msb_signs_message_17_background
+    - input_text.msb_signs_message_17_text_color
+    - input_datetime.msb_signs_public_start_date
+    - sensor.msb_car_counter_enter_cars
+    - input_boolean.msb_signs_operations_configured
+  - trigger: mqtt
+    topic: msb/signs/bridge/availability
+    payload: online
+  conditions:
+  - condition: state
+    entity_id: input_boolean.msb_signs_configured
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.msb_signs_preshow_configured
+    state: 'on'
+  actions:
+  - action: mqtt.publish
+    data:
+      topic: msb/signs/bridge/control
+      qos: 1
+      retain: true
+      payload: "{# Executed by Home Assistant, using its configured America/Chicago timezone.\n   Public sign opening\
+        \ date stays independent of the counter season reset date. #}\n{% set stamp = now() %}\n{% set day = stamp.date().isoformat()\
+        \ %}\n{% set opening = states('input_datetime.msb_signs_public_start_date') %}\n{% set season_end = states('input_datetime.msb_show_end_date')\
+        \ %}\n{% set down = states('input_datetime.msb_show_down_date') %}\n{% set start_text = states('input_datetime.msb_show_start_time')\
+        \ %}\n{% set end_text = states('input_datetime.msb_show_end_time') %}\n{% set valid = start_text not in\
+        \ ['unknown','unavailable',''] and end_text not in ['unknown','unavailable',''] and opening not in ['unknown','unavailable','']\
+        \ and season_end not in ['unknown','unavailable',''] %}\n{% set ns = namespace(start=stamp, end=stamp, advertising=false)\
+        \ %}\n{% set shared_end = as_datetime(states('sensor.msb_effective_entry_closing_time')) %}\n{% set shared_start\
+        \ = as_datetime(state_attr('sensor.msb_effective_entry_closing_time','public_start')) %}\n{% set valid =\
+        \ valid and shared_start is not none and shared_end is not none %}\n{% if valid %}{% set ns.start = shared_start\
+        \ %}{% set ns.end = shared_end %}{% endif %}\n{% set operating_day = ns.start.date().isoformat() %}\n{%\
+        \ set season = valid and opening <= operating_day <= season_end and operating_day != down %}\n{% set special\
+        \ = valid and is_state('input_boolean.msb_signs_special_event_enabled','on') and operating_day == states('input_datetime.msb_signs_special_event_date')\
+        \ %}\n{% set force_close = not is_state('input_boolean.msb_show_force_close','off') %}\n{% set gates = valid\
+        \ and (season or special) and ns.start <= stamp < ns.end and not force_close %}\n{% for offset in [-1,0]\
+        \ %}\n  {% for prefix in ['morning','evening'] %}\n    {% set a = states('input_datetime.msb_signs_' ~ prefix\
+        \ ~ '_start') %}\n    {% set b = states('input_datetime.msb_signs_' ~ prefix ~ '_end') %}\n    {% if a not\
+        \ in ['unknown','unavailable',''] and b not in ['unknown','unavailable',''] %}\n      {% set begin = today_at(a)\
+        \ + timedelta(days=offset) %}\n      {% set finish = today_at(b) + timedelta(days=offset) %}\n      {% if\
+        \ finish <= begin %}{% set finish = finish + timedelta(days=1) %}{% endif %}\n      {% if begin <= stamp\
+        \ < finish %}{% set ns.advertising = true %}{% endif %}\n    {% endif %}\n  {% endfor %}\n{% endfor %}\n\
+        {% set enabled = is_state('input_boolean.msb_signs_enabled','on') %}\n{% set weather = is_state('input_boolean.msb_signs_weather_closed','on')\
+        \ %}\n{% set closed = is_state('input_select.msb_signs_admission_state','Closed') %}\n{% set clearing =\
+        \ is_state('input_select.msb_signs_admission_state','Clearing queue') and valid and opening <= day <= season_end\
+        \ and day != down %}\n{% set admitting = (gates or clearing) and not closed and not weather %}\n{% set preshow\
+        \ = valid and day <= opening and not gates and not clearing and not closed and not weather %}\n{% set traffic\
+        \ = states('sensor.msb_traffic_status') %}\n{% set counters_online = is_state('binary_sensor.msb_car_counter_online','on')\
+        \ and is_state('binary_sensor.msb_gate_counter_online','on') %}\n{% set car_online = is_state('binary_sensor.msb_car_counter_online','on')\
+        \ %}\n{% set tonight = states('sensor.msb_car_counter_enter_cars') %}\n{% set season_count = states('sensor.msb_car_counter_show_total_cars')\
+        \ %}\n{% set food_entity = states('input_text.msb_signs_food_entity') %}\n{% set food = states(food_entity)\
+        \ if food_entity.startswith('sensor.') else 'unknown' %}\n{# A queue-wait entity must measure Sign 2 ->\
+        \ entry. Never substitute the\n   existing msb_travel_time_estimate_min (time WITHIN the park). #}\n{% set\
+        \ wait_entity = 'sensor.msb_sign2_queue_wait_minutes' %}\n{% set wait = states(wait_entity) if wait_entity.startswith('sensor.')\
+        \ else 'unknown' %}\n{% set expires = as_timestamp(states('input_datetime.msb_signs_promotion_expires'),\
+        \ 0) %}\n{% set tomorrow = valid and (stamp.date() + timedelta(days=1)).isoformat() == opening %}\n{% set\
+        \ opening_day = valid and day == opening %}\n{% set opening_time = ns.start.strftime('%I:%M %p').lstrip('0').replace(':00','')\
+        \ if valid else 'Unavailable' %}\n{% set announce = ['OPEN TOMORROW', opening_time] if tomorrow else ['OPEN\
+        \ TONIGHT',''] if opening_day else ['OPENS', as_datetime(opening).strftime('%b %d').upper()] if valid else\
+        \ ['',''] %}\n{% set ha = {\n  'allowed': enabled and (weather or (not force_close and valid and (ns.advertising\
+        \ or gates or clearing or closed))),\n  'weather_closed': weather, 'admissions_closed': closed, 'clearing_queue':\
+        \ clearing,\n  'admitting': admitting, 'gates_open': gates, 'preshow': preshow, 'opening_day': opening_day,\n\
+        \  'promotion': is_state('input_boolean.msb_signs_promotion_enabled','on') and stamp.timestamp() < expires,\n\
+        \  'traffic_valid': counters_online and traffic in ['light','moderate','busy','very_busy'],\n  'traffic':\
+        \ traffic.replace('_',' ').upper(), 'traffic_key': traffic,\n  'tonight': (tonight | int | string) if car_online\
+        \ and is_number(tonight) and tonight | float >= 0 else none,\n  'season_total': (season_count | int | string)\
+        \ if car_online and is_number(season_count) and season_count | float >= 0 else none,\n  'food_lbs': (food\
+        \ | int | string) if is_number(food) and food | float >= 0 else none,\n  'wait_minutes': (wait | float |\
+        \ round(0,'ceil') | int | string) if admitting and counters_online and is_number(wait) and wait | float\
+        \ >= 0 and wait_entity != 'sensor.msb_travel_time_estimate_min' else none,\n  'wait_status': 'Missing HA\
+        \ queue-wait source' if not wait_entity.startswith('sensor.') else 'Wrong source: in-park travel time' if\
+        \ wait_entity == 'sensor.msb_travel_time_estimate_min' else 'Counter offline' if not counters_online else\
+        \ 'HA queue wait unavailable' if not is_number(wait) or wait | float < 0 else 'HA queue wait ready',\n \
+        \ 'closing_time': ns.end.strftime('%I:%M %p').lstrip('0') if valid else 'Unavailable',\n  'opening_time':\
+        \ opening_time, 'opening_announcement': announce,\n  'in_park': states('sensor.msb_gate_counter_in_park_cars'),\
+        \ 'show_total': season_count,\n  'schedule_status': 'Weather closure' if weather else 'Entry closed' if\
+        \ closed else 'Clearing queue' if clearing else 'Force close — overlays suppressed' if force_close else\
+        \ 'Public show' if gates else 'Advertising' if preshow and ns.advertising else 'Outside sign schedule'\n\
+        } %}\n\n{% set message_list = namespace(messages=[]) %}\n{% for i in range(1,18) %}\n  {% set p = 'msb_signs_message_'\
+        \ ~ i ~ '_' %}\n  {% set message_list.messages = message_list.messages + [{\n    'id': i, 'target': states('input_select.'\
+        \ ~ p ~ 'target'),\n    'condition': states('input_select.' ~ p ~ 'condition'),\n    'color_mode': states('input_select.'\
+        \ ~ p ~ 'color_mode'),\n    'line1': states('input_text.' ~ p ~ 'line1'), 'line2': states('input_text.'\
+        \ ~ p ~ 'line2'),\n    'background': states('input_text.' ~ p ~ 'background'),\n    'text_color': states('input_text.'\
+        \ ~ p ~ 'text_color'),\n    'order': states('input_number.' ~ p ~ 'order') | int(1),\n    'seconds': states('input_number.'\
+        \ ~ p ~ 'seconds') | int(0)\n  }] %}\n{% endfor %}\n{{ {\n  'schema': 3, 'sent_at': now().timestamp(),\n\
+        \  'enabled': is_state('input_boolean.msb_signs_enabled','on'),\n  'gate_message_enabled': is_state('input_boolean.msb_signs_gate_message_enabled','on'),\n\
+        \  'screen_seconds': states('input_number.msb_signs_screen_seconds') | int(5),\n  'lor_seconds': {\n   \
+        \ 'HWY 42': states('input_number.msb_signs_hwy42_lor_seconds') | int(30),\n    'Front Entrance': states('input_number.msb_signs_front_lor_seconds')\
+        \ | int(30)\n  },\n  'ha': ha,\n  'colors': {\n    'open': states('input_text.msb_signs_color_open'),\n\
+        \    'closed': states('input_text.msb_signs_color_closed'),\n    'light': states('input_text.msb_signs_color_light'),\n\
+        \    'moderate': states('input_text.msb_signs_color_moderate'),\n    'busy': states('input_text.msb_signs_color_busy'),\n\
+        \    'very_busy': states('input_text.msb_signs_color_very_busy')\n  },\n  'messages': message_list.messages\n\
+        } | to_json }}"
+mqtt:
+  sensor:
+  - name: HWY 42 Activity
+    unique_id: msb_signs_hwy42
+    default_entity_id: sensor.msb_signs_hwy42
+    state_topic: msb/signs/bridge/state
+    value_template: '{{ value_json.hwy42 }}'
+    availability_topic: msb/signs/bridge/availability
+    payload_available: online
+    payload_not_available: offline
+    expire_after: 35
+  - name: Front Entrance Activity
+    unique_id: msb_signs_front
+    default_entity_id: sensor.msb_signs_front
+    state_topic: msb/signs/bridge/state
+    value_template: '{{ value_json.front }}'
+    availability_topic: msb/signs/bridge/availability
+    payload_available: online
+    payload_not_available: offline
+    expire_after: 35
+  - name: Effective Gate Closing Time
+    unique_id: msb_signs_closing_time
+    default_entity_id: sensor.msb_signs_closing_time
+    state_topic: msb/signs/bridge/state
+    value_template: '{{ value_json.closing_time }}'
+    availability_topic: msb/signs/bridge/availability
+    payload_available: online
+    payload_not_available: offline
+    expire_after: 35
+  - name: Sign Bridge Error
+    unique_id: msb_signs_error
+    default_entity_id: sensor.msb_signs_error
+    state_topic: msb/signs/bridge/state
+    value_template: '{{ value_json.error }}'
+    availability_topic: msb/signs/bridge/availability
+    payload_available: online
+    payload_not_available: offline
+    expire_after: 35
+  - name: Sign Schedule
+    unique_id: msb_signs_schedule
+    default_entity_id: sensor.msb_signs_schedule
+    state_topic: msb/signs/bridge/state
+    value_template: '{{ value_json.schedule_status | default(''Waiting for bridge update'') }}'
+    expire_after: 35
+  - name: Sign Bridge Version
+    unique_id: msb_signs_version
+    default_entity_id: sensor.msb_signs_version
+    state_topic: msb/signs/bridge/state
+    value_template: '{{ value_json.version | default(''Older bridge'') }}'
+    expire_after: 35
+  - name: Sign 2 Wait Source
+    unique_id: msb_signs_wait_status
+    default_entity_id: sensor.msb_signs_wait_status
+    state_topic: msb/signs/bridge/state
+    value_template: '{{ value_json.wait_status | default(''Waiting for bridge update'') }}'
+    expire_after: 35
+  binary_sensor:
+  - name: Sign Bridge Online
+    unique_id: msb_signs_online
+    default_entity_id: binary_sensor.msb_signs_online
+    state_topic: msb/signs/bridge/availability
+    payload_on: online
+    payload_off: offline
+    device_class: connectivity
+  - name: Sign Controls Fresh
+    unique_id: msb_signs_controls_fresh
+    default_entity_id: binary_sensor.msb_signs_controls_fresh
+    state_topic: msb/signs/bridge/state
+    value_template: '{{ ''ON'' if value_json.controls_fresh else ''OFF'' }}'
+    expire_after: 35

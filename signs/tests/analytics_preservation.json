@@ -1,0 +1,20 @@
+{
+  "msb_enter_rate_cars_min": "7a5f24d6b1a8d6fee870e94b48ded8e548c0ab78831b06ee803891e747ec69c9",
+  "msb_exit_rate_cars_min": "95d6856abe56df7e1af68d3faa6615e4343ce9f0c984d6d5f2459c1d930dab9f",
+  "msb_car_counter_time_between_cars_ms_valid": "0dff7087c351f0ce1a4e4b34374c0497fd450a28e74280d63088aaa4254d4a77",
+  "msb_flow_delta_cars_min": "80e027a9dd3034ed061bffd4f7ea04704f77fbb83bf1861feb3d70a90abe85c8",
+  "msb_flow_delta_smoothed_cars_min": "10e0ea8227313ff3ca9937566f9a0ae5bf2e1d61ff80a0616074708585248651",
+  "msb_in_park_cars_band": "12b679d9dbd775dc8ed97a50649626aaeed318595487aeaaffc65fd0a27910b6",
+  "msb_travel_time_estimate_min": "eceafaf8a5d807016f44b79b28ec5a1689899529cad74a4b6583c8f8d1924e29",
+  "msb_travel_time_band": "83b7d18e61005ae6d9f0123348e0c9155b301c81611b9dae34e87537cd58cee1",
+  "msb_traffic_pressure": "886caf780ec3839025aabbd897f541d26e310c45a5d15011f94bb24d0cd4c016",
+  "msb_in_park_cars_canonical": "1beab8300bdd218c711873e85c56fdae7d131874974f5127be8b9882db456254",
+  "msb_traffic_status": "45f8b2437bd6e10929f34ebf077e634014336487288d1a245d38f17c442acbc8",
+  "msb_flow_health": "5d0aa15bf6a626d255fdf97fa48846b609ded6e8e0b56c9c2b97a666409918e4",
+  "msb_traffic_status_reason": "16aa18f47169c9f4dccbbf65a9b803e5b8523e22712dfea2a62c5595a3b3f580",
+  "msb_traffic_status_snapshot": "5c13e5b442d61bd3df7272547a43be8f9ca5e4f037543a5b4ca59362be6d5f04",
+  "msb_traffic_status_json": "1032ec35c7d6f0b1ff44c1ea8da70d6b1f9ac66254e23dc2b2aca1196809e4ef",
+  "msb_lane_2_advisory": "1151a2f387713dd9947d564a99d4b842a4d5f3b57587b792422130eba0d83450",
+  "msb_merger_director_advisory": "1900316067ddf8b437b922a00ab0fb9b8942a949e0813e9c319ed24d95bd297e",
+  "msb_lane_2_compliance": "006a3ebda1374c5bb650deeff07338bf1875d4f696d1b94992279d060451f40a"
+}

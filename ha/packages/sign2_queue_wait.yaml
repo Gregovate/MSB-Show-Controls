@@ -1,0 +1,73 @@
+input_boolean:
+  msb_sign2_wait_estimator_enabled:
+    name: Enable experimental HA Sign 2 wait estimate
+  msb_sign2_model_initialized:
+    name: Sign 2 planning model initialized
+input_number:
+  msb_sign2_vehicle_pitch_ft:
+    name: Queue vehicle pitch — planning assumption
+    min: 10
+    max: 60
+    step: 0.1
+    mode: box
+    unit_of_measurement: ft
+  msb_sign2_free_flow_mph:
+    name: Sign 2 free-flow speed — planning assumption
+    min: 1
+    max: 30
+    step: 1
+    mode: box
+    unit_of_measurement: mph
+template:
+- sensor:
+  - name: MSB Sign 2 Queue Wait Minutes
+    unique_id: msb_sign2_queue_wait_minutes
+    default_entity_id: sensor.msb_sign2_queue_wait_minutes
+    unit_of_measurement: min
+    state_class: measurement
+    availability: "{{ is_state('input_boolean.msb_sign2_wait_estimator_enabled','on')\n and is_state('binary_sensor.msb_show_open','on')\n\
+      \ and is_state('binary_sensor.msb_car_counter_online','on')\n and is_state('binary_sensor.msb_gate_counter_online','on')\n\
+      \ and states('input_boolean.lane_2_open') in ['on','off']\n and is_number(states('sensor.msb_in_park_cars_canonical'))\n\
+      \ and states('sensor.msb_in_park_cars_canonical') | float >= 0\n and is_number(states('sensor.msb_enter_rate_cars_s'))\n\
+      \ and is_number(states('sensor.msb_exit_rate_cars_s'))\n and states('sensor.msb_exit_rate_cars_s') | float\
+      \ >= 0\n and states('sensor.msb_traffic_status') in ['light','moderate','busy','very_busy']\n and states('sensor.msb_enter_rate_cars_s')\
+      \ | float > 0\n and not (states('sensor.msb_in_park_cars_canonical') | float >= 120\n          and states('sensor.msb_exit_rate_cars_s')\
+      \ | float <= 0) }}"
+    state: "{# Planning model, not measured highway queue tracking. See docs/signs.md. #}\n{% set inpark = states('sensor.msb_in_park_cars_canonical')\
+      \ | float(0) %}\n{% set enter = states('sensor.msb_enter_rate_cars_s') | float(0) * 60 %}\n{% set exits =\
+      \ states('sensor.msb_exit_rate_cars_s') | float(0) * 60 %}\n{% set pitch = states('input_number.msb_sign2_vehicle_pitch_ft')\
+      \ | float(26.4) %}\n{% set speed = states('input_number.msb_sign2_free_flow_mph') | float(5) %}\n{% set lanes\
+      \ = 2 if is_state('input_boolean.lane_2_open','on') else 1 %}\n{% set ahead = (807 * lanes / pitch) | round(0,'ceil')\
+      \ %}\n{% set free_minutes = 807 / (speed * 88) %}\n{% set status = states('sensor.msb_traffic_status') %}\n\
+      {# Entry throughput alone misses downstream blockage. When the park is loaded\n   and still building, constrain\
+      \ service by observed departures as well. #}\n{% set rate = [enter,exits] | min if inpark >= 120 and enter\
+      \ > exits else enter %}\n{% if enter <= 0 or rate <= 0 %}{{ none }}\n{% elif status == 'light' and inpark\
+      \ < 80 %}{{ free_minutes | round(0,'ceil') | int }}\n{% else %}{{ [free_minutes, ahead/rate] | max | round(0,'ceil')\
+      \ | int }}{% endif %}\n"
+    attributes:
+      basis: 'Planning estimate: Sign 2 to car counter, not in-park travel time'
+      segment_ft: 807
+      vehicle_pitch_ft: '{{ states(''input_number.msb_sign2_vehicle_pitch_ft'') }}'
+      lane_model: '{{ ''Two lanes over full segment (upper bias)'' if is_state(''input_boolean.lane_2_open'',''on'')
+        else ''One lane'' }}'
+      calibration: Experimental; validate against actual Sign 2-to-entry elapsed time
+script:
+  msb_sign2_initialize_model:
+    alias: 'Sign 2: Initialize planning model once'
+    sequence:
+    - condition: state
+      entity_id: input_boolean.msb_sign2_model_initialized
+      state: 'off'
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_sign2_vehicle_pitch_ft
+      data:
+        value: 26.4
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.msb_sign2_free_flow_mph
+      data:
+        value: 5
+    - action: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.msb_sign2_model_initialized

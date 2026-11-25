@@ -1,0 +1,110 @@
+title: Signs
+views:
+- title: Control
+  path: control
+  icon: mdi:sign-text
+  cards:
+  - type: markdown
+    content: '# Sign schedule
+
+      All times Central. The sign opening date does not reset counter totals. Public end time and extensions use
+      the existing HA controls.
+
+
+      Thursday: OPEN TOMORROW / opening time. Friday before opening: OPEN TONIGHT, then GATES OPEN / opening time.
+      At public opening: operational messages. No automatic CLOSED message at cutoff.'
+  - type: entities
+    title: Admissions and emergency closure
+    show_header_toggle: false
+    entities:
+    - input_select.msb_signs_admission_state
+    - input_boolean.msb_signs_weather_closed
+    - input_number.show_end_extension_min
+    - input_boolean.msb_sign2_wait_estimator_enabled
+  - type: markdown
+    content: '**Automatic:** public sign hours. **Clearing queue:** entries still accepted after cutoff; shows ALREADY
+      IN LINE / YOU MAY ENTER. **Closed:** explicitly ends admission. **Weather:** exclusive red CLOSED / WEATHER,
+      even if Show Force Close is on; master overlays must still be enabled. It remains until you turn Weather off.'
+  - type: entities
+    title: What the bridge is doing
+    entities:
+    - sensor.msb_signs_version
+    - sensor.msb_signs_schedule
+    - binary_sensor.msb_signs_online
+    - binary_sensor.msb_signs_controls_fresh
+    - sensor.msb_signs_hwy42
+    - sensor.msb_signs_front
+    - sensor.msb_signs_error
+    - sensor.msb_signs_wait_status
+    show_header_toggle: false
+  - type: button
+    name: Apply opening advertising
+    icon: mdi:calendar-check
+    tap_action:
+      action: perform-action
+      perform_action: script.msb_signs_apply_opening_schedule
+  - type: entities
+    title: Sign controls
+    entities:
+    - input_boolean.msb_signs_enabled
+    - input_boolean.msb_signs_gate_message_enabled
+    - input_number.show_end_extension_min
+    - input_boolean.msb_show_force_close
+    show_header_toggle: false
+  - type: entities
+    title: Advertising times
+    entities:
+    - input_datetime.msb_signs_morning_start
+    - input_datetime.msb_signs_morning_end
+    - input_datetime.msb_signs_evening_start
+    - input_datetime.msb_signs_evening_end
+    show_header_toggle: false
+  - type: entities
+    title: Sign opening date and shared HA hours
+    entities:
+    - input_datetime.msb_signs_public_start_date
+    - input_datetime.msb_show_end_date
+    - input_datetime.msb_show_down_date
+    - input_datetime.msb_show_start_time
+    - input_datetime.msb_show_end_time
+    show_header_toggle: false
+  - type: entities
+    title: HA sources — no manual wait estimate
+    entities:
+    - sensor.msb_sign2_queue_wait_minutes
+    - sensor.msb_effective_entry_closing_time
+    - input_text.msb_signs_food_entity
+  - type: button
+    name: Add operational messages once
+    tap_action:
+      action: perform-action
+      perform_action: script.msb_signs_load_operations
+  - type: entities
+    title: Experimental Sign 2 model — field calibration
+    show_header_toggle: false
+    entities:
+    - input_number.msb_sign2_vehicle_pitch_ft
+    - input_number.msb_sign2_free_flow_mph
+- title: Advertising grid
+  path: pre-show
+  icon: mdi:format-text
+  panel: true
+  cards:
+  - type: custom:msb-sign-message-grid
+    message_ids:
+    - 8
+    - 9
+    - 10
+    - 11
+- title: Message grid
+  path: advanced
+  icon: mdi:table-edit
+  panel: true
+  cards:
+  - type: custom:msb-sign-message-grid
+- title: Colors
+  path: colors
+  icon: mdi:palette
+  panel: true
+  cards:
+  - type: custom:msb-sign-color-grid

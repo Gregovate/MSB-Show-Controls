@@ -1,0 +1,22 @@
+name: MSB Sign Bridge
+version: 0.3.1
+slug: msb_sign_bridge
+description: Independent matrix sign rotations controlled by Home Assistant MQTT
+arch:
+- amd64
+startup: application
+boot: auto
+init: false
+host_network: true
+options:
+  mqtt_host: core-mosquitto
+  mqtt_port: 1883
+  mqtt_username: ''
+  mqtt_password: ''
+  lighting_ip: 10.10.5.4
+schema:
+  mqtt_host: str
+  mqtt_port: port
+  mqtt_username: str
+  mqtt_password: password
+  lighting_ip: str

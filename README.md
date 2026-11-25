@@ -102,3 +102,11 @@ MSB-Show-Controls/
     traffic_flow_diagrams.md        # Logical flow of cars through park
     reset_flow_diagram.md           # When / how resets are allowed
     show_timing_state_machine.md    # How preshow/main/closed/cleanup interact
+
+## Implemented sign app
+
+[MSB Signs source and installation](signs/README.md) contains the maintained MQTT-to-sACN
+bridge, HA package, editable grids and tests. [Sign operating contract](docs/signs.md)
+records actual source entities, shared extension controls, measured highway distances,
+prior decisions and the experimental HA Sign 2 queue-wait model. Older placeholder HA exports
+are not the sign app's implementation.

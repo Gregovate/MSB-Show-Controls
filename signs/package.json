@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "scripts": {
+    "test": "node tests/test_grid.cjs"
+  },
+  "devDependencies": {
+    "jsdom": "31.0.1"
+  }
+}

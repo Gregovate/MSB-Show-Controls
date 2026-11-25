@@ -49,3 +49,8 @@ ha/exports/*-auto.yaml
 # Local notes / scratchpads
 notes/
 scratch/
+
+# Signs development artifacts
+__pycache__/
+*.pyc
+node_modules/
