@@ -1,849 +1,637 @@
 views:
   - type: sections
-    max_columns: 4
+    max_columns: 2
     title: ShowData
     path: show-control
     sections:
+    - type: grid
+      cards:
       - type: grid
-        column_span: 2
+        columns: 3
         square: false
         cards:
-          - type: heading
-            grid_options:
-              columns: full
-            heading: Calendar
-            heading_style: title
-          - type: grid
-            grid_options:
-              columns: full
-            square: false
-            columns: 3
-            cards:
-              - type: custom:button-card
-                entity: sensor.msb_car_counter_days_running
-                name: Show Day
-                icon: mdi:calendar
-                layout: vertical
-                show_state: true
-                styles:
-                  card:
-                    - padding: 10px
-                    - border-radius: 16px
-                  state:
-                    - font-size: 22px
-                    - font-weight: bold
-                  name:
-                    - font-size: 14px
-              - type: custom:button-card
-                entity: sensor.msb_date_display
-                name: Date
-                show_icon: false
-                layout: vertical
-                show_state: true
-                styles:
-                  card:
-                    - padding: 10px
-                    - border-radius: 16px
-                  state:
-                    - font-size: 22px
-                    - font-weight: bold
-                  name:
-                    - font-size: 14px
-              - type: custom:button-card
-                entity: sensor.msb_current_time_display
-                name: Time
-                icon: mdi:clock-outline
-                layout: vertical
-                show_state: true
-                styles:
-                  card:
-                    - padding: 10px
-                    - border-radius: 16px
-                  state:
-                    - font-size: 22px
-                    - font-weight: bold
-                  name:
-                    - font-size: 14px
-          - type: grid
-            square: false
-            columns: 2
-            grid_options:
-              columns: full
-            cards:
-              - type: custom:mushroom-template-card
-                entity: binary_sensor.msb_show_open
-                primary: Show status
-                icon: mdi:traffic-light
-                secondary: >-
-                  {{ {'on':'Open','off':'Closed'}.get(states(entity),
-                  'Unavailable') }}
-                color: '{{ {''on'':''green'',''off'':''red''}.get(states(entity), ''grey'') }}'
-                tap_action:
-                  action: more-info
-              - type: custom:mushroom-template-card
-                entity: cover.traffic_ghost_controls_ghost_controls
-                primary: Entrance gate
-                secondary: >-
-                  {{ states(entity) | capitalize if has_value(entity) else 'Unavailable' }}
-                icon: "{{ 'mdi:gate-open' if is_state(entity, 'open') else 'mdi:gate' }}"
-                color: >-
-                  {{ {'open':'green', 'closed':'red', 'opening':'amber', 'closing':'amber'}.get(states(entity), 'grey') }}
-                tap_action:
-                  action: none
-                hold_action:
-                  action: none
-                double_tap_action:
-                  action: none
-          - type: grid
-            square: false
-            columns: 2
-            grid_options:
-              columns: full
-            cards:
-              - type: custom:mushroom-template-card
-                entity: sensor.msb_in_park_cars_canonical
-                primary: Cars in park
-                icon: mdi:car-multiple
-                secondary: >-
-                  {% set gate = states('sensor.msb_gate_occupancy_diagnostic') %}
-                  {% set traffic = states('sensor.msb_traffic_status_snapshot') %}
-                  {% if has_value(entity) %}
-                    {{ states(entity, with_unit=true) }}{{ ' · ' ~ traffic.replace('_',' ').capitalize() if traffic in ['busy','very_busy'] else '' }}
-                  {% elif is_number(gate) %}
-                    Gate check: {{ gate }} cars · Show unavailable
-                  {% else %}
-                    Unavailable · No fresh Gate balance
-                  {% endif %}
-                color: >-
-                  {% set traffic = states('sensor.msb_traffic_status_snapshot')
-                  %}{{ 'grey' if not has_value(entity) else 'amber' if traffic
-                  in ['busy','very_busy'] else 'teal' }}
-                tap_action:
-                  action: more-info
-              - type: custom:mushroom-template-card
-                entity: sensor.msb_show_total_display
-                primary: Show total
-                icon: mdi:counter
-                secondary: '{{ states(entity, with_unit=true) }}'
-                color: teal
-                tap_action:
-                  action: more-info
-          - type: grid
-            square: false
-            columns: 2
-            cards:
-              - type: custom:mushroom-template-card
-                entity: sensor.msb_enter_total_display
-                primary: Entered
-                icon: mdi:login
-                secondary: '{{ states(entity, with_unit=true) }}'
-                color: teal
-                tap_action:
-                  action: more-info
-              - type: custom:mushroom-template-card
-                entity: sensor.msb_gate_counter_exit_cars
-                primary: Exited
-                icon: mdi:logout
-                secondary: '{{ states(entity, with_unit=true) }}'
-                color: teal
-                tap_action:
-                  action: more-info
-            grid_options:
-              columns: full
-          - type: grid
-            columns: 4
-            square: false
-            grid_options:
-              columns: full
-            cards:
-              - type: custom:mushroom-template-card
-                primary: 6:00 PM
-                secondary: >-
-                  {% if now().hour < 18 %}—{% else %}
-
-                  {% set matches =
-                  device_entities(device_id('sensor.msb_car_counter_enter_cars'))
-                  if device_id('sensor.msb_car_counter_enter_cars') else [] %}
-
-                  {% set ids = matches | select('search', 'car_hourly_cars_raw')
-                  | list %}
-
-                  {% set source = ids | first |
-                  default('sensor.car_hourly_cars_raw') %}
-
-                  {% set hours = states(source) | from_json(none) %}
-
-                  {{ hours[17] if hours is sequence and hours is not string and
-                  hours is not mapping and hours | length == 24 and hours[17] is
-                  number else '—' }}
-
-                  {% endif %}
-                vertical: true
-                tap_action:
-                  action: none
-              - type: custom:mushroom-template-card
-                primary: 7:00 PM
-                secondary: >-
-                  {% if now().hour < 19 %}—{% else %}
-
-                  {% set matches =
-                  device_entities(device_id('sensor.msb_car_counter_enter_cars'))
-                  if device_id('sensor.msb_car_counter_enter_cars') else [] %}
-
-                  {% set ids = matches | select('search', 'car_hourly_cars_raw')
-                  | list %}
-
-                  {% set source = ids | first |
-                  default('sensor.car_hourly_cars_raw') %}
-
-                  {% set hours = states(source) | from_json(none) %}
-
-                  {{ hours[18] if hours is sequence and hours is not string and
-                  hours is not mapping and hours | length == 24 and hours[18] is
-                  number else '—' }}
-
-                  {% endif %}
-                vertical: true
-                tap_action:
-                  action: none
-              - type: custom:mushroom-template-card
-                primary: 8:00 PM
-                secondary: >-
-                  {% if now().hour < 20 %}—{% else %}
-
-                  {% set matches =
-                  device_entities(device_id('sensor.msb_car_counter_enter_cars'))
-                  if device_id('sensor.msb_car_counter_enter_cars') else [] %}
-
-                  {% set ids = matches | select('search', 'car_hourly_cars_raw')
-                  | list %}
-
-                  {% set source = ids | first |
-                  default('sensor.car_hourly_cars_raw') %}
-
-                  {% set hours = states(source) | from_json(none) %}
-
-                  {{ hours[19] if hours is sequence and hours is not string and
-                  hours is not mapping and hours | length == 24 and hours[19] is
-                  number else '—' }}
-
-                  {% endif %}
-                vertical: true
-                tap_action:
-                  action: none
-              - type: custom:mushroom-template-card
-                primary: 9:00 PM
-                secondary: >-
-                  {% if now().hour < 21 %}—{% else %}
-
-                  {% set matches =
-                  device_entities(device_id('sensor.msb_car_counter_enter_cars'))
-                  if device_id('sensor.msb_car_counter_enter_cars') else [] %}
-
-                  {% set ids = matches | select('search', 'car_hourly_cars_raw')
-                  | list %}
-
-                  {% set source = ids | first |
-                  default('sensor.car_hourly_cars_raw') %}
-
-                  {% set hours = states(source) | from_json(none) %}
-
-                  {{ hours[20] if hours is sequence and hours is not string and
-                  hours is not mapping and hours | length == 24 and hours[20] is
-                  number else '—' }}
-
-                  {% endif %}
-                vertical: true
-                tap_action:
-                  action: none
-          - type: heading
-            heading: Highway 42 · North (left) / South (right)
-            grid_options:
-              columns: full
-            heading_style: title
-          - type: grid
-            columns: 2
-            square: false
-            grid_options:
-              columns: full
-            cards:
-              - type: custom:webrtc-camera
-                entity: camera.cam_hwy_42n_profile001_substream
-                name: Highway 42 North
-              - type: custom:webrtc-camera
-                entity: camera.cam_hwy_42s_profile001_substream
-                name: Highway 42 South
-          - type: heading
-            grid_options:
-              columns: full
-            heading: Traffic Control
-            heading_style: title
-          - type: grid
-            grid_options:
-              columns: full
-            square: false
-            columns: 2
-            cards:
-              - type: custom:button-card
-                entity: sensor.msb_traffic_status_snapshot
-                name: Status
-                icon: mdi:traffic-light
-                layout: vertical
-                show_state: true
-                show_units: false
-                styles:
-                  card:
-                    - height: 100px
-                    - padding: 8px
-                    - border-radius: 14px
-                  name:
-                    - font-size: 12px
-                  state:
-                    - font-size: 20px
-                    - font-weight: bold
-                state:
-                  - value: closed
-                    styles:
-                      card:
-                        - background-color: '#b00020'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - value: light
-                    styles:
-                      card:
-                        - background-color: '#2e7d32'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - value: moderate
-                    styles:
-                      card:
-                        - background-color: '#fbc02d'
-                      state:
-                        - color: black
-                      name:
-                        - color: black
-                      icon:
-                        - color: black
-                  - value: busy
-                    styles:
-                      card:
-                        - background-color: '#fb8c00'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - value: very_busy
-                    styles:
-                      card:
-                        - background-color: '#e53935'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-              - type: custom:button-card
-                entity: sensor.msb_travel_time_estimate_min
-                name: Travel Time
-                icon: mdi:timer-sand
-                layout: vertical
-                show_state: true
-                show_units: true
-                styles:
-                  card:
-                    - height: 100px
-                    - padding: 8px
-                    - border-radius: 14px
-                  name:
-                    - font-size: 12px
-                  state:
-                    - font-size: 20px
-                    - font-weight: bold
-                state:
-                  - value: unknown
-                    operator: regex
-                    styles:
-                      card:
-                        - background-color: '#9e9e9e'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - operator: <=
-                    value: 24
-                    styles:
-                      card:
-                        - background-color: '#2e7d32'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - operator: <=
-                    value: 29
-                    styles:
-                      card:
-                        - background-color: '#fbc02d'
-                      state:
-                        - color: black
-                      name:
-                        - color: black
-                      icon:
-                        - color: black
-                  - operator: <=
-                    value: 34
-                    styles:
-                      card:
-                        - background-color: '#fb8c00'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - operator: '>='
-                    value: 35
-                    styles:
-                      card:
-                        - background-color: '#b00020'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-              - type: custom:button-card
-                entity: sensor.msb_lane_2_advisory
-                name: Lane 2
-                icon: mdi:road-variant
-                layout: vertical
-                show_state: true
-                show_units: false
-                styles:
-                  card:
-                    - height: 100px
-                    - padding: 8px
-                    - border-radius: 14px
-                  name:
-                    - font-size: 12px
-                  state:
-                    - font-size: 18px
-                    - font-weight: bold
-                state:
-                  - value: closed
-                    styles:
-                      card:
-                        - background-color: '#9e9e9e'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - value: Close Lane 2
-                    styles:
-                      card:
-                        - background-color: '#b00020'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - value: Lane 2 OK to Open
-                    styles:
-                      card:
-                        - background-color: '#fbc02d'
-                      state:
-                        - color: black
-                      name:
-                        - color: black
-                      icon:
-                        - color: black
-                  - value: Open Lane 2
-                    styles:
-                      card:
-                        - background-color: '#2e7d32'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-              - type: custom:button-card
-                entity: sensor.msb_merger_director_advisory
-                name: Merge Control
-                icon: mdi:account-hard-hat
-                layout: vertical
-                show_state: true
-                show_units: false
-                styles:
-                  card:
-                    - height: 100px
-                    - padding: 8px
-                    - border-radius: 14px
-                  name:
-                    - font-size: 12px
-                  state:
-                    - font-size: 18px
-                    - font-weight: bold
-                state:
-                  - value: Merger Director Not Needed
-                    styles:
-                      card:
-                        - background-color: '#2e7d32'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - value: closed
-                    styles:
-                      card:
-                        - background-color: '#9e9e9e'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-              - type: custom:button-card
-                entity: input_boolean.lane_2_open
-                name: Lane 2 Actual
-                icon: mdi:road
-                layout: vertical
-                show_state: true
-                show_units: false
-                tap_action:
-                  action: toggle
-                styles:
-                  card:
-                    - height: 100px
-                    - padding: 8px
-                    - border-radius: 14px
-                  name:
-                    - font-size: 12px
-                  state:
-                    - font-size: 18px
-                    - font-weight: bold
-                state:
-                  - value: 'on'
-                    name: Lane 2 OPEN
-                    styles:
-                      card:
-                        - background-color: '#2e7d32'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - value: 'off'
-                    name: Lane 2 CLOSED
-                    styles:
-                      card:
-                        - background-color: '#9e9e9e'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-              - type: custom:button-card
-                entity: input_boolean.merger_director_present
-                name: Merger Actual
-                icon: mdi:account-hard-hat
-                layout: vertical
-                show_state: true
-                show_units: false
-                tap_action:
-                  action: toggle
-                styles:
-                  card:
-                    - height: 100px
-                    - padding: 8px
-                    - border-radius: 14px
-                  name:
-                    - font-size: 12px
-                  state:
-                    - font-size: 18px
-                    - font-weight: bold
-                state:
-                  - value: 'on'
-                    name: Assigned
-                    styles:
-                      card:
-                        - background-color: '#2e7d32'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-                  - value: 'off'
-                    name: Not Assigned
-                    styles:
-                      card:
-                        - background-color: '#9e9e9e'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                      icon:
-                        - color: white
-      - type: grid
-        cards:
-          - type: vertical-stack
-            cards:
-              - type: heading
-                heading: Counter health & beam alarms
-              - type: grid
-                square: false
-                columns: 2
-                cards:
-                  - type: custom:mushroom-template-card
-                    entity: sensor.msb_car_counter_msb_car_counter_status_2
-                    primary: Car Counter
-                    icon: mdi:lan-connect
-                    secondary: '{{ states(entity, with_unit=true) }}'
-                    color: >-
-                      {{ 'green' if states(entity)|lower == 'online' else
-                      'amber' if states(entity) in ['unknown','unavailable']
-                      else 'red' }}
-                    tap_action:
-                      action: more-info
-                  - type: custom:mushroom-template-card
-                    entity: sensor.msb_gate_counter_msb_gate_counter_status_2
-                    primary: Gate Counter
-                    icon: mdi:lan-connect
-                    secondary: '{{ states(entity, with_unit=true) }}'
-                    color: >-
-                      {{ 'green' if states(entity)|lower == 'online' else
-                      'amber' if states(entity) in ['unknown','unavailable']
-                      else 'red' }}
-                    tap_action:
-                      action: more-info
-                  - type: custom:mushroom-template-card
-                    entity: sensor.msb_car_counter_msb_car_counter_alarm
-                    primary: Car Beam
-                    icon: mdi:car-brake-alert
-                    secondary: >-
-                      {{ 'Clear' if is_state(entity,'CLEAR') else 'Beam stuck'
-                      if 'STUCK' in states(entity) else
-                      states(entity)|capitalize }}
-                    color: >-
-                      {{ 'green' if states(entity)|lower == 'clear' else 'amber'
-                      if states(entity) in ['unknown','unavailable'] else 'red'
-                      }}
-                    tap_action:
-                      action: more-info
-                  - type: custom:mushroom-template-card
-                    entity: sensor.msb_gate_counter_msb_gate_counter_alarm
-                    primary: Gate Beam
-                    icon: mdi:boom-gate-alert
-                    secondary: >-
-                      {{ 'Clear' if is_state(entity,'CLEAR') else 'Beam stuck'
-                      if 'STUCK' in states(entity) else
-                      states(entity)|capitalize }}
-                    color: >-
-                      {{ 'green' if states(entity)|lower == 'clear' else 'amber'
-                      if states(entity) in ['unknown','unavailable'] else 'red'
-                      }}
-                    tap_action:
-                      action: more-info
-                  - type: custom:mushroom-template-card
-                    entity: sensor.msb_car_counter_car_counter_heartbeat
-                    primary: Car heartbeat
-                    secondary: >-
-                      {% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now()) - stamp < 300 %} {{ 'Receiving' if fresh else ('Last ' ~ states(entity) if stamp is not none else 'Unavailable') }}
-                    icon: mdi:heart-pulse
-                    color: >-
-                      {% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now()) - stamp < 300 %} {{ 'green' if fresh else 'red' }}
-                  - type: custom:mushroom-template-card
-                    entity: sensor.msb_gate_counter_gate_counter_heartbeat
-                    primary: Gate heartbeat
-                    secondary: >-
-                      {% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now()) - stamp < 300 %} {{ 'Receiving' if fresh else ('Last ' ~ states(entity) if stamp is not none else 'Unavailable') }}
-                    icon: mdi:heart-pulse
-                    color: >-
-                      {% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now()) - stamp < 300 %} {{ 'green' if fresh else 'red' }}
-                grid_options:
-                  columns: full
+        - type: custom:mushroom-template-card
+          entity: sensor.msb_car_counter_days_running
+          primary: Show Day
+          secondary: '{{ states(entity) }}'
+          icon: mdi:calendar-star
+          tap_action:
+            action: none
+        - type: custom:mushroom-template-card
+          entity: sensor.msb_date_display
+          primary: Date
+          secondary: '{{ states(entity) }}'
+          icon: mdi:calendar
+          tap_action:
+            action: none
+        - type: custom:mushroom-template-card
+          entity: sensor.msb_current_time_display
+          primary: Time
+          secondary: '{{ states(entity) }}'
+          icon: mdi:clock-outline
+          tap_action:
+            action: none
+        grid_options:
+          columns: full
       - type: grid
         square: false
+        columns: 2
+        grid_options:
+          columns: full
         cards:
-          - type: weather-forecast
-            entity: weather.openweathermap
-            show_current: true
-            show_forecast: true
-            forecast_type: daily
-          - type: grid
-            square: false
-            columns: 4
-            cards:
-              - type: custom:button-card
-                entity: sensor.openweathermap_wind_speed
-                name: Sustained
-                icon: mdi:weather-windy
-                layout: vertical
-                show_state: true
-                styles:
-                  card:
-                    - padding: 10px
-                    - border-radius: 16px
-                  state:
-                    - font-size: 20px
-                    - font-weight: bold
-                  name:
-                    - font-size: 14px
-                state:
-                  - operator: '>'
-                    value: 25
-                    styles:
-                      card:
-                        - background-color: '#f44336'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                  - operator: '>'
-                    value: 15
-                    styles:
-                      card:
-                        - background-color: '#ff9800'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                  - operator: default
-                    styles:
-                      card:
-                        - background-color: '#4caf50'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-              - type: custom:button-card
-                entity: sensor.openweathermap_wind_gust_speed
-                name: Gust
-                icon: mdi:weather-windy-variant
-                layout: vertical
-                show_state: true
-                styles:
-                  card:
-                    - padding: 10px
-                    - border-radius: 16px
-                  state:
-                    - font-size: 20px
-                    - font-weight: bold
-                  name:
-                    - font-size: 14px
-                state:
-                  - operator: '>'
-                    value: 35
-                    styles:
-                      card:
-                        - background-color: '#f44336'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                  - operator: '>'
-                    value: 25
-                    styles:
-                      card:
-                        - background-color: '#ff9800'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                  - operator: default
-                    styles:
-                      card:
-                        - background-color: '#4caf50'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-              - type: custom:button-card
-                entity: sensor.openweathermap_wind_direction
-                name: Direction
-                icon: mdi:compass
-                layout: vertical
-                show_state: true
-                state_display: |
-                  [[[
-                    if (!entity || entity.state === undefined) return 'n/a';
-                    const deg = parseFloat(entity.state);
-                    if (isNaN(deg)) return entity.state;
-                    const card = states['sensor.openweathermap_wind_direction_2']
-                      ? states['sensor.openweathermap_wind_direction_2'].state
-                      : '';
-                    return card ? `${card} (${deg.toFixed(0)}°)` : `${deg.toFixed(0)}°`;
-                  ]]]
-                styles:
-                  card:
-                    - padding: 10px
-                    - border-radius: 16px
-                  state:
-                    - font-size: 18px
-                    - font-weight: bold
-                  name:
-                    - font-size: 14px
-              - type: custom:button-card
-                entity: sensor.openweathermap_wind_status
-                name: Wind Status
-                icon: mdi:alert-circle-outline
-                layout: vertical
-                show_state: true
-                styles:
-                  card:
-                    - padding: 10px
-                    - border-radius: 16px
-                  state:
-                    - font-size: 18px
-                    - font-weight: bold
-                  name:
-                    - font-size: 14px
-                state:
-                  - value: Danger
-                    styles:
-                      card:
-                        - background-color: '#f44336'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                  - value: Caution
-                    styles:
-                      card:
-                        - background-color: '#ff9800'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
-                  - operator: default
-                    styles:
-                      card:
-                        - background-color: '#4caf50'
-                      state:
-                        - color: white
-                      name:
-                        - color: white
+        - type: custom:mushroom-template-card
+          entity: binary_sensor.msb_show_open
+          primary: Show status
+          icon: mdi:traffic-light
+          secondary: '{{ {''on'':''Open'',''off'':''Closed''}.get(states(entity), ''Unavailable'') }}'
+          color: '{{ {''on'':''green'',''off'':''red''}.get(states(entity), ''grey'') }}'
+          tap_action:
+            action: more-info
+        - type: custom:mushroom-template-card
+          entity: cover.traffic_ghost_controls_ghost_controls
+          primary: Entrance gate
+          secondary: '{{ states(entity) | capitalize if has_value(entity) else ''Unavailable'' }}'
+          icon: '{{ ''mdi:gate-open'' if is_state(entity, ''open'') else ''mdi:gate'' }}'
+          color: '{{ {''open'':''green'', ''closed'':''red'', ''opening'':''amber'', ''closing'':''amber''}.get(states(entity), ''grey'')
+            }}'
+          tap_action:
+            action: none
+          hold_action:
+            action: none
+          double_tap_action:
+            action: none
+      - type: grid
+        square: false
+        columns: 2
+        grid_options:
+          columns: full
+        cards:
+        - type: custom:mushroom-template-card
+          entity: sensor.msb_in_park_cars_canonical
+          primary: Cars in park
+          icon: mdi:car-multiple
+          secondary: |-
+            {% set gate = states('sensor.msb_gate_occupancy_diagnostic') %} {% set traffic = states('sensor.msb_traffic_status_snapshot') %} {% if has_value(entity) %}
+              {{ states(entity, with_unit=true) }}{{ ' · ' ~ traffic.replace('_',' ').capitalize() if traffic in ['busy','very_busy'] else '' }}
+            {% elif is_number(gate) %}
+              Gate check: {{ gate }} cars · Show unavailable
+            {% else %}
+              Unavailable · No fresh Gate balance
+            {% endif %}
+          color: '{% set traffic = states(''sensor.msb_traffic_status_snapshot'') %}{{ ''grey'' if not has_value(entity) else ''amber''
+            if traffic in [''busy'',''very_busy''] else ''teal'' }}'
+          tap_action:
+            action: more-info
+        - type: custom:mushroom-template-card
+          entity: sensor.msb_show_total_display
+          primary: Show total
+          icon: mdi:counter
+          secondary: '{{ states(entity, with_unit=true) }}'
+          color: teal
+          tap_action:
+            action: more-info
+      - type: grid
+        square: false
+        columns: 2
+        cards:
+        - type: custom:mushroom-template-card
+          entity: sensor.msb_enter_total_display
+          primary: Entered
+          icon: mdi:login
+          secondary: '{{ states(entity, with_unit=true) }}'
+          color: teal
+          tap_action:
+            action: more-info
+        - type: custom:mushroom-template-card
+          entity: sensor.msb_gate_counter_exit_cars
+          primary: Exited
+          icon: mdi:logout
+          secondary: '{{ states(entity, with_unit=true) }}'
+          color: teal
+          tap_action:
+            action: more-info
+        grid_options:
+          columns: full
+      - type: grid
+        columns: 4
+        square: false
+        grid_options:
+          columns: full
+        cards:
+        - type: custom:mushroom-template-card
+          primary: 6:00 PM
+          secondary: |-
+            {% if now().hour < 18 %}—{% else %}
+            {% set matches = device_entities(device_id('sensor.msb_car_counter_enter_cars')) if device_id('sensor.msb_car_counter_enter_cars') else [] %}
+            {% set ids = matches | select('search', 'car_hourly_cars_raw') | list %}
+            {% set source = ids | first | default('sensor.car_hourly_cars_raw') %}
+            {% set hours = states(source) | from_json(none) %}
+            {{ hours[17] if hours is sequence and hours is not string and hours is not mapping and hours | length == 24 and hours[17] is number else '—' }}
+            {% endif %}
+          vertical: true
+          tap_action:
+            action: none
+        - type: custom:mushroom-template-card
+          primary: 7:00 PM
+          secondary: |-
+            {% if now().hour < 19 %}—{% else %}
+            {% set matches = device_entities(device_id('sensor.msb_car_counter_enter_cars')) if device_id('sensor.msb_car_counter_enter_cars') else [] %}
+            {% set ids = matches | select('search', 'car_hourly_cars_raw') | list %}
+            {% set source = ids | first | default('sensor.car_hourly_cars_raw') %}
+            {% set hours = states(source) | from_json(none) %}
+            {{ hours[18] if hours is sequence and hours is not string and hours is not mapping and hours | length == 24 and hours[18] is number else '—' }}
+            {% endif %}
+          vertical: true
+          tap_action:
+            action: none
+        - type: custom:mushroom-template-card
+          primary: 8:00 PM
+          secondary: |-
+            {% if now().hour < 20 %}—{% else %}
+            {% set matches = device_entities(device_id('sensor.msb_car_counter_enter_cars')) if device_id('sensor.msb_car_counter_enter_cars') else [] %}
+            {% set ids = matches | select('search', 'car_hourly_cars_raw') | list %}
+            {% set source = ids | first | default('sensor.car_hourly_cars_raw') %}
+            {% set hours = states(source) | from_json(none) %}
+            {{ hours[19] if hours is sequence and hours is not string and hours is not mapping and hours | length == 24 and hours[19] is number else '—' }}
+            {% endif %}
+          vertical: true
+          tap_action:
+            action: none
+        - type: custom:mushroom-template-card
+          primary: 9:00 PM
+          secondary: |-
+            {% if now().hour < 21 %}—{% else %}
+            {% set matches = device_entities(device_id('sensor.msb_car_counter_enter_cars')) if device_id('sensor.msb_car_counter_enter_cars') else [] %}
+            {% set ids = matches | select('search', 'car_hourly_cars_raw') | list %}
+            {% set source = ids | first | default('sensor.car_hourly_cars_raw') %}
+            {% set hours = states(source) | from_json(none) %}
+            {{ hours[20] if hours is sequence and hours is not string and hours is not mapping and hours | length == 24 and hours[20] is number else '—' }}
+            {% endif %}
+          vertical: true
+          tap_action:
+            action: none
+      - type: heading
+        heading: Highway 42 · North (left) / South (right)
+        grid_options:
+          columns: full
+        heading_style: title
+      - type: grid
+        columns: 2
+        square: false
+        grid_options:
+          columns: full
+        cards:
+        - type: custom:webrtc-camera
+          entity: camera.cam_hwy_42n_profile001_substream
+          name: Highway 42 North
+        - type: custom:webrtc-camera
+          entity: camera.cam_hwy_42s_profile001_substream
+          name: Highway 42 South
+    - type: grid
+      cards:
+      - type: vertical-stack
+        cards:
+        - type: heading
+          heading: Counter health & beam alarms
+        - type: grid
+          square: false
+          columns: 2
+          cards:
+          - type: custom:mushroom-template-card
+            entity: sensor.msb_car_counter_msb_car_counter_status_2
+            primary: Car Counter
+            icon: mdi:lan-connect
+            secondary: '{{ states(entity, with_unit=true) }}'
+            color: '{{ ''green'' if states(entity)|lower == ''online'' else ''amber'' if states(entity) in [''unknown'',''unavailable'']
+              else ''red'' }}'
+            tap_action:
+              action: more-info
+          - type: custom:mushroom-template-card
+            entity: sensor.msb_gate_counter_msb_gate_counter_status_2
+            primary: Gate Counter
+            icon: mdi:lan-connect
+            secondary: '{{ states(entity, with_unit=true) }}'
+            color: '{{ ''green'' if states(entity)|lower == ''online'' else ''amber'' if states(entity) in [''unknown'',''unavailable'']
+              else ''red'' }}'
+            tap_action:
+              action: more-info
+          - type: custom:mushroom-template-card
+            entity: sensor.msb_car_counter_msb_car_counter_alarm
+            primary: Car Beam
+            icon: mdi:car-brake-alert
+            secondary: '{{ ''Clear'' if is_state(entity,''CLEAR'') else ''Beam stuck'' if ''STUCK'' in states(entity) else states(entity)|capitalize
+              }}'
+            color: '{{ ''green'' if states(entity)|lower == ''clear'' else ''amber'' if states(entity) in [''unknown'',''unavailable'']
+              else ''red'' }}'
+            tap_action:
+              action: more-info
+          - type: custom:mushroom-template-card
+            entity: sensor.msb_gate_counter_msb_gate_counter_alarm
+            primary: Gate Beam
+            icon: mdi:boom-gate-alert
+            secondary: '{{ ''Clear'' if is_state(entity,''CLEAR'') else ''Beam stuck'' if ''STUCK'' in states(entity) else states(entity)|capitalize
+              }}'
+            color: '{{ ''green'' if states(entity)|lower == ''clear'' else ''amber'' if states(entity) in [''unknown'',''unavailable'']
+              else ''red'' }}'
+            tap_action:
+              action: more-info
+          - type: custom:mushroom-template-card
+            entity: sensor.msb_car_counter_car_counter_heartbeat
+            primary: Car heartbeat
+            secondary: '{% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now())
+              - stamp < 300 %} {{ ''Receiving'' if fresh else (''Last '' ~ states(entity) if stamp is not none else ''Unavailable'')
+              }}'
+            icon: mdi:heart-pulse
+            color: '{% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now())
+              - stamp < 300 %} {{ ''green'' if fresh else ''red'' }}'
+          - type: custom:mushroom-template-card
+            entity: sensor.msb_gate_counter_gate_counter_heartbeat
+            primary: Gate heartbeat
+            secondary: '{% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now())
+              - stamp < 300 %} {{ ''Receiving'' if fresh else (''Last '' ~ states(entity) if stamp is not none else ''Unavailable'')
+              }}'
+            icon: mdi:heart-pulse
+            color: '{% set stamp = as_timestamp(states(entity), none) %} {% set fresh = stamp is not none and 0 <= as_timestamp(now())
+              - stamp < 300 %} {{ ''green'' if fresh else ''red'' }}'
+          grid_options:
+            columns: full
+        grid_options:
+          columns: full
+      - type: heading
+        grid_options:
+          columns: full
+        heading: Traffic Control
+        heading_style: title
+      - type: grid
+        grid_options:
+          columns: full
+        square: false
+        columns: 2
+        cards:
+        - type: custom:button-card
+          entity: sensor.msb_traffic_status_snapshot
+          name: Status
+          icon: mdi:traffic-light
+          layout: icon_name_state2nd
+          show_state: true
+          show_units: false
+          styles:
+            card:
+            - height: 62px
+            - padding: 6px
+            name:
+            - font-size: 13px
+            state:
+            - font-size: 16px
+            - font-weight: 600
+          state:
+          - value: closed
+            styles:
+              icon:
+              - color: '#b00020'
+          - value: light
+            styles:
+              icon:
+              - color: '#2e7d32'
+          - value: moderate
+            styles:
+              icon:
+              - color: '#fbc02d'
+          - value: busy
+            styles:
+              icon:
+              - color: '#fb8c00'
+          - value: very_busy
+            styles:
+              icon:
+              - color: '#e53935'
+          size: 22px
+        - type: custom:button-card
+          entity: sensor.msb_travel_time_estimate_min
+          name: Travel Time
+          icon: mdi:timer-sand
+          layout: icon_name_state2nd
+          show_state: true
+          show_units: true
+          styles:
+            card:
+            - height: 62px
+            - padding: 6px
+            name:
+            - font-size: 13px
+            state:
+            - font-size: 16px
+            - font-weight: 600
+          state:
+          - value: unknown
+            operator: regex
+            styles:
+              icon:
+              - color: '#9e9e9e'
+          - operator: <=
+            value: 24
+            styles:
+              icon:
+              - color: '#2e7d32'
+          - operator: <=
+            value: 29
+            styles:
+              icon:
+              - color: '#fbc02d'
+          - operator: <=
+            value: 34
+            styles:
+              icon:
+              - color: '#fb8c00'
+          - operator: '>='
+            value: 35
+            styles:
+              icon:
+              - color: '#b00020'
+          size: 22px
+        - type: custom:button-card
+          entity: sensor.msb_lane_2_advisory
+          name: Lane 2
+          icon: mdi:road-variant
+          layout: icon_name_state2nd
+          show_state: true
+          show_units: false
+          styles:
+            card:
+            - height: 62px
+            - padding: 6px
+            name:
+            - font-size: 13px
+            state:
+            - font-size: 16px
+            - font-weight: 600
+          state:
+          - value: closed
+            styles:
+              icon:
+              - color: '#9e9e9e'
+          - value: Close Lane 2
+            styles:
+              icon:
+              - color: '#b00020'
+          - value: Lane 2 OK to Open
+            styles:
+              icon:
+              - color: '#fbc02d'
+          - value: Open Lane 2
+            styles:
+              icon:
+              - color: '#2e7d32'
+          size: 22px
+        - type: custom:button-card
+          entity: sensor.msb_merger_director_advisory
+          name: Merge Control
+          icon: mdi:account-hard-hat
+          layout: icon_name_state2nd
+          show_state: true
+          show_units: false
+          styles:
+            card:
+            - height: 62px
+            - padding: 6px
+            name:
+            - font-size: 13px
+            state:
+            - font-size: 16px
+            - font-weight: 600
+          state:
+          - value: Merger Director Not Needed
+            styles:
+              icon:
+              - color: '#2e7d32'
+          - value: closed
+            styles:
+              icon:
+              - color: '#9e9e9e'
+          size: 22px
+        - type: custom:button-card
+          entity: input_boolean.lane_2_open
+          name: Lane 2 Actual
+          icon: mdi:road
+          layout: icon_name_state2nd
+          show_state: true
+          show_units: false
+          tap_action:
+            action: toggle
+          styles:
+            card:
+            - height: 62px
+            - padding: 6px
+            name:
+            - font-size: 13px
+            state:
+            - font-size: 16px
+            - font-weight: 600
+          state:
+          - value: 'on'
+            name: Lane 2 OPEN
+            styles:
+              icon:
+              - color: '#2e7d32'
+          - value: 'off'
+            name: Lane 2 CLOSED
+            styles:
+              icon:
+              - color: '#9e9e9e'
+          size: 22px
+        - type: custom:button-card
+          entity: input_boolean.merger_director_present
+          name: Merger Actual
+          icon: mdi:account-hard-hat
+          layout: icon_name_state2nd
+          show_state: true
+          show_units: false
+          tap_action:
+            action: toggle
+          styles:
+            card:
+            - height: 62px
+            - padding: 6px
+            name:
+            - font-size: 13px
+            state:
+            - font-size: 16px
+            - font-weight: 600
+          state:
+          - value: 'on'
+            name: Assigned
+            styles:
+              icon:
+              - color: '#2e7d32'
+          - value: 'off'
+            name: Not Assigned
+            styles:
+              icon:
+              - color: '#9e9e9e'
+          size: 22px
+      - type: weather-forecast
+        entity: weather.openweathermap
+        show_current: true
+        show_forecast: true
+        forecast_type: daily
+        grid_options:
+          columns: full
+      - type: grid
+        square: false
+        columns: 2
+        cards:
+        - type: custom:button-card
+          entity: sensor.openweathermap_wind_speed
+          name: Sustained
+          icon: mdi:weather-windy
+          layout: icon_name_state2nd
+          show_state: true
+          styles:
+            card:
+            - height: 62px
+            - padding: 6px
+            name:
+            - font-size: 13px
+            state:
+            - font-size: 16px
+            - font-weight: 600
+          state:
+          - value: unknown
+            styles:
+              icon:
+              - color: grey
+          - value: unavailable
+            styles:
+              icon:
+              - color: grey
+          - operator: '>'
+            value: 25
+            styles:
+              icon:
+              - color: '#f44336'
+          - operator: '>'
+            value: 15
+            styles:
+              icon:
+              - color: '#ff9800'
+          - operator: default
+            styles:
+              icon:
+              - color: '#4caf50'
+          size: 22px
+        - type: custom:button-card
+          entity: sensor.openweathermap_wind_gust_speed
+          name: Gust
+          icon: mdi:weather-windy-variant
+          layout: icon_name_state2nd
+          show_state: true
+          styles:
+            card:
+            - height: 62px
+            - padding: 6px
+            name:
+            - font-size: 13px
+            state:
+            - font-size: 16px
+            - font-weight: 600
+          state:
+          - value: unknown
+            styles:
+              icon:
+              - color: grey
+          - value: unavailable
+            styles:
+              icon:
+              - color: grey
+          - operator: '>'
+            value: 35
+            styles:
+              icon:
+              - color: '#f44336'
+          - operator: '>'
+            value: 25
+            styles:
+              icon:
+              - color: '#ff9800'
+          - operator: default
+            styles:
+              icon:
+              - color: '#4caf50'
+          size: 22px
+        - type: custom:button-card
+          entity: sensor.openweathermap_wind_direction
+          name: Direction
+          icon: mdi:compass
+          layout: icon_name_state2nd
+          show_state: true
+          state_display: |
+            [[[
+              if (!entity || entity.state === undefined) return 'n/a';
+              const deg = parseFloat(entity.state);
+              if (isNaN(deg)) return entity.state;
+              const card = states['sensor.openweathermap_wind_direction_2']
+                ? states['sensor.openweathermap_wind_direction_2'].state
+                : '';
+              return card ? `${card} (${deg.toFixed(0)}°)` : `${deg.toFixed(0)}°`;
+            ]]]
+          styles:
+            card:
+            - height: 62px
+            - padding: 6px
+            name:
+            - font-size: 13px
+            state:
+            - font-size: 16px
+            - font-weight: 600
+          size: 22px
+          state:
+          - value: unknown
+            styles:
+              icon:
+              - color: grey
+          - value: unavailable
+            styles:
+              icon:
+              - color: grey
+        - type: custom:button-card
+          entity: sensor.openweathermap_wind_status
+          name: Wind Status
+          icon: mdi:alert-circle-outline
+          layout: icon_name_state2nd
+          show_state: true
+          styles:
+            card:
+            - height: 62px
+            - padding: 6px
+            name:
+            - font-size: 13px
+            state:
+            - font-size: 16px
+            - font-weight: 600
+          state:
+          - value: unknown
+            styles:
+              icon:
+              - color: grey
+          - value: unavailable
+            styles:
+              icon:
+              - color: grey
+          - value: Danger
+            styles:
+              icon:
+              - color: '#f44336'
+          - value: Caution
+            styles:
+              icon:
+              - color: '#ff9800'
+          - operator: default
+            styles:
+              icon:
+              - color: '#4caf50'
+          size: 22px
+        grid_options:
+          columns: full
     cards: []
     header:
       card:
