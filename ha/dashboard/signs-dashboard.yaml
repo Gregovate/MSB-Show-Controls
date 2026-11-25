@@ -98,6 +98,16 @@ views:
     entities:
     - input_number.msb_sign2_vehicle_pitch_ft
     - input_number.msb_sign2_free_flow_mph
+- title: Live previews
+  path: live-previews
+  icon: mdi:sign-text
+  cards:
+  - type: custom:msb-sign-preview
+    name: Highway 42
+    entity: sensor.msb_signs_hwy42
+  - type: custom:msb-sign-preview
+    name: Front Entrance
+    entity: sensor.msb_signs_front
 - title: Advertising grid
   path: pre-show
   icon: mdi:format-text
