@@ -1,6 +1,6 @@
 // Run once from a new .gs file in the Show Stats workbook's Apps Script project.
 // The returned form stays unpublished until its owner selects the tablet responder.
-function setupVolunteerCashForm() {
+function NightlyCashForm() {
   const lock = LockService.getScriptLock();
   lock.waitLock(30000);
   try {
@@ -17,7 +17,9 @@ function setupVolunteerCashForm() {
     const props = PropertiesService.getScriptProperties();
     const key = 'MSB_2026_VOLUNTEER_CASH_FORM';
     const id = props.getProperty(key);
-    const form = id ? FormApp.openById(id) : FormApp.create('MSB hourly cash collection', false);
+    const title = 'ParkDonations';
+    const form = id ? FormApp.openById(id) : FormApp.create(title, false);
+    if (id && form.getTitle() !== title) form.setTitle(title);
     if (!id) props.setProperty(key, form.getId());
     const titles = ['Show date', 'Collection period', 'Dollars collected'];
     const items = form.getItems();
