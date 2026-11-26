@@ -2,6 +2,7 @@
 import asyncio
 from datetime import date
 import logging
+from pathlib import Path
 from functools import partial
 from types import SimpleNamespace
 
@@ -20,10 +21,13 @@ LOG = logging.getLogger(__name__)
 async def async_setup(hass, config):
     # All device fetches, Google API calls and connection setup run off the HA event loop.
     lock = asyncio.Lock()
-    settings = hass.config.path("msb-show-sheets.json")
+    settings = Path(hass.config.path("msb_show_sheet", "msb-show-sheets.json"))
+    # Existing installations can keep their credential at its original location.
+    if not settings.exists():
+        settings = Path(hass.config.path("msb-show-sheets.json"))
 
     rehearsal = config[DOMAIN].get("rehearsal_workbook")
-    report = hass.config.path("msb-rehearsal-buckets.csv") if rehearsal else None
+    report = hass.config.path("msb_show_sheet", "msb-rehearsal-buckets.csv") if rehearsal else None
 
     async def sync(call):
         day = call.data.get("closing_date")

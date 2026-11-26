@@ -7,6 +7,8 @@ successfully writing both sheet archives. Cash and sheet-form access are indepen
 
 ## Install in the HA configuration directory
 
+Create the private data directory `/config/msb_show_sheet/` on HA. Existing root-level credentials remain supported.
+
 1. For the MSB shared drive, use an internal Workspace OAuth desktop client
    in the **MSB Show Controls** Cloud project. Enable Google Sheets API,
    configure Google Auth Platform with Internal audience, and create a client of
@@ -20,12 +22,12 @@ successfully writing both sheet archives. Cash and sheet-form access are indepen
 
    Substitute the actual downloaded client filename. Sign in with an MSB
    account that can edit the rehearsal workbook. Copy the resulting
-   msb-show-sheets.json privately to /config/msb-show-sheets.json on HA.
+   msb-show-sheets.json privately to /config/msb_show_sheet/msb-show-sheets.json on HA.
    This file contains a refresh token. Keep both files outside Git and www.
    The uploader uses the Sheets scope and the configured workbook ID.
 
    For installations that permit a service account, with the Google Sheets API enabled for the service account's project, place
-   its private service account JSON at /config/msb-show-sheets.json on HA.
+   its private service account JSON at /config/msb_show_sheet/msb-show-sheets.json on HA.
    Share **MSB 2026 Show Stats** with the JSON's client_email as Editor. Keep the
    key outside the kiosk, the repository, and /config/www. The writer uses only
    the Google Sheets OAuth scope.
@@ -79,10 +81,10 @@ the existing command-line entry point when run from a full repository checkout.
    msb_show_sheet:
      rehearsal_workbook: "YOUR_COPY_ID"
    ```
-3. Create an initially **header-only** /config/msb-rehearsal-buckets.csv using
+3. Create an initially **header-only** /config/msb_show_sheet/msb-rehearsal-buckets.csv using
    the first line of rehearsal/initial.csv. Install the component and edited
    package, check configuration and restart HA. Startup should write zero rows.
-4. Copy the entire rehearsal/initial.csv over /config/msb-rehearsal-buckets.csv.
+4. Copy the entire rehearsal/initial.csv over /config/msb_show_sheet/msb-rehearsal-buckets.csv.
    Publish the payload below to the **rehearsal topic** with retain disabled.
    Verify the automation trace took the closing branch. In the copy, G3:K3
    should read **2, 3, 5, 7, 11** (28 cars) and D3 should read **30.8**.
