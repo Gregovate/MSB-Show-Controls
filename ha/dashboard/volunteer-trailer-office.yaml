@@ -752,5 +752,7 @@ views:
         color: red
         tap_action:
           action: none
-    - type: markdown
-      content: Cash entry will open here once the hourly collection form is published.
+    - type: iframe
+      title: ParkDonations
+      url: https://docs.google.com/forms/d/e/1FAIpQLScc_Wd1Q1y6EDaR6dvrdDdvhZsBjhKkIEleT4LCDRnH1piD0Q/viewform?embedded=true
+      aspect_ratio: 65%
