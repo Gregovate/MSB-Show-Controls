@@ -32,11 +32,11 @@ Create the private data directory `/config/msb_show_sheet/` on HA. Existing root
    key outside the kiosk, the repository, and /config/www. The writer uses only
    the Google Sheets OAuth scope.
 2. Copy the entire ha/custom_components/msb_show_sheet directory into
-   /config/custom_components/msb_show_sheet. Copy ha/packages/volunteer_vehicle_sheet.yaml
-   into /config/packages/volunteer_vehicle_sheet.yaml. This assumes the existing
+   /config/custom_components/msb_show_sheet. Copy ha/packages/show_stats_car_count_upload.yaml
+   into /config/packages/show_stats_car_count_upload.yaml. This assumes the existing
    Home Assistant configuration includes packages from /config/packages.
 3. Check the Home Assistant configuration and restart Home Assistant, then
-   open the Settings → Automations entry **Vehicle Sheets - Sync Car Counter**.
+   open the Settings → Automations entry **Show Stats - Upload Car Counts**.
    In Developer Tools → Actions, run **msb_show_sheet.sync** with an empty set
    of parameters to perform an actual sheet scan now. Inspect the automation's
    trace or Settings → System → Logs for the error on failure. If the firmware
