@@ -1,0 +1,10 @@
+{
+  "domain": "msb_show_sheet",
+  "name": "MSB Show Stats",
+  "codeowners": ["@Gregovate"],
+  "documentation": "https://github.com/Gregovate/MSB-Show-Controls/tree/main/park/season-sheet",
+  "iot_class": "cloud_push",
+  "integration_type": "service",
+  "requirements": ["gspread==6.2.1"],
+  "version": "1.0.0"
+}
