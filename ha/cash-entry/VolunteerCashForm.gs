@@ -36,8 +36,18 @@ function NightlyCashForm() {
       .requireTextMatchesPattern('^[0-9]+([.][0-9]{1,2})?$')
       .setHelpText('Enter dollars and cents, for example 42.50 or 0.00.').build());
     form.setConfirmationMessage('Cash entry received. Submit another response for the next pickup.');
-    if (!form.getDestinationId()) form.setDestination(FormApp.DestinationType.SPREADSHEET, book.getId());
-    if (form.getDestinationId() !== book.getId()) throw new Error('Unexpected response workbook.');
+    // Google throws when a newly created form has no response destination.
+    let destinationId;
+    try {
+      destinationId = form.getDestinationId();
+    } catch (error) {
+      if (!/form currently has no response destination/i.test(error.message)) throw error;
+    }
+    if (!destinationId) {
+      form.setDestination(FormApp.DestinationType.SPREADSHEET, book.getId());
+      destinationId = form.getDestinationId();
+    }
+    if (destinationId !== book.getId()) throw new Error('Unexpected response workbook.');
     SpreadsheetApp.flush();
     // Identify this form's own sheet without relying on a generated tab number.
     const response = book.getSheets().find(sheet => {
