@@ -21,7 +21,8 @@ function NightlyCashForm() {
     const form = id ? FormApp.openById(id) : FormApp.create(title, false);
     if (id && form.getTitle() !== title) form.setTitle(title);
     if (!id) props.setProperty(key, form.getId());
-    const titles = ['Show date', ...periods];
+    const noteTitle = 'Nightly note';
+    const titles = ['Show date', ...periods, noteTitle];
     // The original form used a period selector and a single amount. Remove
     // those two setup questions only while the original form is still unused.
     const obsolete = form.getItems().filter(item =>
@@ -44,6 +45,9 @@ function NightlyCashForm() {
       const question = item ? item.asTextItem() : form.addTextItem().setTitle(period);
       question.setRequired(false).setValidation(money);
     });
+    const noteItem = items[periods.length + 1];
+    const note = noteItem ? noteItem.asParagraphTextItem() : form.addParagraphTextItem().setTitle(noteTitle);
+    note.setRequired(false).setHelpText('Anything unusual about tonight’s count? For example, two buckets were counted together.');
     form.setDescription('Enter the amounts counted for this show date. Leave an uncounted period blank. Enter 0 for a confirmed zero. To correct a period, submit its updated total.');
     form.setConfirmationMessage('Cash amounts received.');
     // Google throws when a newly created form has no response destination.
@@ -67,7 +71,7 @@ function NightlyCashForm() {
     if (!response) throw new Error('Response tab pending. Run setup again.');
     const headers = response.getRange(1, 1, 1, response.getLastColumn()).getValues()[0];
     const tab = "'" + response.getName().replace(/'/g, "''") + "'!";
-    const ranges = titles.map(title => {
+    const ranges = titles.slice(0, 1 + periods.length).map(title => {
       const index = headers.indexOf(title);
       if (index < 0) throw new Error('Missing response column: ' + title);
       const col = response.getRange(1, index + 1).getA1Notation().replace(/1$/, '');
