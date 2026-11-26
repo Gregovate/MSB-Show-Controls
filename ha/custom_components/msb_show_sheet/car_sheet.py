@@ -56,9 +56,11 @@ def entries(data, scheduled, today, closing_day=None):
     return found
 
 
-def import_sheet(args, closing_day=None):
+def import_sheet(args, closing_day=None, *, rehearsal_book=None, report_file=None):
     import gspread
-    sheet = gspread.service_account(filename=args.credentials, scopes=["https://www.googleapis.com/auth/spreadsheets"]).open_by_key(BOOK).worksheet("Park Data 2026")
+    if report_file is not None and (not rehearsal_book or rehearsal_book.strip() == BOOK):
+        raise ValueError("A rehearsal requires a separate workbook")
+    sheet = gspread.service_account(filename=args.credentials, scopes=["https://www.googleapis.com/auth/spreadsheets"]).open_by_key(rehearsal_book or BOOK).worksheet("Park Data 2026")
     header = sheet.get("G2:K2")[0]
     if [s.strip() for s in header] != COLUMNS:
         raise ValueError("Sheet layout changed; refusing to write")
@@ -77,7 +79,8 @@ def import_sheet(args, closing_day=None):
             if day in schedule:
                 raise ValueError(f"Duplicate show date {day}")
             schedule[day] = ix
-    with urlopen(SOURCE, timeout=15) as response:
+    # The rehearsal uses a local report so a simulated close never touches the counter.
+    with (open(report_file, "rb") if report_file else urlopen(SOURCE, timeout=15)) as response:
         data = response.read(65537)
     if len(data) > 65536:
         raise ValueError("Unexpectedly large car sheet")
