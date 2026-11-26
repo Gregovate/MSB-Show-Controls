@@ -11,6 +11,7 @@ sheet credential on that host. A submitted zero is a real count.
 import argparse
 import csv
 import io
+import math
 from datetime import date, datetime
 from urllib.request import urlopen
 from zoneinfo import ZoneInfo
@@ -39,7 +40,12 @@ def entries(data, scheduled, today, closing_day=None):
         late = int(record["DailyTotal"]) - sum(nums)
         if min([late, *nums]) < 0:
             raise ValueError(f"Invalid vehicle count for {day}")
-        found[day] = nums + [late]
+        # Blank means no verified show-window reading. Preserve a real zero.
+        raw_temp = (record.get("DailyAvgTemp") or "").strip()
+        temp = float(raw_temp) if raw_temp else None
+        if temp is not None and not math.isfinite(temp):
+            raise ValueError(f"Invalid DailyAvgTemp for {day}")
+        found[day] = (nums + [late], temp)
     return found
 
 
@@ -50,6 +56,9 @@ def import_sheet(args, closing_day=None):
     if [s.strip() for s in header] != COLUMNS:
         raise ValueError("Sheet layout changed; refusing to write")
     # Use sheet-local calendar serials; never parse locale-dependent amounts or dates.
+    if sheet.get("D2")[0][0].strip() != "Temp":
+        raise ValueError("Expected the sheet’s Temp header at D2")
+    temps = sheet.get("D3:D37", value_render_option="FORMULA")
     rows = sheet.get("B3:K37", value_render_option="UNFORMATTED_VALUE")
     formulas = sheet.get("G3:K37", value_render_option="FORMULA")
     schedule = {}
@@ -71,8 +80,13 @@ def import_sheet(args, closing_day=None):
         raise ValueError(f"Expected a sheet for {closing_day}; firmware export missing")
     writes = []
     conflicts = []
-    for day, values in sorted(source.items()):
+    for day, (values, temp) in sorted(source.items()):
         ix = schedule[day]
+        number = ix + 3
+        initial = temps[ix][0] if ix < len(temps) and temps[ix] else None
+        if temp is not None and initial in (None, ""):
+            sheet_value = {"range": f"D{number}", "values": [[temp]]}
+            writes.append(sheet_value)
         existing = list(formulas[ix]) if ix < len(formulas) else []
         existing.extend([""] * (5-len(existing)))
         if existing == values:
@@ -80,7 +94,6 @@ def import_sheet(args, closing_day=None):
         if any(v is not None and v != "" for v in existing):
             conflicts.append(str(day))
             continue
-        number = ix + 3
         writes.append({"range": f"G{number}:K{number}", "values": [values]})
         print(day, values)
     if args.write and writes:
@@ -90,7 +103,7 @@ def import_sheet(args, closing_day=None):
                 raise ValueError(f"Readback failed at {item['range']}")
     if conflicts:
         raise ValueError("Review existing vehicle cells for " + ", ".join(conflicts))
-    print(f"{len(writes)} vehicle rows {'written' if args.write else 'pending'}")
+    print(f"{len(writes)} sheet entries {'written' if args.write else 'pending'}")
     return len(writes)
 
 
