@@ -27,9 +27,9 @@ successfully writing both sheet archives. Cash and sheet-form access are indepen
 ## Season checks
 
 Park Data 2026 G–K hold sheet entries for the four hours ending at 6, 7, 8,
-and 9 PM, plus the official daily total minus those four amounts. The last
-amount includes the closing allowance. The source's 10PM value starts only
-when the gate is extended. Sheet column S should equal the Car sheet's
+and 9 PM, plus After9PM, including the closing allowance. For legacy sheets the importer
+recovers that last amount from DailyTotal minus the four period counts.
+It rejects cumulative CSVs and inconsistent new totals. Sheet column S should equal the Car sheet's
 DailyTotal for the same show date. A scheduled show and a confirmed zero
 are distinguished from a closed date, missing sheet, or unreported day.
 

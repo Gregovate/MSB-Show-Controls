@@ -27,7 +27,8 @@ def entries(data, scheduled, today, closing_day=None):
     # Source is the incremental sheet. The other sheet has a similar name
     # and cumulative counts; its header must never pass this check.
     data = csv.DictReader(io.StringIO(data))
-    if not set(["Date", "DailyTotal", *HOURS]).issubset(data.fieldnames or []):
+    headers = data.fieldnames or []
+    if "Before5" in headers or not {"Date", "DailyTotal", *HOURS}.issubset(headers):
         raise ValueError("Expected the Car Counter's ShowSummaryBuckets.csv")
     found = {}
     for record in data:
@@ -37,7 +38,13 @@ def entries(data, scheduled, today, closing_day=None):
         if day in found:
             raise ValueError(f"Duplicate source date {day}")
         nums = [int(record[k]) for k in HOURS]
-        late = int(record["DailyTotal"]) - sum(nums)
+        total = int(record["DailyTotal"])
+        if "After9PM" in headers:
+            late = int(record["After9PM"])
+            if sum(nums) + late != total:
+                raise ValueError(f"After9PM and DailyTotal disagree for {day}")
+        else:
+            late = total - sum(nums)
         if min([late, *nums]) < 0:
             raise ValueError(f"Invalid vehicle count for {day}")
         # Blank means no verified show-window reading. Preserve a real zero.
