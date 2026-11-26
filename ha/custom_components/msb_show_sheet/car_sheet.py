@@ -11,6 +11,7 @@ sheet credential on that host. A submitted zero is a real count.
 import argparse
 import csv
 import io
+import json
 import math
 from datetime import date, datetime
 from urllib.request import urlopen
@@ -56,11 +57,25 @@ def entries(data, scheduled, today, closing_day=None):
     return found
 
 
-def import_sheet(args, closing_day=None, *, rehearsal_book=None, report_file=None):
+def sheets_client(filename):
     import gspread
+
+    scopes = ["https://www.googleapis.com/auth/spreadsheets"]
+    with open(filename, encoding="utf-8") as stream:
+        info = json.load(stream)
+    if info.get("type") == "authorized_user":
+        from google.oauth2.credentials import Credentials
+        credentials = Credentials.from_authorized_user_info(info, scopes=scopes)
+        return gspread.authorize(credentials)
+    if info.get("type") == "service_account":
+        return gspread.service_account_from_dict(info, scopes=scopes)
+    raise ValueError("Expected an authorized Workspace user or service account credential")
+
+
+def import_sheet(args, closing_day=None, *, rehearsal_book=None, report_file=None):
     if report_file is not None and (not rehearsal_book or rehearsal_book.strip() == BOOK):
         raise ValueError("A rehearsal requires a separate workbook")
-    sheet = gspread.service_account(filename=args.credentials, scopes=["https://www.googleapis.com/auth/spreadsheets"]).open_by_key(rehearsal_book or BOOK).worksheet("Park Data 2026")
+    sheet = sheets_client(args.credentials).open_by_key(rehearsal_book or BOOK).worksheet("Park Data 2026")
     header = sheet.get("G2:K2")[0]
     if [s.strip() for s in header] != COLUMNS:
         raise ValueError("Sheet layout changed; refusing to write")

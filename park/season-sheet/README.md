@@ -7,7 +7,24 @@ successfully writing both sheet archives. Cash and sheet-form access are indepen
 
 ## Install in the HA configuration directory
 
-1. With the Google Sheets API enabled for the service account's project, place
+1. For the MSB shared drive, use an internal Workspace OAuth desktop client
+   in the **MSB Show Controls** Cloud project. Enable Google Sheets API,
+   configure Google Auth Platform with Internal audience, and create a client of
+   type **Desktop app**. Download its client JSON privately on the laptop.
+   From the repo root on Windows, run:
+
+   ```powershell
+   py -m pip install google-auth-oauthlib
+   py park/season-sheet/authorize_workspace.py "$HOME/Downloads/desktop-client.json" "$HOME/Downloads/msb-show-sheets.json"
+   ```
+
+   Substitute the actual downloaded client filename. Sign in with an MSB
+   account that can edit the rehearsal workbook. Copy the resulting
+   msb-show-sheets.json privately to /config/msb-show-sheets.json on HA.
+   This file contains a refresh token. Keep both files outside Git and www.
+   The uploader uses the Sheets scope and the configured workbook ID.
+
+   For installations that permit a service account, with the Google Sheets API enabled for the service account's project, place
    its private service account JSON at /config/msb-show-sheets.json on HA.
    Share **MSB 2026 Show Stats** with the JSON's client_email as Editor. Keep the
    key outside the kiosk, the repository, and /config/www. The writer uses only
@@ -48,8 +65,7 @@ the existing command-line entry point when run from a full repository checkout.
 
 ## Pre-opening rehearsal on HA
 
-1. Make a **separate copy** of the workbook. Share that copy with the service
-   account and retain the tab name `Park Data 2026`. In the copy only, set
+1. Make a **separate copy** of the workbook. Grant the chosen uploader identity Editor access to that copy and retain the tab name `Park Data 2026`. In the copy only, set
    B3 and B4 to real dates November 24 and 25, 2026. Clear D3:D4 and G3:K4.
    Verify those dates occur only once and the rows are open.
 2. **Before the first HA restart**, replace the package's `msb_show_sheet: {}`

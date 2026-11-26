@@ -2,7 +2,6 @@
 import importlib.util
 from datetime import date
 from pathlib import Path
-import sys
 from types import SimpleNamespace
 import unittest
 from unittest.mock import MagicMock, patch
@@ -28,14 +27,13 @@ class UploadRehearsal(unittest.TestCase):
                     "G3:K37": [cells.get(f"G{row}:K{row}", [[]])[0] for row in (3, 4)],
                     "D3:D37": [cells.get(f"D{row}", [[]])[0] for row in (3, 4)]}[address]
 
-        api = MagicMock()
-        client = api.service_account.return_value
+        client = MagicMock()
         sheet = client.open_by_key.return_value.worksheet.return_value
         sheet.get.side_effect = read
         sheet.batch_update.side_effect = lambda writes, **kw: cells.update(
             {w["range"]: w["values"] for w in writes})
         args = SimpleNamespace(credentials="unused", write=True)
-        with patch.dict(sys.modules, gspread=api), patch.object(uploader, "datetime") as clock:
+        with patch.object(uploader, "sheets_client", return_value=client), patch.object(uploader, "datetime") as clock:
             clock.now.return_value.date.return_value = date(2026, 11, 24)
             with self.assertRaises(ValueError):
                 uploader.import_sheet(args, rehearsal_book=uploader.BOOK,
