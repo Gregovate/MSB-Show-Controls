@@ -752,7 +752,10 @@ views:
         color: red
         tap_action:
           action: none
-    - type: iframe
-      title: ParkDonations
-      url: https://docs.google.com/forms/d/e/1FAIpQLScc_Wd1Q1y6EDaR6dvrdDdvhZsBjhKkIEleT4LCDRnH1piD0Q/viewform?embedded=true
-      aspect_ratio: 65%
+    - type: custom:button-card
+      name: Open ParkDonations
+      icon: mdi:cash-register
+      tap_action:
+        action: javascript
+        javascript: |
+          [[[ window.location.assign("https://docs.google.com/forms/d/e/1FAIpQLScc_Wd1Q1y6EDaR6dvrdDdvhZsBjhKkIEleT4LCDRnH1piD0Q/viewform"); ]]]
