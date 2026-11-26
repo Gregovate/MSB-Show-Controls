@@ -75,7 +75,8 @@ function NightlyCashForm() {
       const index = headers.indexOf(title);
       if (index < 0) throw new Error('Missing response column: ' + title);
       const col = response.getRange(1, index + 1).getA1Notation().replace(/1$/, '');
-      return tab + '$' + col + '$2:$' + col;
+      // Forms inserts response rows. Whole-column references include the first submission.
+      return tab + '$' + col + ':$' + col;
     });
     // Latest submission for this date and period is the correction. Zero stays numeric.
     // Populate empty cells only so existing manual entries and formulas survive reruns.
