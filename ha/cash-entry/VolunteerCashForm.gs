@@ -21,21 +21,31 @@ function NightlyCashForm() {
     const form = id ? FormApp.openById(id) : FormApp.create(title, false);
     if (id && form.getTitle() !== title) form.setTitle(title);
     if (!id) props.setProperty(key, form.getId());
-    const titles = ['Show date', 'Collection period', 'Dollars collected'];
+    const titles = ['Show date', ...periods];
+    // The original form used a period selector and a single amount. Remove
+    // those two setup questions only while the original form is still unused.
+    const obsolete = form.getItems().filter(item =>
+      ['Collection period', 'Dollars collected'].includes(item.getTitle()));
+    if (obsolete.length && form.getResponses().length) {
+      throw new Error('Existing hourly responses detected. Stop before changing questions.');
+    }
+    obsolete.reverse().forEach(item => form.deleteItem(item));
     const items = form.getItems();
     if (items.some((item, index) => item.getTitle() !== titles[index])) {
       throw new Error('Review existing cash form questions before continuing.');
     }
-    if (items.length < 1) form.addListItem().setTitle(titles[0]);
-    if (items.length < 2) form.addListItem().setTitle(titles[1]);
-    if (items.length < 3) form.addTextItem().setTitle(titles[2]);
-    const questions = form.getItems();
-    questions[0].asListItem().setChoiceValues(labels).setRequired(true);
-    questions[1].asListItem().setChoiceValues(periods).setRequired(true);
-    questions[2].asTextItem().setRequired(true).setValidation(FormApp.createTextValidation()
+    const day = items[0] ? items[0].asListItem() : form.addListItem().setTitle(titles[0]);
+    day.setChoiceValues(labels).setRequired(true);
+    const money = FormApp.createTextValidation()
       .requireTextMatchesPattern('^[0-9]+([.][0-9]{1,2})?$')
-      .setHelpText('Enter dollars and cents, for example 42.50 or 0.00.').build());
-    form.setConfirmationMessage('Cash entry received. Submit another response for the next pickup.');
+      .setHelpText('Enter dollars and cents, for example 42.50 or 0.00.').build();
+    periods.forEach((period, index) => {
+      const item = items[index + 1];
+      const question = item ? item.asTextItem() : form.addTextItem().setTitle(period);
+      question.setRequired(false).setValidation(money);
+    });
+    form.setDescription('Enter the amounts counted for this show date. Leave an uncounted period blank. Enter 0 for a confirmed zero. To correct a period, submit its updated total.');
+    form.setConfirmationMessage('Cash amounts received.');
     // Google throws when a newly created form has no response destination.
     let destinationId;
     try {
@@ -70,10 +80,15 @@ function NightlyCashForm() {
       periods.forEach((period, offset) => {
         const row = index + 3;
         const cell = park.getRange(row, 12 + offset);
-        if (!cell.isBlank()) return;
-        cell.setFormula('=IFNA(VALUE(XLOOKUP(1,ARRAYFORMULA((' + ranges[0] +
-          '=("Show "&TEXT($B' + row + ',"yyyy-mm-dd")))*(' + ranges[1] + '="' +
-          period + '"))),' + ranges[2] + ',NA(),0,-1)),"")');
+        const existing = cell.getFormula();
+        const legacy = '=IFNA(VALUE(XLOOKUP(1,ARRAYFORMULA((' + tab + '$B$2:$B=("Show "&TEXT($B' +
+          row + ',"yyyy-mm-dd")))*(' + tab + '$C$2:$C="' + period + '"))),' +
+          tab + '$D$2:$D,NA(),0,-1)),"")';
+        const amounts = ranges[offset + 1];
+        const formula = '=IFNA(VALUE(XLOOKUP(1,ARRAYFORMULA((' + ranges[0] +
+          '=("Show "&TEXT($B' + row + ',"yyyy-mm-dd")))*(' + amounts +
+          '<>"")),' + amounts + ',NA(),0,-1)),"")';
+        if (cell.isBlank() || existing === legacy || existing === legacy.replace('"))),', '")),')) cell.setFormula(formula);
       });
     });
     console.log('Set responder access and publish: ' + form.getEditUrl());
