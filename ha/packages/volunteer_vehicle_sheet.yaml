@@ -1,0 +1,28 @@
+# The firmware checks the two sheet archives before it publishes this close notification.
+msb_show_sheet: {}
+automation:
+  - id: msb_car_vehicle_sheet
+    alias: "Vehicle Sheets - Sync Car Counter"
+    mode: queued
+    triggers:
+      - trigger: mqtt
+        topic: msb/traffic/CarCounter/Calendar/showSummary
+        id: closing
+      - trigger: homeassistant
+        event: start
+        id: setup
+      - trigger: time
+        at: ["01:00:00", "12:00:00"]
+        id: catch_up
+    actions:
+      - if: "{{ trigger is defined and trigger.id == 'closing' }}"
+        then:
+          - variables:
+              fields: "{{ trigger.payload.split(',') }}"
+          - condition: template
+            value_template: "{{ fields | length >= 9 and fields[0] | regex_match('^[0-9]{4}-[0-9]{2}-[0-9]{2}$') }}"
+          - action: msb_show_sheet.sync
+            data:
+              closing_date: "{{ fields[0] }}"
+        else:
+          - action: msb_show_sheet.sync
