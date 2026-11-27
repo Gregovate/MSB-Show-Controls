@@ -99,3 +99,30 @@ the existing command-line entry point when run from a full repository checkout.
 6. When ready for production, restore the repository's original package and
    restart HA. This enables production writes from the real counter. The
    preseason fixture dates are absent from the live show schedule.
+
+## 2026 acceptance checkpoint and annual rollover
+
+Rehearsal on HA, November 26, 2026: operator confirmed manual upload,
+duplicate synchronization, fresh write/readback, MQTT-triggered upload and
+startup recovery. Windows regression tests passed after installing tzdata
+(`python -m pip install tzdata`). Production cutover and first actual nightly
+upload remain to be confirmed. Do not manually reset counter totals from HA
+as part of this deployment.
+
+### Annual rollover requirements (open work; not implemented)
+
+- Move the hard-coded production workbook ID, worksheet name and calendar
+  range into validated season configuration. Keep the active season explicit;
+  never infer it from January 1 or silently select a different workbook.
+- Reuse HA's season start/end dates for validation without coupling spreadsheet
+  configuration changes to MCU reset commands. Preserve prior season workbooks.
+- Validate workbook identity, unique real calendar dates, expected headers,
+  closed days, and write permissions before arming a new season.
+- Provide a read-only preflight and an isolated rehearsal with a separate
+  workbook and MQTT topic before enabling production writes.
+- Assign an organizational owner and backup for Workspace authorization;
+  document reauthorization and credential storage without committing secrets.
+- Document the yearly checklist and first-night verification for the next
+  operator. Keep a manual reporting fallback and never overwrite conflicting
+  existing counts.
+- Record deployment and first-night acceptance in the repository.
