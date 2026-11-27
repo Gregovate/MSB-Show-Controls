@@ -30,8 +30,13 @@ class UploadRehearsal(unittest.TestCase):
         client = MagicMock()
         sheet = client.open_by_key.return_value.worksheet.return_value
         sheet.get.side_effect = read
-        sheet.batch_update.side_effect = lambda writes, **kw: cells.update(
-            {w["range"]: w["values"] for w in writes})
+        def batch_update(writes, **options):
+            # gspread 6.2.1 mutates each range by qualifying it with the tab name.
+            for item in writes:
+                cells[item["range"]] = item["values"]
+                item["range"] = "'Park Data 2026'!" + item["range"]
+
+        sheet.batch_update.side_effect = batch_update
         args = SimpleNamespace(credentials="unused", write=True)
         with patch.object(uploader, "sheets_client", return_value=client), patch.object(uploader, "datetime") as clock:
             clock.now.return_value.date.return_value = date(2026, 11, 24)
