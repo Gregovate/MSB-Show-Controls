@@ -186,7 +186,11 @@ template:
     availability: >-
       {% set clock = now() %}
       {% set stamp = strptime(states('sensor.msb_gate_occupancy_sample_time'), '%Y-%m-%d %H:%M:%S', none) %}
-      {{ is_state('binary_sensor.msb_gate_counter_online','on') and stamp is not none
+      {% set online = states('binary_sensor.msb_gate_counter_gate_counter_online') %}
+      {% if online == 'unknown' %}
+        {% set online = states('binary_sensor.msb_gate_counter_online') %}
+      {% endif %}
+      {{ online == 'on' and stamp is not none
          and -5 <= clock.timestamp() - stamp.replace(tzinfo=clock.tzinfo).timestamp() <= 120
          and states('sensor.msb_gate_occupancy_raw') | regex_match('^-?[0-9]+$') }}
     state: "{{ states('sensor.msb_gate_occupancy_raw') | int(none) }}"
