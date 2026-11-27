@@ -102,3 +102,32 @@ class OccupancyTests(unittest.TestCase):
         self.assertEqual(t.render(value_json={'now': '2026-11-27 17:01:00', 'inpark': 0}), '2026-11-27 17:01:00')
         attribute = SENSORS['msb_traffic_status_snapshot']['attributes']['in_park_cars']
         self.assertEqual(self.env.from_string(attribute).render(), 'None')
+
+    def test_opening_night_analytics_with_unavailable_diagnostic(self):
+        self.clock = self.clock.replace(hour=17, minute=30, second=42)
+        self.state.update({
+            'sensor.msb_gate_occupancy_diagnostic': 'unavailable',
+            'sensor.msb_gate_occupancy_raw': '100',
+            'sensor.msb_gate_occupancy_sample_time': '2026-11-27 17:30:38',
+            'binary_sensor.msb_gate_counter_gate_counter_online': 'on',
+            'binary_sensor.msb_gatecounter_analytics_active': 'on',
+            # Controlled rates exercise the estimates. They are not field measurements.
+            'sensor.msb_exit_rate_cars_min': '4',
+            'sensor.msb_enter_rate_cars_min': '5',
+            'sensor.msb_flow_delta_cars_min': '1',
+        })
+        chain = [
+            ('msb_in_park_cars_canonical', '100'),
+            ('msb_in_park_cars_band', 'medium'),
+            ('msb_travel_time_estimate_min', '25.0'),
+            ('msb_travel_time_band', 'busy'),
+            ('msb_traffic_pressure', 'medium'),
+            ('msb_traffic_status', 'busy'),
+            ('msb_traffic_status_snapshot', 'busy'),
+        ]
+        for delay in (0, 121):
+            self.clock += timedelta(seconds=delay)
+            for uid, fresh_value in chain:
+                value = self.render_sensor(uid)
+                self.assertEqual(value, fresh_value if delay == 0 else 'unavailable', uid)
+                self.state['sensor.' + uid] = value
