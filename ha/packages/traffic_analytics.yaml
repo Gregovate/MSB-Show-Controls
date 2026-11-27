@@ -37,10 +37,10 @@ template:
   - default_entity_id: binary_sensor.msb_show_open
     unique_id: msb_show_open
     name: MSB Show Open (Published)
-    state: '{% set start = as_datetime(state_attr(''sensor.msb_effective_entry_closing_time'',''public_start''))
+    state: '{% set start = as_datetime(state_attr(''sensor.msb_effective_entry_closing_time'',''public_start''), none)
       %}
 
-      {% set end = as_datetime(states(''sensor.msb_effective_entry_closing_time'')) %}
+      {% set end = as_datetime(states(''sensor.msb_effective_entry_closing_time''), none) %}
 
       {% if start is none or end is none %}false
 
@@ -55,10 +55,10 @@ template:
   - default_entity_id: binary_sensor.msb_carcounter_analytics_active
     unique_id: msb_carcounter_analytics_active
     name: MSB Car Counter Analytics Active
-    state: '{% set start = as_datetime(state_attr(''sensor.msb_effective_entry_closing_time'',''public_start''))
+    state: '{% set start = as_datetime(state_attr(''sensor.msb_effective_entry_closing_time'',''public_start''), none)
       %}
 
-      {% set end = as_datetime(states(''sensor.msb_effective_entry_closing_time'')) %}
+      {% set end = as_datetime(states(''sensor.msb_effective_entry_closing_time''), none) %}
 
       {% if start is none or end is none %}false
 
@@ -74,10 +74,10 @@ template:
   - default_entity_id: binary_sensor.msb_gatecounter_analytics_active
     unique_id: msb_gatecounter_analytics_active
     name: MSB Gate Counter Analytics Active
-    state: '{% set start = as_datetime(state_attr(''sensor.msb_effective_entry_closing_time'',''public_start''))
+    state: '{% set start = as_datetime(state_attr(''sensor.msb_effective_entry_closing_time'',''public_start''), none)
       %}
 
-      {% set end = as_datetime(states(''sensor.msb_effective_entry_closing_time'')) %}
+      {% set end = as_datetime(states(''sensor.msb_effective_entry_closing_time''), none) %}
 
       {% if start is none or end is none %}false
 
