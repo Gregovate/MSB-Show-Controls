@@ -199,13 +199,19 @@ template:
     availability: >-
       {% set clock = now() %}
       {% set stamp = strptime(states('sensor.msb_gate_occupancy_sample_time'), '%Y-%m-%d %H:%M:%S', none) %}
+      {% set online = states('binary_sensor.msb_gate_counter_gate_counter_online') %}
+      {% if online == 'unknown' %}
+        {% set online = states('binary_sensor.msb_gate_counter_online') %}
+      {% endif %}
+      {% set raw = states('sensor.msb_gate_occupancy_raw') %}
       {% set first = states('input_datetime.msb_signs_public_start_date') %}
       {% set last = states('input_datetime.msb_show_end_date') %}
       {% set down = states('input_datetime.msb_show_down_date') %}
       {% set opening = states('input_datetime.msb_show_start_time') %}
       {% set day = clock.strftime('%Y-%m-%d') %}
       {{ is_state('binary_sensor.msb_show_open','on') and stamp is not none and stamp.date() == clock.date()
-         and is_number(states('sensor.msb_gate_occupancy_diagnostic'))
+         and online == 'on' and raw | regex_match('^-?[0-9]+$')
+         and -5 <= clock.timestamp() - stamp.replace(tzinfo=clock.tzinfo).timestamp() <= 120
          and strptime(first, '%Y-%m-%d', none) is not none
          and strptime(last, '%Y-%m-%d', none) is not none
          and strptime(down, '%Y-%m-%d', none) is not none
@@ -217,9 +223,8 @@ template:
     icon: mdi:car-multiple
     state_class: measurement
     unit_of_measurement: cars
-    state: '{{ states(''sensor.msb_gate_occupancy_diagnostic'') | int(none) }}
-
-      '
+    # The diagnostic entity may be unavailable while the Gate still publishes valid samples.
+    state: "{{ states('sensor.msb_gate_occupancy_raw') | int(none) }}"
   - name: MSB Traffic Status
     unique_id: msb_traffic_status
     availability: "{{ is_state('binary_sensor.msb_show_open', 'off') or is_number(states('sensor.msb_in_park_cars_canonical')) }}"
