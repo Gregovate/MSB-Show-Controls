@@ -1,0 +1,10 @@
+sync:
+  name: Sync car counts
+  description: Import completed car count records into the configured show workbook.
+  fields:
+    closing_date:
+      name: Closing date
+      description: Optional local show date for a completed nightly close (YYYY-MM-DD).
+      required: false
+      selector:
+        text:
