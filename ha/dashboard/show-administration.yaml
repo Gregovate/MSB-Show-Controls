@@ -155,15 +155,14 @@ views:
             title: Car Counter Time Offsets
           - type: markdown
             content: >-
-              Offsets are in minutes from these times and used to reset daily
-              show counts and start recording traffic Exit counts. If Stop
-              Recording in 0 then don't stop counting exit counts untl Midnight.
+              Gate reset is measured from show opening. The closing allowance is
+              added to the show end time, including any extension.
           - type: entities
             entities:
               - entity: input_number.gatecounter_start_offset_min
                 name: Reset Gate Counts
-              - entity: input_number.gatecounter_end_offset_min
-                name: Stop Recording
+              - entity: input_number.gatecounter_show_end_offset_min
+                name: Closing allowance
             title: Gate Counter Time Offsets
       - type: grid
         cards:
