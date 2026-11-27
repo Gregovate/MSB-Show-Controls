@@ -22,7 +22,8 @@ function NightlyCashForm() {
     if (id && form.getTitle() !== title) form.setTitle(title);
     if (!id) props.setProperty(key, form.getId());
     const noteTitle = 'Nightly note';
-    const titles = ['Show date', ...periods, noteTitle];
+    const amountTitles = periods.map(period => period.replace(/^Cash /, 'Hourly Total Amount '));
+    const titles = ['Show date', ...amountTitles, noteTitle];
     // The original form used a period selector and a single amount. Remove
     // those two setup questions only while the original form is still unused.
     const obsolete = form.getItems().filter(item =>
@@ -32,7 +33,8 @@ function NightlyCashForm() {
     }
     obsolete.reverse().forEach(item => form.deleteItem(item));
     const items = form.getItems();
-    if (items.some((item, index) => item.getTitle() !== titles[index])) {
+    if (items.some((item, index) => item.getTitle() !== titles[index] &&
+        !(index > 0 && index <= periods.length && item.getTitle() === periods[index - 1]))) {
       throw new Error('Review existing cash form questions before continuing.');
     }
     const day = items[0] ? items[0].asListItem() : form.addListItem().setTitle(titles[0]);
@@ -40,16 +42,16 @@ function NightlyCashForm() {
     const money = FormApp.createTextValidation()
       .requireTextMatchesPattern('^[0-9]+([.][0-9]{1,2})?$')
       .setHelpText('Enter dollars and cents, for example 42.50 or 0.00.').build();
-    periods.forEach((period, index) => {
+    amountTitles.forEach((title, index) => {
       const item = items[index + 1];
-      const question = item ? item.asTextItem() : form.addTextItem().setTitle(period);
-      question.setRequired(false).setValidation(money);
+      const question = item ? item.asTextItem() : form.addTextItem();
+      question.setTitle(title).setRequired(false).setValidation(money);
     });
     const noteItem = items[periods.length + 1];
     const note = noteItem ? noteItem.asParagraphTextItem() : form.addParagraphTextItem().setTitle(noteTitle);
     note.setRequired(false).setHelpText('Anything unusual about tonight’s count? For example, two buckets were counted together.');
-    form.setDescription('Enter the amounts counted for this show date. Leave an uncounted period blank. Enter 0 for a confirmed zero. To correct a period, submit its updated total.');
-    form.setConfirmationMessage('Cash amounts received.');
+    form.setDescription('For each period, enter one total for bills, coins, and checks combined. Leave an uncounted period blank. Enter 0 for a confirmed zero. To correct a period, submit its updated total.');
+    form.setConfirmationMessage('Hourly totals received.');
     // Google throws when a newly created form has no response destination.
     let destinationId;
     try {
@@ -71,8 +73,12 @@ function NightlyCashForm() {
     if (!response) throw new Error('Response tab pending. Run setup again.');
     const headers = response.getRange(1, 1, 1, response.getLastColumn()).getValues()[0];
     const tab = "'" + response.getName().replace(/'/g, "''") + "'!";
-    const ranges = titles.slice(0, 1 + periods.length).map(title => {
-      const index = headers.indexOf(title);
+    const ranges = titles.slice(0, 1 + periods.length).map((title, position) => {
+      // Linked response headers can retain the original question title.
+      const matches = headers.map((header, i) => header === title ||
+        (position > 0 && header === periods[position - 1]) ? i : -1).filter(i => i >= 0);
+      if (matches.length > 1) throw new Error('Ambiguous response column: ' + title);
+      const index = matches.length ? matches[0] : -1;
       if (index < 0) throw new Error('Missing response column: ' + title);
       const col = response.getRange(1, index + 1).getA1Notation().replace(/1$/, '');
       // Forms inserts response rows. Whole-column references include the first submission.
