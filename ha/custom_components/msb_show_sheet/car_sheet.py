@@ -10,7 +10,9 @@ sheet credential on that host. A submitted zero is a real count.
 """
 import argparse
 import csv
+from copy import deepcopy
 import io
+import json
 import math
 from datetime import date, datetime
 from urllib.request import urlopen
@@ -56,9 +58,25 @@ def entries(data, scheduled, today, closing_day=None):
     return found
 
 
-def import_sheet(args, closing_day=None):
+def sheets_client(filename):
     import gspread
-    sheet = gspread.service_account(filename=args.credentials, scopes=["https://www.googleapis.com/auth/spreadsheets"]).open_by_key(BOOK).worksheet("Park Data 2026")
+
+    scopes = ["https://www.googleapis.com/auth/spreadsheets"]
+    with open(filename, encoding="utf-8") as stream:
+        info = json.load(stream)
+    if info.get("type") == "authorized_user":
+        from google.oauth2.credentials import Credentials
+        credentials = Credentials.from_authorized_user_info(info, scopes=scopes)
+        return gspread.authorize(credentials)
+    if info.get("type") == "service_account":
+        return gspread.service_account_from_dict(info, scopes=scopes)
+    raise ValueError("Expected an authorized Workspace user or service account credential")
+
+
+def import_sheet(args, closing_day=None, *, rehearsal_book=None, report_file=None):
+    if report_file is not None and (not rehearsal_book or rehearsal_book.strip() == BOOK):
+        raise ValueError("A rehearsal requires a separate workbook")
+    sheet = sheets_client(args.credentials).open_by_key(rehearsal_book or BOOK).worksheet("Park Data 2026")
     header = sheet.get("G2:K2")[0]
     if [s.strip() for s in header] != COLUMNS:
         raise ValueError("Sheet layout changed; refusing to write")
@@ -77,7 +95,8 @@ def import_sheet(args, closing_day=None):
             if day in schedule:
                 raise ValueError(f"Duplicate show date {day}")
             schedule[day] = ix
-    with urlopen(SOURCE, timeout=15) as response:
+    # The rehearsal uses a local report so a simulated close never touches the counter.
+    with (open(report_file, "rb") if report_file else urlopen(SOURCE, timeout=15)) as response:
         data = response.read(65537)
     if len(data) > 65536:
         raise ValueError("Unexpectedly large car sheet")
@@ -104,7 +123,8 @@ def import_sheet(args, closing_day=None):
         writes.append({"range": f"G{number}:K{number}", "values": [values]})
         print(day, values)
     if args.write and writes:
-        sheet.batch_update(writes, value_input_option="RAW")
+        # gspread qualifies ranges in place; preserve local ranges for readback.
+        sheet.batch_update(deepcopy(writes), value_input_option="RAW")
         for item in writes:
             if sheet.get(item["range"], value_render_option="UNFORMATTED_VALUE") != item["values"]:
                 raise ValueError(f"Readback failed at {item['range']}")

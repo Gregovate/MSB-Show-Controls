@@ -2,7 +2,7 @@
 msb_show_sheet: {}
 automation:
   - id: msb_car_vehicle_sheet
-    alias: "Vehicle Sheets - Sync Car Counter"
+    alias: "Show Stats - Upload Car Counts"
     mode: queued
     triggers:
       - trigger: mqtt

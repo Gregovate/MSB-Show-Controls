@@ -2,6 +2,8 @@
 import asyncio
 from datetime import date
 import logging
+from pathlib import Path
+from functools import partial
 from types import SimpleNamespace
 
 import voluptuous as vol
@@ -11,7 +13,7 @@ from .car_sheet import import_sheet
 
 DOMAIN = "msb_show_sheet"
 CONFIG_SCHEMA = vol.Schema(
-    {DOMAIN: vol.Schema({})}, extra=vol.ALLOW_EXTRA
+    {DOMAIN: vol.Schema({vol.Optional("rehearsal_workbook"): vol.All(str, vol.Match(r"^[A-Za-z0-9_-]+$"))})}, extra=vol.ALLOW_EXTRA
 )
 LOG = logging.getLogger(__name__)
 
@@ -19,14 +21,20 @@ LOG = logging.getLogger(__name__)
 async def async_setup(hass, config):
     # All device fetches, Google API calls and connection setup run off the HA event loop.
     lock = asyncio.Lock()
-    settings = hass.config.path("msb-show-sheets.json")
+    settings = Path(hass.config.path("msb_show_sheet", "msb-show-sheets.json"))
+    # Existing installations can keep their credential at its original location.
+    if not settings.exists():
+        settings = Path(hass.config.path("msb-show-sheets.json"))
+
+    rehearsal = config[DOMAIN].get("rehearsal_workbook")
+    report = hass.config.path("msb_show_sheet", "msb-rehearsal-buckets.csv") if rehearsal else None
 
     async def sync(call):
         day = call.data.get("closing_date")
         try:
             async with lock:
                 count = await hass.async_add_executor_job(
-                    import_sheet, SimpleNamespace(credentials=settings, write=True),
+                    partial(import_sheet, rehearsal_book=rehearsal, report_file=report), SimpleNamespace(credentials=settings, write=True),
                     date.fromisoformat(day) if day else None
                 )
         except Exception as exc:
