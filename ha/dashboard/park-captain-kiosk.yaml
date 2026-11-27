@@ -57,23 +57,19 @@ views:
             columns: 2
             cards:
               - type: custom:mushroom-template-card
-                entity: sensor.msb_in_park_cars_canonical
+                entity: sensor.msb_gate_occupancy_raw
                 primary: Cars in park
                 icon: mdi:car-multiple
                 secondary: >-
-                  {% set gate = states('sensor.msb_gate_occupancy_diagnostic') %}
-                  {% set traffic = states('sensor.msb_traffic_status_snapshot') %}
-                  {% if has_value(entity) %}
-                    {{ states(entity, with_unit=true) }}{{ ' · ' ~ traffic.replace('_',' ').capitalize() if traffic in ['busy','very_busy'] else '' }}
-                  {% elif is_number(gate) %}
-                    Gate check: {{ gate }} cars · Show unavailable
+                  {% set raw = states(entity) %}
+                  {% set stamp = strptime(states('sensor.msb_gate_occupancy_sample_time'), '%Y-%m-%d %H:%M:%S', none) %}
+                  {% set clock = now() %}
+                  {% set age = clock.timestamp() - stamp.replace(tzinfo=clock.tzinfo).timestamp() if stamp is not none else none %}
+                  {% if age is not none and -5 <= age <= 120 and raw | regex_match('^-?[0-9]+$') %}
+                    {{ raw }} cars
                   {% else %}
                     Unavailable · No fresh Gate balance
                   {% endif %}
-                color: >-
-                  {% set traffic = states('sensor.msb_traffic_status_snapshot')
-                  %}{{ 'grey' if not has_value(entity) else 'amber' if traffic
-                  in ['busy','very_busy'] else 'teal' }}
                 tap_action:
                   action: more-info
               - type: custom:mushroom-template-card
