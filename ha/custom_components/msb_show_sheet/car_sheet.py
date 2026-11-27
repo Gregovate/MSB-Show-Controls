@@ -10,6 +10,7 @@ sheet credential on that host. A submitted zero is a real count.
 """
 import argparse
 import csv
+from copy import deepcopy
 import io
 import json
 import math
@@ -122,7 +123,8 @@ def import_sheet(args, closing_day=None, *, rehearsal_book=None, report_file=Non
         writes.append({"range": f"G{number}:K{number}", "values": [values]})
         print(day, values)
     if args.write and writes:
-        sheet.batch_update(writes, value_input_option="RAW")
+        # gspread qualifies ranges in place; preserve local ranges for readback.
+        sheet.batch_update(deepcopy(writes), value_input_option="RAW")
         for item in writes:
             if sheet.get(item["range"], value_render_option="UNFORMATTED_VALUE") != item["values"]:
                 raise ValueError(f"Readback failed at {item['range']}")
